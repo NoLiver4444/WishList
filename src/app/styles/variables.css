@@ -1,16 +1,17 @@
 :root {
   --color-dark-blue: #081028;
-  --color-light-blue: #0A1330;
-  --color-gray: #AEB9E1;
-  --color-purple: #8951FF;
-  --color-dark-pink: #CB3CFF;
-  --color-light-pink: #EA8DF7;
+  --color-light-blue: #0a1330;
+  --color-gray: #aeb9e1;
+  --color-purple: #8951ff;
+  --color-dark-pink: #cb3cff;
+  --color-light-pink: #ea8df7;
   --color-black: #000;
 
   --border: 1px solid var(--color-black);
   --border-radius: 8px;
 
-  --box-shadow: -4px -4px 4px 0 var(--color-black), 4px 4px 4px 0 var(--color-black);
+  --box-shadow:
+    -4px -4px 4px 0 var(--color-black), 4px 4px 4px 0 var(--color-black);
 
   --input-height: 50px;
 
