@@ -1,0 +1,18 @@
+.navigation {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  background-color: var(--color-light-blue);
+  border-radius: 30px;
+}
+
+.item {
+  width: 90px;
+  height: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
