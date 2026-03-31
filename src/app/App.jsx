@@ -1,6 +1,8 @@
+import './styles'
+
 const App = () => {
   return (
-    <h1>Wishlist</h1>
+    <h1>Wish-piece</h1>
   )
 }
 
