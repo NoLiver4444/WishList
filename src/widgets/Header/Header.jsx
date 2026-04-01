@@ -1,7 +1,7 @@
 import styles from './Header.module.css'
-import Logo from "@/shared/ui/Logo";
-import Navigation from "@/shared/ui/Navigation";
-import Menu from "@/shared/ui/Menu";
+import Logo from "@/entities/ui/Logo";
+import Navigation from "@/entities/ui/Navigation";
+import Menu from "@/entities/ui/Menu";
 
 const Header = () => {
   return (

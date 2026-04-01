@@ -5,7 +5,7 @@ const Logo = () => {
   return (
     <div className={styles.logo}>
       {/*сделай Link заместе ссылки и укажи путь на домашюю страницу*/}
-      <a>
+      <a className={styles.iconButton}>
         <img
           src={logoIconURL}
           alt='Logo wish-piece'

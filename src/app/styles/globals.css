@@ -3,7 +3,6 @@ body {
   justify-content: center;
   align-items: start;
   height: 100vh;
-  width: 100vw;
   padding: 15px 25px;
   font-family: 'Inter', sans-serif;
   color: var(--color-gray);

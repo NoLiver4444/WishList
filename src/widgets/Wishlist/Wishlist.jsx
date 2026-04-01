@@ -1,8 +1,15 @@
 import Header from "@/widgets/Header";
+import Main from "@/widgets/Main";
+import Footer from "@/widgets/Footer";
+import styles from "./Wishlist.module.css";
 
 const Wishlist = () => {
   return (
-    <Header />
+    <div className={styles.wishlist}>
+      <Header />
+      <Main />
+      <Footer />
+    </div>
   )
 }
 

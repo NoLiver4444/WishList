@@ -1,24 +1,31 @@
-.navigation {
+.menu {
   list-style: none;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 0;
+  column-gap: 5px;
+  padding: 0 4px;
+  margin: 0;
   height: 50px;
   background-color: var(--color-light-blue);
   border-radius: 30px;
 }
 
 .item {
-  width: 90px;
-  height: 40px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
 }
 
 .icon {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
+}
+
+.avatar {
+  width: 35px;
+  height: 35px;
 }

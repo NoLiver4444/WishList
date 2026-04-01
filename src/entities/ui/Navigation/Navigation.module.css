@@ -1,29 +1,25 @@
-.menu {
+.navigation {
   list-style: none;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  gap: 8px;
-  padding: 0 4px;
+  padding: 0;
   margin: 0;
   height: 50px;
-  width: 174px;
   background-color: var(--color-light-blue);
   border-radius: 30px;
 }
 
 .item {
-  width: 40px;
-  height: 40px;
+  width: 70px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .icon {
-  width: 40px;
-  height: 40px;
-}
-
-.avatar {
-  width: 40px;
-  height: 40px;
+  width:35px;
+  height: 35px;
 }
