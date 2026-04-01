@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.title {
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.list {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+}
+
+.isActive {
+  background-color: var(--color-light-blue);
+  padding-inline: 5px;
+  border-radius: 3px;
+  border-left: 4px solid var(--color-dark-pink);
+}
+
+.item {
+
+}
