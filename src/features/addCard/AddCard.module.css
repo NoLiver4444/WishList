@@ -1,0 +1,27 @@
+.card {
+  width: 100%;
+  height: 280px;
+  background-color: var(--color-light-blue);
+  border-radius: var(--border-radius);
+}
+
+.button {
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-light-blue);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+.icon {
+  width: 75px;
+  height: 75px;
+  background-color: var(--color-light-blue);
+}
+
+.text {
+  color: var(--color-gray);
+  font-weight: 400;
+  font-size: 20px;
+}

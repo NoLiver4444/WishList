@@ -8,7 +8,7 @@ const Logo = () => {
       <a className={styles.iconButton}>
         <img
           src={logoIconURL}
-          alt='Logo wish-piece'
+          alt='CardList wish-piece'
           className={styles.icon}
         />
       </a>

@@ -2,7 +2,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: start;
-  height: 100vh;
+  min-height: 100vh;
   padding: 15px 25px;
   font-family: 'Inter', sans-serif;
   color: var(--color-gray);

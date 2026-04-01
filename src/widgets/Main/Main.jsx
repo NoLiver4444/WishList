@@ -1,5 +1,6 @@
 import styles from './Main.module.css'
-import SortCardsForm from "@/features/sortingCards/index.js";
+import SortCardsForm from "@/features/sortingCards";
+import CardList from "@/entities/ui/CardList";
 
 const Main = () => {
   return (
@@ -8,6 +9,7 @@ const Main = () => {
     >
       <h1 className={styles.title}>Вишлисты</h1>
       <SortCardsForm />
+      <CardList />
     </main>
   )
 }
