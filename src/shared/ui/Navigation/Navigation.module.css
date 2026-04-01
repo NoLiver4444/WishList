@@ -5,14 +5,20 @@
   justify-content: space-between;
   align-items: center;
   padding: 0;
+  height: 50px;
   background-color: var(--color-light-blue);
   border-radius: 30px;
 }
 
 .item {
   width: 90px;
-  height: 64px;
+  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
 }
