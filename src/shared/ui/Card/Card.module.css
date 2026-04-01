@@ -19,8 +19,9 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: repeat(2, 1fr);
-  grid-template-areas: 'title title'
-  'date counts';
+  grid-template-areas:
+    'title title'
+    'date counts';
 }
 
 .title {

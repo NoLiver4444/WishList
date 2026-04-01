@@ -1,1 +1,1 @@
-export { default } from './SortCardsForm'
+export { default } from './SortCardsForm';
