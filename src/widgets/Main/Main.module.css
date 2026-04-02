@@ -1,5 +1,5 @@
 .main {
-  margin-top: 97px;
+  margin-top: 11vh;
   display: flex;
   flex-direction: column;
   align-items: Start;
@@ -7,7 +7,7 @@
   padding: 20px;
   width: clamp(430px, -70px + 100vw, 2930px);
   flex: 1;
-  border-radius: var(--border-radius);
+  border-radius: var(--small-border-radius);
   box-shadow: var(--box-shadow);
 }
 

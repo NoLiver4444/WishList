@@ -7,6 +7,6 @@
   padding: 15px 20px;
   width: clamp(430px, -70px + 100vw, 2930px);
   height: 70px;
-  border-radius: var(--border-radius);
+  border-radius: var(--small-border-radius);
   box-shadow: var(--box-shadow);
 }

@@ -1,6 +1,6 @@
 .wishlist {
   display: flex;
   flex-direction: column;
-  row-gap: 27px;
+  row-gap: 3vh;
   min-height: 96vh;
 }

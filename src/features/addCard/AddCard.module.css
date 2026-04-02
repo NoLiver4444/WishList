@@ -2,7 +2,7 @@
   width: 100%;
   height: 280px;
   background-color: var(--color-light-blue);
-  border-radius: var(--border-radius);
+  border-radius: var(--small-border-radius);
 }
 
 .button {
@@ -10,7 +10,7 @@
   height: 100%;
   background-color: var(--color-light-blue);
   border: none;
-  border-radius: var(--border-radius);
+  border-radius: var(--small-border-radius);
   cursor: pointer;
 }
 

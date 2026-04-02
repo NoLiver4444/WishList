@@ -1,5 +1,4 @@
 .menu {
-  list-style: none;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -9,7 +8,7 @@
   margin: 0;
   height: 50px;
   background-color: var(--color-light-blue);
-  border-radius: 30px;
+  border-radius: var(--big-border-radius);
 }
 
 .item {
