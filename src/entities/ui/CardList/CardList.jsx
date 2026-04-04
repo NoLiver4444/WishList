@@ -1,5 +1,5 @@
 import styles from './CardList.module.css'
-import AddCard from "@/features/AddCard";
+import AddCard from "@/features/add-card/AddCard";
 import Card from "@/shared/ui/Card";
 
 const CardList = () => {

@@ -43,6 +43,13 @@
   outline: none;
 }
 
+.item:focus-visible {
+  outline: 2px solid var(--color-light-pink);
+  outline-offset: 4px;
+  background-color: var(--color-dark-blue);
+  border-radius: var(--big-border-radius);
+}
+
 .item::after {
   content: attr(data-tooltip);
   position: absolute;
@@ -71,6 +78,12 @@
   transform: translateX(-50%) translateY(0);
 }
 
+.item:focus-visible::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
 .icon {
   color: var(--color-gray);
   transition:
@@ -80,21 +93,25 @@
 }
 
 .item:hover .favorite,
+.item:focus-visible .favorite,
 .activeItem .favorite {
   color: var(--color-red);
 }
 
 .item:hover .wishlists,
+.item:focus-visible .wishlists,
 .activeItem .wishlists {
   color: var(--color-purple);
 }
 
 .item:hover .friends,
+.item:focus-visible .friends,
 .activeItem .friends {
   color: var(--color-dark-pink);
 }
 
 .item:hover .calendar,
+.item:focus-visible .calendar,
 .activeItem .calendar {
   color: var(--color-yellow);
 }
@@ -157,6 +174,7 @@
 }
 
 .item:hover .search svg,
+.item:focus-visible .search svg,
 .activeSearch svg {
   color: var(--color-light-pink) !important;
 }

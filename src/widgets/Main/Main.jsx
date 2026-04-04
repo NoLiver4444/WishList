@@ -1,5 +1,5 @@
 import styles from './Main.module.css'
-import SortCardsForm from "@/features/sortingCards";
+import SortCardsForm from "@/features/sort-cards";
 import CardList from "@/entities/ui/CardList";
 
 const Main = () => {
