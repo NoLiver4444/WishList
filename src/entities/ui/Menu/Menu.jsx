@@ -21,7 +21,7 @@ const Menu = () => {
     setActiveDropdown(activeDropdown === name ? null : name);
   };
 
-  const unreadNotifications = [/*"xd"*/];
+  const unreadNotifications = ["xd"];
   const hasUnread = unreadNotifications.length > 0;
 
   return (
@@ -67,7 +67,15 @@ const Menu = () => {
         {activeDropdown === 'burger' && (
           <div className={styles.dropdown}>
             <button className={styles.menuLink}>Настройки</button>
-            <button className={styles.menuLink}>Помощь</button>
+            <a
+              href="https://t.me/AISAAAAUUUU"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.menuLink}
+              onClick={closeAll}
+            >
+              Помощь
+            </a>
             <button className={styles.menuLink}>О проекте</button>
             <hr className={styles.divider} />
             <button className={`${styles.menuLink} ${styles.exit}`}>Выйти</button>
