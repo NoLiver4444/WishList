@@ -1,22 +1,194 @@
 .navigation {
+  position: relative;
+}
+
+.list {
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  gap: 5px;
   height: 50px;
+  padding-inline: 5px;
   background-color: var(--color-light-blue);
   border-radius: var(--big-border-radius);
+  transition: width var(--transition-duration) ease;
 }
 
 .item {
+  position: relative;
   width: 70px;
   height: 45px;
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: background-color var(--transition-duration);
+  border-radius: var(--big-border-radius);
+  border: none;
+  background-color: var(--color-light-blue);
+  overflow: visible;
+  cursor: pointer;
+}
+
+.item:hover,
+.activeItem {
+  background-color: var(--color-dark-blue);
+}
+
+.item:focus,
+.searchInput:focus,
+.closeButton:focus,
+.submitSearch:focus {
+  outline: none;
+}
+
+.item::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  padding: 6px 10px;
+  background-color: var(--color-gray);
+  color: var(--color-light-blue);
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: var(--small-border-radius);
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.item:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
 }
 
 .icon {
-  width: 35px;
-  height: 35px;
+  color: var(--color-gray);
+  transition:
+    transform var(--transition-duration),
+    color var(--transition-duration);
+  overflow: visible;
+}
+
+.item:hover .favorite,
+.activeItem .favorite {
+  color: var(--color-red);
+}
+
+.item:hover .wishlists,
+.activeItem .wishlists {
+  color: var(--color-purple);
+}
+
+.item:hover .friends,
+.activeItem .friends {
+  color: var(--color-dark-pink);
+}
+
+.item:hover .calendar,
+.activeItem .calendar {
+  color: var(--color-yellow);
+}
+
+.searchContainer {
+  display: flex;
+  align-items: center;
+  flex-grow: 0;
+  transition: flex-grow 0.4s ease;
+}
+
+.fullWidth {
+  flex-grow: 1;
+  justify-content: flex-start;
+}
+
+.expanded .list {
+  width: 700px;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding-right: 10px;
+}
+
+.searchInput {
+  width: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
+  padding: 0 15px;
+  font-size: 16px;
+  color: var(--color-gray);
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.searchInput::-webkit-search-cancel-button {
+  display: none;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: var(--color-gray);
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  transition: color var(--transition-duration) ease;
+}
+
+.closeButton:hover {
+  color: var(--color-red);
+}
+
+.search svg {
+  color: var(--color-gray);
+}
+
+.item:hover .search svg,
+.activeSearch svg {
+  color: var(--color-light-pink) !important;
+}
+
+.searchActiveMode {
+  background-color: transparent !important;
+  cursor: default;
+}
+
+.searchActiveMode:hover {
+  background-color: transparent !important;
+}
+
+.searchActiveMode .search {
+  cursor: pointer;
+}
+
+.hiddenItem {
+  width: 0;
+  opacity: 0;
+  transform: scale(0.5);
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
