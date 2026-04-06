@@ -19,10 +19,19 @@
 
 .isActive {
   background-color: var(--color-light-blue);
-  padding-inline: 5px;
-  border-radius: 3px;
-  border-left: 4px solid var(--color-dark-pink);
+  border-left: 4px solid var(--color-light-pink);
 }
 
 .item {
+  cursor: pointer;
+  padding-inline: 5px;
+  border-radius: 3px;
+  transition:
+    background-color var(--transition-duration) ease,
+    border-left var(--transition-duration) ease;
+}
+
+.item:hover {
+  background-color: var(--color-light-blue);
+  border-left: 4px solid var(--color-purple);
 }

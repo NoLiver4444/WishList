@@ -41,7 +41,7 @@
 .avatar {
   width: 32px;
   height: 32px;
-  transition: var(--transition-duration) ease-in-out;
+  transition: var(--transition-duration) ease;
 }
 
 .avatar:hover {
