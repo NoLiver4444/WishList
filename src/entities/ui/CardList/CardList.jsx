@@ -5,7 +5,7 @@ import Card from "@/shared/ui/Card";
 const CardList = () => {
   return (
     <ul className={styles.list}>
-      <AddCard />
+      <AddCard title={'Добавить подарок'} />
       <Card
         name={'Подвал Севы'}
         date={'14.07.2026'}

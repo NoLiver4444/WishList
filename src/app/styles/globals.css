@@ -20,3 +20,7 @@ button {
   outline-offset: 2px;
   transition-duration: 0s !important;
 }
+
+@view-transition {
+  navigation: auto;
+}

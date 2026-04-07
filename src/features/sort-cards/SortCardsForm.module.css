@@ -1,6 +1,7 @@
 .container {
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 10px;
 }
 
@@ -24,8 +25,11 @@
 
 .item {
   cursor: pointer;
-  padding-inline: 5px;
-  border-radius: 3px;
+  padding-inline: 6px;
+  border: none;
+  border-radius: 4px;
+  color: var(--color-gray);
+  background-color: var(--color-dark-blue);
   transition:
     background-color var(--transition-duration) ease,
     border-left var(--transition-duration) ease;
@@ -34,4 +38,21 @@
 .item:hover {
   background-color: var(--color-light-blue);
   border-left: 4px solid var(--color-purple);
+}
+
+.item:focus {
+  outline: none;
+}
+
+.item:focus-visible {
+  outline: 2px solid var(--color-light-pink);
+  outline-offset: 2px;
+  background-color: var(--color-light-blue);
+  border-left: 4px solid var(--color-purple);
+}
+
+.isActive {
+  background-color: var(--color-light-blue);
+  border-left: 4px solid var(--color-light-pink);
+  font-weight: 400;
 }

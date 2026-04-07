@@ -6,14 +6,16 @@ const SortCardsForm = ({ options, activeSort, onSortChange }) => {
       <h3 className={styles.title}>Сортировать по: </h3>
       <ul className={styles.list}>
         {options.map((option) => (
-          <li
-            key={option.value}
-            className={`${styles.item} ${
-              activeSort === option.value ? styles.isActive : ''
-            }`}
-            onClick={() => onSortChange(option.value)}
-          >
-            {option.label}
+          <li key={option.value} className={styles.listItem}>
+            <button
+              type="button"
+              className={`${styles.item} ${
+                activeSort === option.value ? styles.isActive : ''
+              }`}
+              onClick={() => onSortChange(option.value)}
+            >
+              {option.label}
+            </button>
           </li>
         ))}
       </ul>

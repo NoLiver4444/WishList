@@ -32,7 +32,7 @@
 
 .item:focus-visible {
   outline: 2px solid var(--color-light-pink);
-  outline-offset: 4px;
+  outline-offset: 2px;
   color: var(--color-dark-pink);
   background-color: var(--color-dark-blue);
   border-radius: var(--big-border-radius);
