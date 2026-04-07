@@ -1,8 +1,9 @@
 import { useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { Bell, Menu as MenuIcon } from 'lucide-react';
 import { useClickOutside } from '@/shared/hooks/useClickOutside';
 import { BurgerDropdown, NotificationDropdown } from '@/shared/ui/Dropdowns';
-import profile from '@/shared/assets/govishka.png';
+import profileAvatar from '@/shared/assets/govishka.png';
 import styles from './Menu.module.css';
 
 const Menu = () => {
@@ -35,16 +36,17 @@ const Menu = () => {
       </li>
 
       <li className={styles.itemContainer} ref={profileRef}>
-        <button
+        <Link
+          to={'/profile'}
           className={`${styles.item} ${activeDropdown === 'notification' ? styles.activeItem : ''}`}
           data-tooltip={'Профиль'}
         >
           <img
-            src={profile}
+            src={profileAvatar}
             alt='Ваш аватар'
             className={styles.avatar}
-          /> {/*ДОБАВЬ ССЫЛКУ НА НАСТРОЙКУ ПРОФИЛЯ*/}
-        </button>
+          />
+        </Link>
       </li>
 
       <li className={styles.itemContainer} ref={burgerRef}>

@@ -9,4 +9,5 @@
   height: 70px;
   border-radius: var(--small-border-radius);
   box-shadow: var(--box-shadow);
+  background-color: var(--color-dark-blue);
 }
