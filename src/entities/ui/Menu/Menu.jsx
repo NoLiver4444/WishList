@@ -1,7 +1,8 @@
 import { useState, useRef } from 'react';
 import { Bell, Menu as MenuIcon } from 'lucide-react';
-import profile from '@/shared/assets/govishka.png';
 import { useClickOutside } from '@/shared/hooks/useClickOutside';
+import { BurgerDropdown, NotificationDropdown } from '@/shared/ui/Dropdowns';
+import profile from '@/shared/assets/govishka.png';
 import styles from './Menu.module.css';
 
 const Menu = () => {
@@ -27,20 +28,13 @@ const Menu = () => {
   return (
     <ul className={styles.menu}>
       <li className={styles.itemContainer} ref={notificationRef}>
-        <button
-          className={`${styles.item} ${activeDropdown === 'notification' ? styles.activeItem : ''}`}
-          onClick={() => toggleDropdown('notification')}
-          data-tooltip={'Уведомления'}
-        >
+        <button onClick={() => setActiveDropdown(activeDropdown === 'notification' ? null : 'notification')}
+                className={`${styles.item} ${activeDropdown === 'notification' ? styles.activeItem : ''}`}
+                data-tooltip="Уведомления">
           <Bell size={28} />
-          {hasUnread && <span className={styles.badge} />}
+          <span className={styles.badge} />
         </button>
-        {activeDropdown === 'notification' && (
-          <div className={styles.dropdown}>
-            <p className={styles.dropdownTitle}>Уведомления</p>
-            <div className={styles.dropdownContent}>Пока нет новых сообщений</div>
-          </div>
-        )}
+        {activeDropdown === 'notification' && <NotificationDropdown />}
       </li>
 
       <li className={styles.itemContainer} ref={profileRef}>
@@ -57,30 +51,12 @@ const Menu = () => {
       </li>
 
       <li className={styles.itemContainer} ref={burgerRef}>
-        <button
-          className={`${styles.item} ${activeDropdown === 'burger' ? styles.activeItem : ''}`}
-          onClick={() => toggleDropdown('burger')}
-          data-tooltip={'Меню'}
-        >
+        <button onClick={() => setActiveDropdown(activeDropdown === 'burger' ? null : 'burger')}
+                className={`${styles.item} ${activeDropdown === 'burger' ? styles.activeItem : ''}`}
+                data-tooltip="Меню">
           <MenuIcon size={28} />
         </button>
-        {activeDropdown === 'burger' && (
-          <div className={styles.dropdown}>
-            <button className={styles.menuLink}>Настройки</button>
-            <a
-              href="https://t.me/AISAAAAUUUU"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.menuLink}
-              onClick={closeAll}
-            >
-              Помощь
-            </a>
-            <button className={styles.menuLink}>О проекте</button>
-            <hr className={styles.divider} />
-            <button className={`${styles.menuLink} ${styles.exit}`}>Выйти</button>
-          </div>
-        )}
+        {activeDropdown === 'burger' && <BurgerDropdown onClose={closeAll} />}
       </li>
     </ul>
   );
