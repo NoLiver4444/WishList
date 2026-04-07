@@ -23,7 +23,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: background-color var(--transition-duration);
+  transition: background-color var(--transition-duration) ease;
   border-radius: var(--big-border-radius);
   border: none;
   background-color: var(--color-light-blue);
@@ -91,28 +91,20 @@
   overflow: visible;
 }
 
-.item:hover .favorite,
-.item:focus-visible .favorite,
-.activeItem .favorite {
-  color: var(--color-red);
+.icon svg {
+  transition: color var(--transition-duration) ease;
 }
 
-.item:hover .wishlists,
-.item:focus-visible .wishlists,
-.activeItem .wishlists {
-  color: var(--color-purple);
-}
-
-.item:hover .friends,
-.item:focus-visible .friends,
-.activeItem .friends {
+.item:hover svg,
+.item:focus-visible .svg,
+.activeItem .icon svg {
   color: var(--color-dark-pink);
 }
 
-.item:hover .calendar,
-.item:focus-visible .calendar,
-.activeItem .calendar {
-  color: var(--color-yellow);
+.item:hover .favorite svg,
+.item:focus-visible .favorite svg,
+.activeItem .favorite svg {
+  color: var(--color-red);
 }
 
 .searchContainer {
@@ -170,12 +162,6 @@
 
 .search svg {
   color: var(--color-gray);
-}
-
-.item:hover .search svg,
-.item:focus-visible .search svg,
-.activeSearch svg {
-  color: var(--color-light-pink) !important;
 }
 
 .searchActiveMode {

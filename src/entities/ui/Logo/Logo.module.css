@@ -9,6 +9,10 @@
   text-decoration: none;
 }
 
+.logo:focus-visible {
+  border-radius: 10px;
+}
+
 .icon {
   width: 45px;
   height: 45px;

@@ -7,27 +7,23 @@ export const NAV_ITEMS = [
     label: 'Желания',
     path: '/',
     icon: Heart,
-    style: styles.favorite,
   },
   {
     id: 'wishlists',
     label: 'Вишлисты',
     path: '/wishlists',
     icon: Home,
-    style: styles.wishlists,
   },
   {
     id: 'friends',
     label: 'Друзья',
     path: '/friends',
     icon: Users,
-    style: styles.friends,
   },
   {
     id: 'calendar',
     label: 'Календарь',
     path: '/calendar',
     icon: Calendar,
-    style: styles.calendar,
   },
 ];

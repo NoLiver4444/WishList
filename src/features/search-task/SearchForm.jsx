@@ -16,7 +16,12 @@ const SearchForm = forwardRef(({ query, setQuery, onSearch, onClose }, ref) => (
         if (e.key === 'Escape') onClose();
       }}
     />
-    <button className={styles.closeButton} onClick={onClose}>
+    <button
+      className={styles.closeButton}
+      onClick={onClose}
+      type="button"
+      aria-label="Закрыть поиск"
+    >
       <X size={32} strokeWidth={2} />
     </button>
   </div>

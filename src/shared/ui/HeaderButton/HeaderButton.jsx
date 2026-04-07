@@ -1,17 +1,22 @@
 import styles from '@/entities/ui/Navigation/Navigation.module.css'
 import {NavLink} from "react-router-dom";
 
-const HeaderButton = ({ item, isActive, onClick }) => {
+const HeaderButton = ({ item }) => {
   const Icon = item.icon;
   return (
     <li>
       <NavLink
         to={item.path}
-        className={`${styles.item} ${isActive ? styles.activeItem : ''}`}
-        onClick={() => onClick(item.id)}
+        className={({ isActive }) =>
+          `${styles.item} ${isActive ? styles.activeItem : ''}`
+        }
         data-tooltip={item.label}
       >
-        <span className={`${styles.icon} ${item.style}`}>
+        <span
+          className={`
+            ${styles.icon} ${item.id === 'favorite' ? styles.favorite : ''}
+          `}
+        >
           <Icon size={32} strokeWidth={2} />
         </span>
       </NavLink>

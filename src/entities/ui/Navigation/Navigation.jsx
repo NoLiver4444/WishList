@@ -7,11 +7,11 @@ import styles from './Navigation.module.css'
 import {useClickOutside} from "@/shared/hooks/useClickOutside.jsx";
 
 const Navigation = () => {
-  const [active, setActive] = useState('wishlists');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   const searchRef = useRef(null);
+  const searchButtonRef = useRef(null);
 
   const closeSearch = () => {
     setIsSearchOpen(false);
@@ -24,7 +24,15 @@ const Navigation = () => {
     }
   };
 
-  useClickOutside(searchRef, closeSearch)
+  const toggleSearch = () => {
+    if (isSearchOpen) {
+      handleSearch();
+    } else {
+      setIsSearchOpen(true);
+    }
+  };
+
+  useClickOutside(searchRef, closeSearch, [searchButtonRef])
 
   return (
     <nav className={`${styles.navigation} ${isSearchOpen ? styles.expanded : ''}`}>
@@ -33,20 +41,18 @@ const Navigation = () => {
           <HeaderButton
             key={item.id}
             item={item}
-            isActive={active === item.id}
-            onClick={setActive}
           />
         ))}
 
         <li className={`${styles.searchContainer} ${isSearchOpen ? styles.fullWidth : ''}`}>
           <button
+            ref={searchButtonRef}
             className={`
               ${styles.item} 
-              ${isSearchOpen ? styles.searchActiveMode : ''} 
-              ${active === 'search' || isSearchOpen ? styles.activeSearch : ''}
+              ${isSearchOpen ? styles.searchActiveMode : ''}
             `}
-            data-tooltip={'Поиск'}
-            onClick={() => isSearchOpen ? handleSearch() :setIsSearchOpen(true)}
+            data-tooltip={isSearchOpen ? "Выполнить поиск" : "Поиск"}
+            onClick={toggleSearch}
           >
             <span className={styles.search}>
                 <Search size={32} strokeWidth={2.5} />
