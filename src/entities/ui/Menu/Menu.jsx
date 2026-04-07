@@ -18,21 +18,18 @@ const Menu = () => {
   useClickOutside(profileRef, () => activeDropdown === 'profile' && closeAll());
   useClickOutside(burgerRef, () => activeDropdown === 'burger' && closeAll());
 
-  const toggleDropdown = (name) => {
-    setActiveDropdown(activeDropdown === name ? null : name);
-  };
-
-  const unreadNotifications = ["xd"];
-  const hasUnread = unreadNotifications.length > 0;
+  const hasUnread = true;
 
   return (
     <ul className={styles.menu}>
       <li className={styles.itemContainer} ref={notificationRef}>
-        <button onClick={() => setActiveDropdown(activeDropdown === 'notification' ? null : 'notification')}
-                className={`${styles.item} ${activeDropdown === 'notification' ? styles.activeItem : ''}`}
-                data-tooltip="Уведомления">
+        <button
+          onClick={() => setActiveDropdown(activeDropdown === 'notification' ? null : 'notification')}
+          className={`${styles.item} ${activeDropdown === 'notification' ? styles.activeItem : ''}`}
+          data-tooltip="Уведомления"
+        >
           <Bell size={28} />
-          <span className={styles.badge} />
+          {hasUnread && <span className={styles.badge} />}
         </button>
         {activeDropdown === 'notification' && <NotificationDropdown />}
       </li>
@@ -51,9 +48,11 @@ const Menu = () => {
       </li>
 
       <li className={styles.itemContainer} ref={burgerRef}>
-        <button onClick={() => setActiveDropdown(activeDropdown === 'burger' ? null : 'burger')}
-                className={`${styles.item} ${activeDropdown === 'burger' ? styles.activeItem : ''}`}
-                data-tooltip="Меню">
+        <button
+          onClick={() => setActiveDropdown(activeDropdown === 'burger' ? null : 'burger')}
+          className={`${styles.item} ${activeDropdown === 'burger' ? styles.activeItem : ''}`}
+          data-tooltip="Меню"
+        >
           <MenuIcon size={28} />
         </button>
         {activeDropdown === 'burger' && <BurgerDropdown onClose={closeAll} />}
