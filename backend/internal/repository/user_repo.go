@@ -59,3 +59,16 @@ func (r *UserRepo) FindByID(ctx context.Context, id uuid.UUID) (*models.User, er
 	}
 	return &u, err
 }
+
+func (r *UserRepo) Update(ctx context.Context, user *models.User) error {
+	_, err := r.Pool.Exec(ctx, `UPDATE users SET 
+		login=$1, email=$2, phone=$3, avatar_url=$4 
+		WHERE id=$5`,
+		user.Login, user.Email, user.Phone, user.AvatarURL, user.ID)
+	return err
+}
+
+func (r *UserRepo) Delete(ctx context.Context, id uuid.UUID) error {
+	_, err := r.Pool.Exec(ctx, `DELETE FROM users WHERE id=$1`, id)
+	return err
+}

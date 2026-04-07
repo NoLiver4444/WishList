@@ -17,11 +17,12 @@ func New(authHandler *handler.AuthHandler, userHandler *handler.UserHandler, jwt
 	mux.HandleFunc("POST /v1/auth/login", authHandler.Login)
 
 	protectedMux := http.NewServeMux()
-	
 	protectedMux.HandleFunc("GET /v1/users/me", userHandler.GetMe)
+	protectedMux.HandleFunc("PATCH /v1/users/me", userHandler.UpdateMe)
+	protectedMux.HandleFunc("DELETE /v1/users/me", userHandler.DeleteMe)
 
 	authMiddleware := middleware.AuthMiddleware(jwtSecret, protectedMux)
-
+	
 	mux.Handle("/v1/users/", authMiddleware)
 
 	return mux

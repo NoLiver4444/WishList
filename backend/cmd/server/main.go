@@ -41,7 +41,7 @@ func main() {
 	authHandler := &handler.AuthHandler{Service: authService, Validator: val}
 
 	userService := service.NewUserService(userRepo)
-	userHandler := &handler.UserHandler{Service: userService}
+	userHandler := &handler.UserHandler{Service: userService, Validator: val}
 
 	r := router.New(authHandler, userHandler, cfg.Auth.JWTSecret)
 
