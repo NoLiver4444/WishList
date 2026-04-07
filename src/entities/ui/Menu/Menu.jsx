@@ -32,7 +32,7 @@ const Menu = () => {
           <Bell size={28} />
           {hasUnread && <span className={styles.badge} />}
         </button>
-        {activeDropdown === 'notification' && <NotificationDropdown />}
+        {activeDropdown === 'notification' && <NotificationDropdown onClose={closeAll} />}
       </li>
 
       <li className={styles.itemContainer} ref={profileRef}>
