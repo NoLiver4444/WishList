@@ -96,7 +96,7 @@
 }
 
 .item:hover svg,
-.item:focus-visible .svg,
+.item:focus-visible svg,
 .activeItem .icon svg {
   color: var(--color-dark-pink);
 }
