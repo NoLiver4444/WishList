@@ -7,8 +7,9 @@
   border: 1px solid var(--color-light-blue);
   border-radius: var(--small-border-radius);
   transition:
-    transform var(--transition-duration) ease,
-    border 0.1s ease;
+    transform var(--transition-duration)
+      var(--function-time-transition-duration),
+    border var(--transition-duration) var(--function-time-transition-duration);
 }
 
 .card:hover {

@@ -30,7 +30,8 @@
   border: none;
   cursor: pointer;
   color: var(--color-gray);
-  transition: color var(--transition-duration) ease;
+  transition: color var(--transition-duration)
+    var(--function-time-transition-duration);
 }
 
 .closeButton:hover {

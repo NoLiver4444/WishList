@@ -13,7 +13,8 @@
   padding-inline: 5px;
   background-color: var(--color-light-blue);
   border-radius: var(--big-border-radius);
-  transition: width var(--transition-duration) ease;
+  transition: width var(--transition-duration)
+    var(--function-time-transition-duration);
 }
 
 .item {
@@ -23,7 +24,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: background-color var(--transition-duration) ease;
+  transition: background-color var(--transition-duration)
+    var(--function-time-transition-duration);
   border-radius: var(--big-border-radius);
   border: none;
   background-color: var(--color-light-blue);
@@ -65,8 +67,9 @@
   opacity: 0;
   visibility: hidden;
   transition:
-    opacity 0.2s ease,
-    transform 0.2s ease;
+    opacity var(--transition-duration) var(--function-time-transition-duration),
+    transform var(--transition-duration)
+      var(--function-time-transition-duration);
   pointer-events: none;
   z-index: 100;
 }
@@ -86,13 +89,15 @@
 .icon {
   color: var(--color-gray);
   transition:
-    transform var(--transition-duration),
-    color var(--transition-duration);
+    transform var(--transition-duration)
+      var(--function-time-transition-duration),
+    color var(--transition-duration) var(--function-time-transition-duration);
   overflow: visible;
 }
 
 .icon svg {
-  transition: color var(--transition-duration) ease;
+  transition: color var(--transition-duration)
+    var(--function-time-transition-duration);
 }
 
 .item:hover svg,
@@ -111,7 +116,8 @@
   display: flex;
   align-items: center;
   flex-grow: 0;
-  transition: flex-grow 0.4s ease;
+  transition: flex-grow var(--transition-duration)
+    var(--function-time-transition-duration);
 }
 
 .fullWidth {
@@ -138,7 +144,8 @@
   padding: 0 15px;
   font-size: 16px;
   color: var(--color-gray);
-  animation: fadeIn 0.3s ease forwards;
+  animation: fadeIn var(--transition-duration)
+    var(--function-time-transition-duration);
 }
 
 .searchInput::-webkit-search-cancel-button {
@@ -153,7 +160,8 @@
   padding: 5px;
   display: flex;
   align-items: center;
-  transition: color var(--transition-duration) ease;
+  transition: color var(--transition-duration)
+    var(--function-time-transition-duration);
 }
 
 .closeButton:hover {
@@ -182,7 +190,8 @@
   opacity: 0;
   transform: scale(0.5);
   pointer-events: none;
-  transition: all 0.3s ease;
+  transition: all var(--transition-duration)
+    var(--function-time-transition-duration);
 }
 
 @keyframes fadeIn {

@@ -21,7 +21,8 @@
   border-radius: var(--big-border-radius);
   cursor: pointer;
   color: var(--color-gray);
-  transition: all var(--transition-duration);
+  transition: all var(--transition-duration)
+    var(--function-time-transition-duration);
 }
 
 .item:hover,
@@ -41,7 +42,8 @@
 .avatar {
   width: 32px;
   height: 32px;
-  transition: var(--transition-duration) ease;
+  transition: scale var(--transition-duration)
+    var(--function-time-transition-duration);
 }
 
 .avatar:hover {
@@ -64,8 +66,9 @@
   opacity: 0;
   visibility: hidden;
   transition:
-    opacity 0.2s ease,
-    transform 0.2s ease;
+    opacity var(--transition-duration) var(--function-time-transition-duration),
+    transform var(--transition-duration)
+      var(--function-time-transition-duration);
   pointer-events: none;
   z-index: 100;
 }
@@ -109,7 +112,8 @@
   color: var(--color-gray);
   text-decoration: none;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background var(--transition-duration)
+    var(--function-time-transition-duration);
 }
 
 .menuLink:hover,

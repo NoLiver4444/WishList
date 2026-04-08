@@ -26,8 +26,10 @@
   color: var(--color-gray);
   background-color: var(--color-dark-blue);
   transition:
-    background-color var(--transition-duration) ease,
-    border-left var(--transition-duration) ease;
+    background-color var(--transition-duration)
+      var(--function-time-transition-duration),
+    border-left var(--transition-duration)
+      var(--function-time-transition-duration);
 }
 
 .item:hover,
