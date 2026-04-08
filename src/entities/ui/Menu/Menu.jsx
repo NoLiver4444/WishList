@@ -1,25 +1,36 @@
 import { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { AnimatePresence } from "framer-motion";
 import { Bell, Menu as MenuIcon } from 'lucide-react';
 import { useClickOutside } from '@/shared/hooks/useClickOutside';
-import { BurgerDropdown, NotificationDropdown } from '@/shared/ui/Dropdowns';
+import { NotificationDropdown, BurgerDropdown } from '@/shared/ui/Dropdowns';
+import ProfilePopup from "@/shared/ui/ProfilePopup";
 import profileAvatar from '@/shared/assets/govishka.png';
 import styles from './Menu.module.css';
 
 const Menu = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const notificationRef = useRef(null);
   const profileRef = useRef(null);
   const burgerRef = useRef(null);
 
-  const closeAll = () => setActiveDropdown(null);
+  const closeAll = () => {
+    setActiveDropdown(null);
+    setIsProfileOpen(false);
+  }
 
   useClickOutside(notificationRef, () => activeDropdown === 'notification' && closeAll());
   useClickOutside(profileRef, () => activeDropdown === 'profile' && closeAll());
   useClickOutside(burgerRef, () => activeDropdown === 'burger' && closeAll());
 
   const hasUnread = true;
+
+  const userData = {
+    login: "Димасик Твикс",
+    avatarURL: profileAvatar,
+    birthday: "25.07.2006"
+  };
 
   return (
     <ul className={styles.menu}>
@@ -32,21 +43,19 @@ const Menu = () => {
           <Bell size={28} />
           {hasUnread && <span className={styles.badge} />}
         </button>
-        {activeDropdown === 'notification' && <NotificationDropdown onClose={closeAll} />}
+        <AnimatePresence>
+          {activeDropdown === 'notification' && <NotificationDropdown onClose={closeAll} />}
+        </AnimatePresence>
       </li>
 
       <li className={styles.itemContainer} ref={profileRef}>
-        <Link
-          to={'/profile'}
-          className={`${styles.item} ${activeDropdown === 'notification' ? styles.activeItem : ''}`}
+        <button
+          onClick={() => setIsProfileOpen(true)}
+          className={styles.item}
           data-tooltip={'Профиль'}
         >
-          <img
-            src={profileAvatar}
-            alt='Ваш аватар'
-            className={styles.avatar}
-          />
-        </Link>
+          <img src={profileAvatar} alt='Ваш аватар' className={styles.avatar} />
+        </button>
       </li>
 
       <li className={styles.itemContainer} ref={burgerRef}>
@@ -57,8 +66,19 @@ const Menu = () => {
         >
           <MenuIcon size={28} />
         </button>
-        {activeDropdown === 'burger' && <BurgerDropdown onClose={closeAll} />}
+        <AnimatePresence>
+          {activeDropdown === 'burger' && <BurgerDropdown onClose={closeAll} />}
+        </AnimatePresence>
       </li>
+
+      <AnimatePresence>
+        {isProfileOpen && (
+          <ProfilePopup
+            user={userData}
+            onClose={closeAll}
+          />
+        )}
+      </AnimatePresence>
     </ul>
   );
 };

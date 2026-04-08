@@ -3,8 +3,8 @@ import SearchForm from "@/features/search-task/SearchForm";
 import HeaderButton from "@/shared/ui/HeaderButton";
 import { NAV_ITEMS } from "./Navigation.config.js";
 import { Search } from 'lucide-react';
-import styles from './Navigation.module.css'
 import {useClickOutside} from "@/shared/hooks/useClickOutside.jsx";
+import styles from './Navigation.module.css'
 
 const Navigation = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
