@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="65" height="65" viewBox="0 0 65 65" fill="none"><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description><dc:creator>RealFaviconGenerator</dc:creator><dc:source>https://realfavicongenerator.net</dc:source></rdf:Description></rdf:RDF></metadata><g clip-path="url(#clip0_3331_164)">
+<mask id="mask0_3331_164" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="65" height="65">
+<path d="M65 0H0V65H65V0Z" fill="white"></path>
+</mask>
+<g mask="url(#mask0_3331_164)">
+<path d="M21.6657 41.2694C21.6657 42.409 22.5904 43.3335 23.7298 43.3337H43.3337V62.9377C43.3333 64.0768 42.4088 64.9993 41.2694 64.9993H21.6657C9.70008 64.9988 0.000189465 55.2994 0 43.3337C0 31.3679 9.69995 21.6662 21.6657 21.6657V41.2694ZM43.3337 0C55.2994 0.000192251 64.9988 9.70008 64.9993 21.6657C64.9993 33.2576 55.897 42.7237 44.4495 43.3047L43.3337 43.3337V23.7298C43.3335 22.5904 42.409 21.6657 41.2694 21.6657H21.6657V2.0642C21.6657 0.924677 22.5904 0.000176891 23.7298 0H43.3337Z" fill="#8951FF"></path>
+<path d="M23.4977 0C22.4865 0 21.6667 0.81976 21.6667 1.83099L21.6667 21.6667H41.5024C42.5136 21.6667 43.3335 22.4864 43.3335 23.4977V43.3332C55.2996 43.3332 65 33.6329 65 21.6667C65 9.7005 55.2996 0 43.3335 0H23.4977Z" fill="#CB3CFF"></path>
+</g>
+</g><defs>
+<clipPath id="clip0_3331_164">
+<rect width="65" height="65" fill="white"></rect>
+</clipPath>
+</defs></svg>
