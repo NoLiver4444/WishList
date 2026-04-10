@@ -7,7 +7,7 @@ const Footer = () => {
     >
       © 2026 Los huilos
     </footer>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

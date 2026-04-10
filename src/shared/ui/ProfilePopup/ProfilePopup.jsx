@@ -1,11 +1,11 @@
-import { useRef } from "react";
-import { motion } from "framer-motion";
-import { X } from 'lucide-react'
-import { useClickOutside } from "@/shared/hooks/useClickOutside";
-import { useEscClose } from "@/shared/hooks/useEscClose";
-import styles from './ProfilePopup.module.css'
+import {useRef} from "react";
+import {motion} from "framer-motion";
+import {X} from 'lucide-react';
+import {useClickOutside} from "@/shared/hooks/useClickOutside";
+import {useEscClose} from "@/shared/hooks/useEscClose";
+import styles from './ProfilePopup.module.css';
 
-const ProfilePopup = ({ user, onClose }) => {
+const ProfilePopup = ({user, onClose}) => {
   const popupRef = useRef(null);
 
   useEscClose(onClose);
@@ -14,24 +14,27 @@ const ProfilePopup = ({ user, onClose }) => {
   return (
     <motion.div
       className={styles.overlay}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
+      initial={{opacity: 0}}
+      animate={{opacity: 1}}
+      exit={{opacity: 0}}
+      transition={{duration: 0.3}}
     >
       <motion.div
         ref={popupRef}
         className={styles.content}
-        initial={{ scale: 0.9, opacity: 0, y: -100 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        exit={{ scale: 0.9, opacity: 0, y: 100 }}
+        initial={{scale: 0.9, opacity: 0, y: -100}}
+        animate={{scale: 1, opacity: 1, y: 0}}
+        exit={{scale: 0.9, opacity: 0, y: 100}}
         transition={{
           type: "spring",
           damping: 25,
           stiffness: 300
         }}
       >
-        <button className={styles.closeButton} onClick={onClose}>
+        <button
+          className={styles.closeButton}
+          onClick={onClose}
+        >
           <X size={32} />
         </button>
 

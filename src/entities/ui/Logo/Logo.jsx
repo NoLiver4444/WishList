@@ -1,10 +1,13 @@
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import logoIconURL from '@/shared/assets/logo.svg'
 import styles from './Logo.module.css'
 
 const Logo = () => {
   return (
-    <Link to="/" className={`${styles.logo}`}>
+    <Link
+      to="/"
+      className={`${styles.logo}`}
+    >
       <img
         src={logoIconURL}
         alt='CardList wish-piece'
@@ -14,7 +17,7 @@ const Logo = () => {
         Wish-piece
       </h1>
     </Link>
-  )
-}
+  );
+};
 
-export default Logo
+export default Logo;

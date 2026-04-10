@@ -13,7 +13,7 @@ const Card = (props) => {
     wishes,
   } = props
 
-  const wishesList =  (wishes.length > 0) ? (
+  const wishesList = (wishes.length > 0) ? (
     <ul className={styles.wishesList}>
       <li className={styles.image}>
         <img
@@ -43,7 +43,7 @@ const Card = (props) => {
       />
       <div className={styles.text}>Добавить подарок</div>
     </button>
-  )
+  );
 
   return (
     <li className={styles.card}>
@@ -63,7 +63,7 @@ const Card = (props) => {
         {wishesList}
       </div>
     </li>
-  )
-}
+  );
+};
 
 export default Card

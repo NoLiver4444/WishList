@@ -19,7 +19,7 @@ const CardList = () => {
         wishes={[]}
       />
     </ul>
-  )
-}
+  );
+};
 
-export default CardList
+export default CardList;

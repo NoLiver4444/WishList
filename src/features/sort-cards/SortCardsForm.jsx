@@ -1,12 +1,15 @@
 import styles from './SortCardsForm.module.css'
 
-const SortCardsForm = ({ options, activeSort, onSortChange }) => {
+const SortCardsForm = ({options, activeSort, onSortChange}) => {
   return (
     <div className={styles.container}>
-      <h3 className={styles.title}>Сортировать по: </h3>
+      <h3 className={styles.title}>Сортировать по:</h3>
       <ul className={styles.list}>
         {options.map((option) => (
-          <li key={option.value} className={styles.listItem}>
+          <li
+            key={option.value}
+            className={styles.listItem}
+          >
             <button
               type="button"
               className={`${styles.item} ${
@@ -20,7 +23,7 @@ const SortCardsForm = ({ options, activeSort, onSortChange }) => {
         ))}
       </ul>
     </div>
-  )
-}
+  );
+};
 
-export default SortCardsForm
+export default SortCardsForm;

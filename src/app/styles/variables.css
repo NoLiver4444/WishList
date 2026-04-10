@@ -19,5 +19,5 @@
   --input-height: 50px;
 
   --transition-duration: 0.2s;
-  --function-time-transition-duration: cubic-bezier(0.4, 0, 0.2, 1);
+  --function-time-transition-duration: ease;
 }

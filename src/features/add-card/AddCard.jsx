@@ -1,7 +1,7 @@
-import { Plus } from 'lucide-react';
+import {Plus} from 'lucide-react';
 import styles from './AddCard.module.css'
 
-const AddCard = ({ title, onClick }) => {
+const AddCard = ({title, onClick}) => {
   return (
     <li className={styles.card}>
       <button
@@ -21,6 +21,6 @@ const AddCard = ({ title, onClick }) => {
       </button>
     </li>
   )
-}
+};
 
-export default AddCard
+export default AddCard;
