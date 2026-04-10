@@ -1,29 +1,24 @@
-import {useState} from "react";
-import SortCardsForm from "@/features/sort-cards";
-import CardList from "@/entities/ui/CardList";
-import styles from './FriendsPage.module.css'
+import Main from "@/widgets/Main";
 
 const FriendsPage = () => {
-  const [currentSort, setCurrentSort] = useState('date_added');
-
   const sortOptions = [
     {label: 'дате добавления', value: 'date_added'},
-    {label: 'названию', value: 'name'},
-    {label: 'дате события', value: 'event_date'},
+    {label: 'имени', value: 'name'},
+    {label: 'дате рождения', value: 'birthday_date'},
   ];
 
+  const handleAdd = () => {
+    console.log("Модалка добавления друга");
+  };
+
   return (
-    <main
-      className={styles.main}
-    >
-      <h1 className={styles.title}>Друзья</h1>
-      <SortCardsForm
-        options={sortOptions}
-        activeSort={currentSort}
-        onSortChange={setCurrentSort}
-      />
-      <CardList />
-    </main>
+    <Main
+      title="Мои друзья"
+      variant="friends"
+      type="friends"
+      sortOptions={sortOptions}
+      onAddClick={handleAdd}
+    />
   );
 };
 

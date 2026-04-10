@@ -42,9 +42,16 @@
   font-size: 12px;
 }
 
-.dots {
+.menuButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 40px;
   height: 40px;
+  background-color: var(--color-light-blue);
+  color: var(--color-gray);
+  border: none;
+  cursor: pointer;
 }
 
 .wishesList {
@@ -53,14 +60,4 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(62px, 1fr));
   gap: 12px;
-}
-
-.button {
-  width: 100%;
-  height: 100%;
-  background-color: var(--color-light-blue);
-  border: none;
-  border-radius: var(--small-border-radius);
-  color: var(--color-gray);
-  cursor: pointer;
 }

@@ -3,7 +3,6 @@ import ProductsPage from '@/pages/ProductsPage'
 import WishlistsPage from '@/pages/WishlistsPage'
 import FriendsPage from '@/pages/FriendsPage'
 import CalendarPage from '@/pages/CalendarPage'
-import ProfilePage from '@/pages/ProfilePage'
 import SettingsPage from '@/pages/SettingsPage'
 import Header from "@/widgets/Header";
 import Footer from "@/widgets/Footer";
@@ -30,10 +29,6 @@ const App = () => {
           <Route
             path="/calendar"
             element={<CalendarPage />}
-          />
-          <Route
-            path="/profile"
-            element={<ProfilePage />}
           />
           <Route
             path="/settings"

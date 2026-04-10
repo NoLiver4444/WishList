@@ -1,5 +1,4 @@
-import { Heart, Home, Users, Calendar } from 'lucide-react';
-import styles from './Navigation.module.css';
+import {Calendar, ClipboardList, Heart, Users} from 'lucide-react';
 
 export const NAV_ITEMS = [
   {
@@ -12,7 +11,7 @@ export const NAV_ITEMS = [
     id: 'wishlists',
     label: 'Вишлисты',
     path: '/wishlists',
-    icon: Home,
+    icon: ClipboardList,
   },
   {
     id: 'friends',

@@ -1,29 +1,26 @@
-import {useState} from "react";
-import SortCardsForm from "@/features/sort-cards";
-import CardList from "@/entities/ui/CardList";
-import styles from './WishlistsPage.module.css'
+import Main from "@/widgets/Main/index.js";
 
 const WishlistsPage = () => {
-  const [currentSort, setCurrentSort] = useState('date_added');
-
   const sortOptions = [
     {label: 'дате добавления', value: 'date_added'},
     {label: 'названию', value: 'name'},
-    {label: 'дате события', value: 'event_date'},
+    {label: 'количеству желаний', value: 'count_products'},
+    {label: 'дедлайну', value: 'deadline'},
   ];
 
+  const handleAdd = () => {
+    console.log("Модалка добавления вишлиста");
+  };
+
   return (
-    <main
-      className={styles.main}
-    >
-      <h1 className={styles.title}>Вишлисты</h1>
-      <SortCardsForm
-        options={sortOptions}
-        activeSort={currentSort}
-        onSortChange={setCurrentSort}
-      />
-      <CardList />
-    </main>
+    <Main
+      title="Мои вишлисты"
+      variant="wishlists"
+      type="wishlists"
+      sortOptions={sortOptions}
+      onAddClick={handleAdd}
+      data={[]}
+    />
   );
 };
 

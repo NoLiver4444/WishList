@@ -1,23 +1,54 @@
-import styles from './CardList.module.css'
 import AddCard from "@/features/add-card/AddCard";
 import Card from "@/shared/ui/Card";
 
-const CardList = () => {
+const CardList = ({type, items = [], onAddClick}) => {
+  const titles = {
+    wishes: 'Добавить желание',
+    wishlists: 'Создать вишлист',
+    friends: 'Добавить друга',
+  }
+  const addCardTitle = titles[type] || 'Добавить';
+
   return (
-    <ul className={styles.list}>
-      <AddCard title={'Добавить подарок'} />
-      <Card
-        name={'Подвал Севы'}
-        date={'14.07.2026'}
-        counts={3}
-        wishes={['Maka', 'MeowMeow', 'Shiro']}
+    <ul>
+      <AddCard
+        title={addCardTitle}
+        onClick={onAddClick}
       />
-      <Card
-        name={'Подвал Озара'}
-        date={'11.09.2026'}
-        counts={0}
-        wishes={[]}
-      />
+
+      {items.map((item) => (
+        <Card
+          key={item.id}
+          name={item.name}
+          date={item.date}
+          counts={item.counts}
+          wishes={item.wishes}
+          type={type}
+        />
+      ))}
+
+      {items.length === 0 && (
+        <>
+          <Card
+            name="Подвал Севы"
+            date="10.04.2026"
+            counts={0}
+            wishes={[]}
+            onMenuClick={() => {
+            }}
+            type={type}
+          />
+          <Card
+            name="Подвал Озара"
+            date="12.04.2026"
+            counts={5}
+            wishes={[]}
+            onMenuClick={() => {
+            }}
+            type={type}
+          />
+        </>
+      )}
     </ul>
   );
 };

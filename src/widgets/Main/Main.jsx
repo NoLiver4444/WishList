@@ -1,28 +1,42 @@
 import {useState} from "react";
 import SortCardsForm from "@/features/sort-cards";
 import CardList from "@/entities/ui/CardList";
-import styles from './Main.module.css'
+import styles from './Main.module.css';
 
-const Main = () => {
-  const [currentSort, setCurrentSort] = useState('date_added');
-
-  const sortOptions = [
-    {label: 'дате добавления', value: 'date_added'},
-    {label: 'названию', value: 'name'},
-    {label: 'дате события', value: 'event_date'},
-  ];
+const Main = ({
+                title,
+                variant = 'default',
+                type,
+                sortOptions = [],
+                onAddClick,
+                data = [],
+                children
+              }) => {
+  const [currentSort, setCurrentSort] = useState(sortOptions[0]?.value);
 
   return (
-    <main
-      className={styles.main}
-    >
-      <h1 className={styles.title}>Вишлисты</h1>
-      <SortCardsForm
-        options={sortOptions}
-        activeSort={currentSort}
-        onSortChange={setCurrentSort}
-      />
-      <CardList />
+    <main className={`${styles.main} ${styles[variant]}`}>
+      <div className={styles.container}>
+        <h1 className={styles.title}>{title}</h1>
+
+        {sortOptions.length > 0 && (
+          <SortCardsForm
+            options={sortOptions}
+            activeSort={currentSort}
+            onSortChange={setCurrentSort}
+          />
+        )}
+
+        <div className={styles.content}>
+          {children ? children : (
+            <CardList
+              type={type}
+              items={data}
+              onAddClick={onAddClick}
+            />
+          )}
+        </div>
+      </div>
     </main>
   );
 };
