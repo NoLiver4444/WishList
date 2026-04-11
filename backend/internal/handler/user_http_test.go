@@ -9,14 +9,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/go-playground/validator/v10"
-	"github.com/golang-jwt/jwt/v5"
-	"github.com/google/uuid"
-	"golang.org/x/crypto/bcrypt"
 	"wish-piece/internal/dto"
 	"wish-piece/internal/middleware"
 	"wish-piece/internal/models"
 	"wish-piece/internal/service"
+
+	"github.com/go-playground/validator/v10"
+	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // --- Mock Repository ---
@@ -24,17 +25,27 @@ type mockUserRepo struct {
 	user *models.User
 }
 
-func (m *mockUserRepo) Create(ctx context.Context, user *models.User) error          { m.user = user; return nil }
+func (m *mockUserRepo) Create(ctx context.Context, user *models.User) error {
+	m.user = user
+	return nil
+}
 func (m *mockUserRepo) FindByLoginOrEmail(ctx context.Context, val string) (*models.User, error) {
-	if m.user != nil && (m.user.Login == val || m.user.Email == val) { return m.user, nil }
+	if m.user != nil && (m.user.Login == val || m.user.Email == val) {
+		return m.user, nil
+	}
 	return nil, nil
 }
 func (m *mockUserRepo) FindByID(ctx context.Context, id uuid.UUID) (*models.User, error) {
-	if m.user != nil && m.user.ID == id { return m.user, nil }
+	if m.user != nil && m.user.ID == id {
+		return m.user, nil
+	}
 	return nil, nil
 }
-func (m *mockUserRepo) Update(ctx context.Context, user *models.User) error          { m.user = user; return nil }
-func (m *mockUserRepo) Delete(ctx context.Context, id uuid.UUID) error               { m.user = nil; return nil }
+func (m *mockUserRepo) Update(ctx context.Context, user *models.User) error {
+	m.user = user
+	return nil
+}
+func (m *mockUserRepo) Delete(ctx context.Context, id uuid.UUID) error { m.user = nil; return nil }
 
 // --- Helpers ---
 func generateTestJWT(userID uuid.UUID, secret string) string {
@@ -50,7 +61,7 @@ func generateTestJWT(userID uuid.UUID, secret string) string {
 // setupTestServer создаёт тестовый HTTP-сервер БЕЗ импорта router (чтобы избежать цикла)
 func setupTestServer(t *testing.T) (*httptest.Server, string, uuid.UUID) {
 	t.Helper()
-	
+
 	userID := uuid.New()
 	phone := "+79991234567"
 	passHash, _ := bcrypt.GenerateFromPassword([]byte("SecurePass1!"), bcrypt.DefaultCost)
@@ -68,16 +79,16 @@ func setupTestServer(t *testing.T) (*httptest.Server, string, uuid.UUID) {
 	token := generateTestJWT(userID, jwtSecret)
 
 	userH := &UserHandler{Service: svc, Validator: val}
-	
+
 	// 🔄 Вместо router.New собираем защищённый маршрут вручную
 	protectedMux := http.NewServeMux()
 	protectedMux.HandleFunc("GET /v1/users/me", userH.GetMe)
 	protectedMux.HandleFunc("PATCH /v1/users/me", userH.UpdateMe)
 	protectedMux.HandleFunc("DELETE /v1/users/me", userH.DeleteMe)
-	
+
 	handler := middleware.AuthMiddleware(jwtSecret, protectedMux)
 	ts := httptest.NewServer(handler)
-	
+
 	return ts, token, userID
 }
 
@@ -92,7 +103,10 @@ func TestUserHTTP_GetMe(t *testing.T) {
 		req.Header.Set("Authorization", "Bearer "+token)
 
 		resp, err := client.Do(req)
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatalf("request failed: %v", err)
+		}
+		// Теперь точно знаем, что resp != nil
 		defer resp.Body.Close()
 
 		if resp.StatusCode != http.StatusOK {
@@ -100,7 +114,9 @@ func TestUserHTTP_GetMe(t *testing.T) {
 		}
 
 		var u dto.UserDTO
-		if err := json.NewDecoder(resp.Body).Decode(&u); err != nil { t.Fatal(err) }
+		if err := json.NewDecoder(resp.Body).Decode(&u); err != nil {
+			t.Fatal(err)
+		}
 		if u.Login != "testuser" || u.Email != "test@mail.com" {
 			t.Fatalf("unexpected user data: %+v", u)
 		}
@@ -152,7 +168,9 @@ func TestUserHTTP_UpdateMe(t *testing.T) {
 			req.Header.Set("Content-Type", "application/json")
 
 			resp, err := client.Do(req)
-			if err != nil { t.Fatal(err) }
+			if err != nil {
+				t.Fatal(err)
+			}
 			defer resp.Body.Close()
 
 			if resp.StatusCode != tt.expectCode {
@@ -182,7 +200,9 @@ func TestUserHTTP_DeleteMe(t *testing.T) {
 		req.Header.Set("Content-Type", "application/json")
 
 		resp, err := client.Do(req)
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 		defer resp.Body.Close()
 
 		if resp.StatusCode != http.StatusNoContent {
@@ -201,7 +221,9 @@ func TestUserHTTP_DeleteMe(t *testing.T) {
 		req.Header.Set("Content-Type", "application/json")
 
 		resp, err := client.Do(req)
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 		defer resp.Body.Close()
 
 		if resp.StatusCode != http.StatusForbidden {

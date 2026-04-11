@@ -10,14 +10,15 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/go-playground/validator/v10"
-	"github.com/joho/godotenv"
 	"wish-piece/internal/config"
 	"wish-piece/internal/database"
 	"wish-piece/internal/handler"
 	"wish-piece/internal/repository"
 	"wish-piece/internal/router"
 	"wish-piece/internal/service"
+
+	"github.com/go-playground/validator/v10"
+	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -43,8 +44,17 @@ func main() {
 	userService := service.NewUserService(userRepo)
 	userHandler := &handler.UserHandler{Service: userService, Validator: val}
 
-	r := router.New(authHandler, userHandler, cfg.Auth.JWTSecret)
+	wishlistRepo := repository.NewWishlistRepo(pool)
+	itemRepo := repository.NewWishlistItemRepo(pool)
+	productRepo := repository.NewProductRepo(pool)
 
+	wishlistService := service.NewWishlistService(wishlistRepo, itemRepo, productRepo)
+	wishlistHandler := &handler.WishlistHandler{
+		Service:   wishlistService,
+		Validator: val,
+	}
+
+	r := router.New(authHandler, userHandler, wishlistHandler, cfg.Auth.JWTSecret)
 
 	srv := &http.Server{Addr: fmt.Sprintf(":%d", cfg.App.Port), Handler: r}
 	go func() {
