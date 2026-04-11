@@ -104,9 +104,8 @@ func TestUserHTTP_GetMe(t *testing.T) {
 
 		resp, err := client.Do(req)
 		if err != nil {
-			t.Fatalf("request failed: %v", err)
+			t.Fatal(err)
 		}
-		// Теперь точно знаем, что resp != nil
 		defer resp.Body.Close()
 
 		if resp.StatusCode != http.StatusOK {
@@ -124,7 +123,10 @@ func TestUserHTTP_GetMe(t *testing.T) {
 
 	t.Run("returns 401 without token", func(t *testing.T) {
 		req, _ := http.NewRequest("GET", ts.URL+"/v1/users/me", nil)
-		resp, _ := client.Do(req)
+		resp, err := client.Do(req)
+		if err != nil {
+			t.Fatal(err)
+		}
 		defer resp.Body.Close()
 
 		if resp.StatusCode != http.StatusUnauthorized {
