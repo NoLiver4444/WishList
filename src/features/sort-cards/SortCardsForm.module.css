@@ -23,8 +23,8 @@
   padding-inline: 6px;
   border: none;
   border-radius: 4px;
-  color: var(--color-gray);
-  background-color: var(--color-dark-blue);
+  color: var(--text-color);
+  background-color: var(--background-color);
   transition:
     background-color var(--transition-duration)
       var(--function-time-transition-duration),
@@ -34,8 +34,8 @@
 
 .item:hover,
 .item:focus-visible {
-  background-color: var(--color-light-blue);
-  border-left: 4px solid var(--color-purple);
+  background-color: var(--hover-color);
+  border-left: 4px solid var(--primary-color);
 }
 
 .item:focus {
@@ -43,11 +43,11 @@
 }
 
 .item:focus-visible {
-  outline: 2px solid var(--color-light-pink);
+  outline: 2px solid var(--primary-color);
   outline-offset: 2px;
 }
 
 .isActive {
-  background-color: var(--color-light-blue);
-  border-left: 4px solid var(--color-dark-pink);
+  background-color: var(--hover-color);
+  border-left: 4px solid var(--primary-color);
 }

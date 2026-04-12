@@ -5,14 +5,14 @@
   width: 100%;
   max-width: 230px;
   height: 270px;
-  background-color: var(--color-light-blue);
+  background-color: var(--hover-color);
   border-radius: var(--small-border-radius);
   transition: border var(--transition-duration)
     var(--function-time-transition-duration);
 }
 
 .card:hover {
-  border: 3px solid var(--color-dark-pink);
+  border: 3px solid var(--primary-color);
 }
 
 .header {

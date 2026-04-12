@@ -17,18 +17,18 @@
   gap: 10px;
   padding: 5px;
   cursor: pointer;
-  color: var(--color-text);
+  color: var(--text-color);
   transition: all var(--transition-duration)
     var(--function-time-transition-duration);
 }
 
 .item:hover,
 .activeItem {
-  background-color: var(--color-hover);
+  background-color: var(--hover-color);
 }
 
 .item:focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--primary-color);
   border-radius: var(--big-border-radius);
 }
 
@@ -44,7 +44,7 @@
 .chevron {
   transition: transform var(--transition-duration)
     var(--function-time-transition-duration);
-  color: var(--color-text);
+  color: var(--text-color);
   margin-left: -5px;
 }
 
@@ -53,7 +53,7 @@
 }
 
 .item:hover .chevron {
-  color: var(--color-text);
+  color: var(--text-color);
 }
 
 .itemContainer {
@@ -65,7 +65,7 @@
   top: calc(100% + 3px);
   left: 0;
   min-width: 230px;
-  background-color: var(--color-dropdown);
+  background-color: var(--dropdown-color);
   border: var(--border);
   border-radius: var(--big-border-radius);
   padding: 12px;
@@ -74,13 +74,13 @@
 .dropdownTitle {
   font-weight: 600;
   margin-bottom: 8px;
-  color: var(--color-text);
+  color: var(--text-color);
 }
 
 .subtitle {
   font-size: 12px;
   font-weight: 400;
-  color: var(--color-subtext);
+  color: var(--subtext-color);
   padding-left: 36px;
 }
 
@@ -94,7 +94,7 @@
   background: transparent;
   border-radius: var(--small-border-radius);
   font-size: 14px;
-  color: var(--color-text);
+  color: var(--text-color);
   text-decoration: none;
   cursor: pointer;
   transition: background var(--transition-duration)
@@ -103,7 +103,7 @@
 
 .menuLink:hover,
 .menuLink:focus-visible {
-  background-color: var(--color-primary);
+  background-color: var(--primary-color);
 }
 
 .profileData {
@@ -141,13 +141,13 @@
 .profileEmail {
   display: block;
   font-size: 12px;
-  color: var(--color-subtext);
+  color: var(--subtext-color);
 }
 
 .viewProfileLabel {
   display: none;
   font-size: 12px;
-  color: var(--color-subtext);
+  color: var(--subtext-color);
 }
 
 .profileIcon:hover + .profileInfo .profileEmail,
@@ -184,7 +184,7 @@
 
 .switchAccountEmail {
   grid-area: switchEmail;
-  color: var(--color-subtext);
+  color: var(--subtext-color);
 }
 
 .noCheckPadding {
@@ -195,12 +195,12 @@
   margin: 0;
   font-size: 12px;
   font-weight: 400;
-  color: var(--color-subtext);
+  color: var(--subtext-color);
 }
 
 .divider {
   border: 0;
-  border-top: 1px solid var(--color-split-line);
+  border-top: 1px solid var(--split-line-color);
   margin: 8px 0;
 }
 
@@ -210,7 +210,7 @@
   right: 5px;
   width: 10px;
   height: 10px;
-  background-color: var(--color-red);
+  background-color: var(--attention-color);
   border-radius: 50%;
   pointer-events: none;
 }

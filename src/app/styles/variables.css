@@ -1,19 +1,18 @@
 :root {
-  --color-background: #1f1f1f;
-  --color-split-line: #3b3b3b;
-  --color-hover: #3b3b3b;
-  --color-dropdown: #1e1e1e;
-  --color-text: #ddd;
-  --color-subtext: #938989;
-  --color-primary: #8951ff;
+  --background-color: #1f1f1f;
+  --split-line-color: #3b3b3b;
+  --hover-color: #3b3b3b;
+  --dropdown-color: #1e1e1e;
+  --text-color: #ddd;
+  --subtext-color: #938989;
+  --primary-color: #8951ff;
+  --attention-color: #e70d27;
 
-  --border: 2px solid var(--color-split-line);
+  --border: 2px solid var(--split-line-color);
   --small-border-radius: 5px;
   --big-border-radius: 10px;
 
   --box-shadow: -1px 1px 7px 0 var(#000), 1px -1px 7px 0 var(#000);
-
-  --input-height: 50px;
 
   --transition-duration: 0.2s;
   --function-time-transition-duration: ease;

@@ -22,7 +22,7 @@
   position: absolute;
   top: -4px;
   height: calc(100% + 8px);
-  background-color: var(--color-primary);
+  background-color: var(--primary-color);
   border-radius: var(--big-border-radius);
   pointer-events: none;
 }
@@ -38,7 +38,7 @@
 }
 
 .chapter {
-  color: var(--color-text);
+  color: var(--text-color);
   font-size: 20px;
   font-weight: 500;
   text-decoration: none;

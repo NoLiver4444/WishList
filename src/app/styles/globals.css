@@ -1,8 +1,8 @@
 body {
   min-height: 100vh;
   font-family: 'Inter', sans-serif;
-  color: var(--color-text);
-  background-color: var(--color-background);
+  color: var(--text-color);
+  background-color: var(--background-color);
   margin: 0;
   padding: 0;
   width: 100%;
@@ -23,6 +23,6 @@ button {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--primary-color);
   transition-duration: 0s !important;
 }

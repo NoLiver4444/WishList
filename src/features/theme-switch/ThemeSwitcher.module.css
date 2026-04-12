@@ -8,7 +8,7 @@
   background: transparent;
   border-radius: var(--small-border-radius);
   font-size: 14px;
-  color: var(--color-text);
+  color: var(--text-color);
   text-decoration: none;
   cursor: pointer;
   transition: background var(--transition-duration)
@@ -17,7 +17,7 @@
 
 .menuLink:hover,
 .menuLink:focus-visible {
-  background-color: var(--color-primary);
+  background-color: var(--primary-color);
 }
 
 .submenuContainer {
@@ -38,7 +38,7 @@
   top: 0;
   left: calc(100% + 5px);
   min-width: 180px;
-  background-color: var(--color-dropdown);
+  background-color: var(--dropdown-color);
   border: var(--border);
   border-radius: var(--big-border-radius);
   padding: 8px;

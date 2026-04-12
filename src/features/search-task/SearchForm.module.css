@@ -10,12 +10,12 @@
 }
 
 .inputWrapper:focus-within {
-  border: 2px solid var(--color-primary);
+  border: 2px solid var(--primary-color);
 }
 
 .input {
   border: none;
-  color: var(--color-text);
+  color: var(--text-color);
   background-color: transparent;
   flex: 1;
 }
