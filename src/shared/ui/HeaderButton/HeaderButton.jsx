@@ -1,30 +1,24 @@
+import {forwardRef} from 'react';
 import {NavLink} from "react-router-dom";
-import styles from '@/entities/ui/Navigation/Navigation.module.css';
+import styles from '@/shared/ui/Navigation/Navigation.module.css';
 
-const HeaderButton = ({item}) => {
+const HeaderButton = forwardRef(({item}, ref) => {
   const Icon = item.icon;
   return (
-    <li>
+    <li ref={ref}>
       <NavLink
         to={item.path}
         className={({isActive}) =>
-          `${styles.item} ${isActive ? styles.activeItem : ''}`
-        }
-        data-tooltip={item.label}
+          `${styles.item} ${isActive ? styles.activeItem : ''}`}
       >
-        <span
-          className={`
-            ${styles.icon} ${item.id === 'favorite' ? styles.favorite : ''}
-          `}
-        >
-          <Icon
-            size={32}
-            strokeWidth={2}
-          />
-        </span>
+        <Icon
+          size={30}
+          strokeWidth={2}
+          style={{color: "white"}}
+        />
       </NavLink>
     </li>
   );
-};
+});
 
 export default HeaderButton;

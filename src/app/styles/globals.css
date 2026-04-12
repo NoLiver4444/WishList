@@ -1,12 +1,10 @@
 body {
   display: flex;
-  justify-content: center;
   align-items: start;
   min-height: 100vh;
-  padding: 2vh 25px;
   font-family: 'Inter', sans-serif;
-  color: var(--color-gray);
-  background-color: var(--color-dark-blue);
+  color: var(--color-text);
+  background-color: var(--color-background);
 }
 
 .app {
@@ -23,11 +21,6 @@ button {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-light-pink);
-  outline-offset: 2px;
+  outline: 2px solid var(--color-primary);
   transition-duration: 0s !important;
-}
-
-@view-transition {
-  navigation: auto;
 }

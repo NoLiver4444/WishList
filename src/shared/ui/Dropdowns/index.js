@@ -1,1 +1,1 @@
-export { BurgerDropdown, NotificationDropdown } from './Dropdowns';
+export { ProfileDropdown, NotificationDropdown } from './Dropdowns';

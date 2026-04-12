@@ -14,6 +14,7 @@ const CardList = ({type, items = [], onAddClick}) => {
       <AddCard
         title={addCardTitle}
         onClick={onAddClick}
+        type={type}
       />
 
       {items.map((item) => (

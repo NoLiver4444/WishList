@@ -1,4 +1,4 @@
-import {Calendar, ClipboardList, Heart, Users} from 'lucide-react';
+import { Calendar, ClipboardList, Heart, Users } from 'lucide-react';
 
 export const NAV_ITEMS = [
   {

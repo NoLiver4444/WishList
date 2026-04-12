@@ -1,0 +1,18 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding-inline: 15px;
+  border-left: var(--border);
+}
+
+.button {
+  padding: 5px;
+  border: none;
+  border-radius: var(--small-border-radius);
+  background-color: var(--color-primary);
+  font-size: 16px;
+  color: var(--color-text);
+  cursor: pointer;
+}

@@ -1,4 +1,5 @@
 import {useRef} from "react";
+import {createPortal} from 'react-dom';
 import {motion} from "framer-motion";
 import {X} from 'lucide-react';
 import {useClickOutside} from "@/shared/hooks/useClickOutside";
@@ -11,7 +12,7 @@ const ProfilePopup = ({user, onClose}) => {
   useEscClose(onClose);
   useClickOutside([popupRef], onClose);
 
-  return (
+  const modalContent = (
     <motion.div
       className={styles.overlay}
       initial={{opacity: 0}}
@@ -40,18 +41,20 @@ const ProfilePopup = ({user, onClose}) => {
 
         <div className={styles.profileInfo}>
           <img
-            src={user.avatarURL}
-            alt={user.login}
+            src={user?.avatarURL}
+            alt={user?.login}
             className={styles.avatar}
           />
-          <h2 className={styles.name}>{user.login}</h2>
+          <h2 className={styles.name}>{user?.login}</h2>
           <p className={styles.birthday}>
-            Дата рождения: {user.birthday || 'Не указана'}
+            Дата рождения: {user?.birthday || 'Не указана'}
           </p>
         </div>
       </motion.div>
     </motion.div>
   );
-}
 
-export default ProfilePopup
+  return createPortal(modalContent, document.body);
+};
+
+export default ProfilePopup;

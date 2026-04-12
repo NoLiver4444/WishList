@@ -1,0 +1,228 @@
+.menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-inline: 10px;
+  height: 100%;
+}
+
+.item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background: transparent;
+  border-radius: var(--small-border-radius);
+  gap: 10px;
+  padding: 5px;
+  cursor: pointer;
+  color: var(--color-text);
+  transition: all var(--transition-duration)
+    var(--function-time-transition-duration);
+}
+
+.item:hover,
+.activeItem {
+  background-color: var(--color-hover);
+}
+
+.item:focus-visible {
+  outline: 2px solid var(--color-primary);
+  border-radius: var(--big-border-radius);
+}
+
+.avatar {
+  width: 24px;
+  height: 24px;
+}
+
+.avatarLabel {
+  display: none;
+}
+
+.chevron {
+  transition: transform var(--transition-duration)
+    var(--function-time-transition-duration);
+  color: var(--color-text);
+  margin-left: -5px;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.item:hover .chevron {
+  color: var(--color-text);
+}
+
+.itemContainer {
+  position: relative;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 3px);
+  left: 0;
+  min-width: 230px;
+  background-color: var(--color-dropdown);
+  border: var(--border);
+  border-radius: var(--big-border-radius);
+  padding: 12px;
+}
+
+.dropdownTitle {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--color-text);
+}
+
+.subtitle {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-subtext);
+  padding-left: 36px;
+}
+
+.menuLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  background: transparent;
+  border-radius: var(--small-border-radius);
+  font-size: 14px;
+  color: var(--color-text);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--transition-duration)
+    var(--function-time-transition-duration);
+}
+
+.menuLink:hover,
+.menuLink:focus-visible {
+  background-color: var(--color-primary);
+}
+
+.profileData {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  font-size: 14px;
+}
+
+.profileIcon {
+  width: 45px;
+  height: 45px;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.profileLogin {
+  cursor: pointer;
+}
+
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.profileIcon:hover + .profileInfo .profileLogin,
+.profileLogin:hover {
+  text-decoration: underline;
+}
+
+.profileEmail {
+  display: block;
+  font-size: 12px;
+  color: var(--color-subtext);
+}
+
+.viewProfileLabel {
+  display: none;
+  font-size: 12px;
+  color: var(--color-subtext);
+}
+
+.profileIcon:hover + .profileInfo .profileEmail,
+.profileLogin:hover ~ .profileEmail {
+  display: none;
+}
+
+.profileIcon:hover + .profileInfo .viewProfileLabel,
+.profileLogin:hover ~ .viewProfileLabel {
+  display: block;
+}
+
+.switchAccount {
+  display: grid;
+  justify-items: start;
+  align-items: center;
+  grid-template-columns: 24px 1fr;
+  grid-template-areas:
+    'switchIcon switchLogin'
+    'switchIcon switchEmail';
+  gap: 5px;
+  font-size: 13px;
+}
+
+.switchAccountIcon {
+  width: 24px;
+  height: 24px;
+  grid-area: switchIcon;
+}
+
+.switchAccountLogin {
+  grid-area: switchLogin;
+}
+
+.switchAccountEmail {
+  grid-area: switchEmail;
+  color: var(--color-subtext);
+}
+
+.noCheckPadding {
+  margin-left: 26px;
+}
+
+.notificationsSubtitle {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-subtext);
+}
+
+.divider {
+  border: 0;
+  border-top: 1px solid var(--color-split-line);
+  margin: 8px 0;
+}
+
+.badge {
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  width: 10px;
+  height: 10px;
+  background-color: var(--color-red);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+@media (min-width: 1024px) {
+  .menu {
+    gap: 15px;
+  }
+
+  .avatarLabel {
+    display: inline;
+    font-size: 16px;
+    font-weight: 400;
+  }
+}

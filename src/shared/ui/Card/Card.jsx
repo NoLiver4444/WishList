@@ -7,7 +7,7 @@ const Card = ({name, date, counts, children, onMenuClick, type}) => {
   const shouldShowCounts = type === 'wishlists';
 
   return (
-    <li className={styles.card}>
+    <li className={`${styles.card} ${styles[type]}`}>
       <div className={styles.header}>
         <div className={styles.information}>
           <h5 className={styles.title}>{name}</h5>

@@ -1,13 +1,11 @@
 .header {
   position: fixed;
-  display: flex;
+  display: grid;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
-  padding: 15px 20px;
-  width: clamp(430px, -70px + 100vw, 2930px);
-  height: 70px;
-  border-radius: var(--small-border-radius);
-  box-shadow: var(--box-shadow);
-  background-color: var(--color-dark-blue);
+  grid-template-columns: auto auto 1fr auto auto;
+  width: 100%;
+  height: 48px;
+  border-bottom: var(--border);
 }

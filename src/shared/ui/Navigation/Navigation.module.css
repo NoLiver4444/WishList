@@ -1,0 +1,45 @@
+.navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  padding-inline: 20px;
+  height: 100%;
+  border-right: var(--border);
+}
+
+.list {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  width: 100%;
+  list-style: none;
+}
+
+.capsule {
+  position: absolute;
+  top: -4px;
+  height: calc(100% + 8px);
+  background-color: var(--color-primary);
+  border-radius: var(--big-border-radius);
+  pointer-events: none;
+}
+
+.item {
+  position: relative;
+  border-radius: var(--small-border-radius);
+  text-decoration: none;
+}
+
+.item:focus-visible {
+  outline-offset: 3px;
+}
+
+.chapter {
+  color: var(--color-text);
+  font-size: 20px;
+  font-weight: 500;
+  text-decoration: none;
+}

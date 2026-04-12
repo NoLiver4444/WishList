@@ -1,9 +1,9 @@
 import {Plus} from 'lucide-react';
-import styles from './AddCard.module.css'
+import styles from './AddCard.module.css';
 
-const AddCard = ({title, onClick}) => {
+const AddCard = ({title, onClick, type}) => {
   return (
-    <li className={styles.card}>
+    <li className={`${styles.card} ${styles[type]}`}>
       <button
         className={styles.button}
         onClick={onClick}

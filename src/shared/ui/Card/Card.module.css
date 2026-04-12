@@ -3,10 +3,16 @@
   grid-template-rows: 46px 1fr;
   padding: 25px 20px;
   width: 100%;
-  max-width: 270px;
-  height: 300px;
+  max-width: 230px;
+  height: 270px;
   background-color: var(--color-light-blue);
   border-radius: var(--small-border-radius);
+  transition: border var(--transition-duration)
+    var(--function-time-transition-duration);
+}
+
+.card:hover {
+  border: 3px solid var(--color-dark-pink);
 }
 
 .header {
@@ -52,12 +58,4 @@
   color: var(--color-gray);
   border: none;
   cursor: pointer;
-}
-
-.wishesList {
-  list-style: none;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(62px, 1fr));
-  gap: 12px;
 }

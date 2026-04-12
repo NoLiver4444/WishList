@@ -1,0 +1,18 @@
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 48px;
+  border-inline: var(--border);
+  cursor: pointer;
+}
+
+.logo:focus-visible {
+  border-radius: 10px;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
