@@ -12,7 +12,7 @@ const HeaderButton = forwardRef(({item}, ref) => {
           `${styles.item} ${isActive ? styles.activeItem : ''}`}
       >
         <Icon
-          size={30}
+          size={26}
           strokeWidth={2}
           style={{color: "white"}}
         />
