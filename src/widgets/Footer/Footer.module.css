@@ -13,6 +13,7 @@
 }
 
 .title {
+  color: var(--color-text);
   font-weight: 800;
   font-size: 30px;
 }
@@ -26,8 +27,20 @@
 .link {
   color: var(--color-text);
   text-decoration: none;
+  background-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 90%,
+    var(--color-primary) 90%,
+    var(--color-primary) 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 0 100%;
+  background-position-x: right;
+  transition: background-size var(--transition-duration);
 }
 
 .link:hover {
-  color: var(--color-primary);
+  background-size: 100% 100%;
+  background-position-x: left;
 }

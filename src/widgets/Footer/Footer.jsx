@@ -1,9 +1,17 @@
-import styles from './Footer.module.css'
+import {Link} from 'react-router-dom';
+import styles from './Footer.module.css';
 
 const Footer = () => {
   return (
     <footer className={styles.footer}>
-      <h3 className={styles.title}>Wish-piece</h3>
+      <Link
+        to="/"
+        className={styles.link}
+      >
+        <h3 className={styles.title}>
+          Wish-piece
+        </h3>
+      </Link>
       <div className={styles.content}>
         <div>© 2026 Los huilos</div>
         <a
