@@ -6,18 +6,12 @@
   --color-text: #ddd;
   --color-subtext: #938989;
   --color-primary: #8951ff;
-  --color-dark-pink: #cb3cff;
-  --color-light-pink: #ea8df7;
-  --color-red: #cb004e;
-  --color-yellow: #cb9c00;
-  --color-black: #000;
 
   --border: 2px solid var(--color-split-line);
   --small-border-radius: 5px;
   --big-border-radius: 10px;
 
-  --box-shadow:
-    -1px 1px 7px 0 var(--color-black), 1px -1px 7px 0 var(--color-black);
+  --box-shadow: -1px 1px 7px 0 var(#000), 1px -1px 7px 0 var(#000);
 
   --input-height: 50px;
 

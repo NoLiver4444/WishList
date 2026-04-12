@@ -1,4 +1,5 @@
 .footer {
+  box-sizing: border-box;
   position: static;
   margin-top: auto;
   display: flex;
