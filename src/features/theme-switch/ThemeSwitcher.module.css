@@ -8,11 +8,10 @@
   background: transparent;
   border-radius: var(--small-border-radius);
   font-size: 14px;
-  color: var(--text-color);
+  color: var(--dropdown-text-color);
   text-decoration: none;
   cursor: pointer;
-  transition: background var(--transition-duration)
-    var(--function-time-transition-duration);
+  transition: background var(--transition-duration) var(--function-time-transition-duration);
 }
 
 .menuLink:hover,
@@ -25,8 +24,7 @@
 }
 
 .chevronSubmenu {
-  transition: transform var(--transition-duration)
-    var(--function-time-transition-duration);
+  transition: transform var(--transition-duration) var(--function-time-transition-duration);
 }
 
 .chevronSubmenuOpen {
