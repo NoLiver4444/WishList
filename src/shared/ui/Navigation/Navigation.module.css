@@ -32,7 +32,8 @@
   justify-content: center;
   padding: 6px 10px;
   border-radius: var(--big-border-radius);
-  transition: background-color var(--transition-duration) var(--function-time-transition-duration);
+  transition: background-color var(--transition-duration)
+    var(--function-time-transition-duration);
   cursor: pointer;
 }
 
@@ -49,7 +50,6 @@
 .item:focus-visible {
   outline-offset: 3px;
 }
-
 
 .icon {
   color: var(--text-color);

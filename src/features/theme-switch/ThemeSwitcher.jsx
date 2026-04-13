@@ -1,11 +1,32 @@
 import {AnimatePresence, motion} from 'framer-motion';
-import {ChevronRight, Monitor, Moon, Palette, Sun} from 'lucide-react';
+import {
+  Banana,
+  Bomb,
+  Cat,
+  Check,
+  ChevronRight,
+  Monitor,
+  Moon,
+  Palette,
+  ScanHeart,
+  Sun,
+  Sword,
+  Tractor,
+  Wand
+} from 'lucide-react';
 import {useTheme} from '@/shared/hooks/useTheme';
 import styles from './ThemeSwitcher.module.css';
 
 const THEMES = [
   {value: 'light', label: 'Светлая', Icon: Sun},
   {value: 'dark', label: 'Тёмная', Icon: Moon},
+  {value: 'contrast', label: 'Контрастная', Icon: Tractor},
+  {value: 'banana', label: 'Банан', Icon: Banana},
+  {value: 'megumin', label: 'Мегумин', Icon: Bomb},
+  {value: 'maomao', label: 'МаоМао', Icon: Cat},
+  {value: 'rin', label: 'Рин Тосака', Icon: Wand},
+  {value: 'artoria', label: 'Артория', Icon: Sword},
+  {value: 'silfiea', label: 'Сильфи', Icon: ScanHeart},
   {value: 'system', label: 'Системная', Icon: Monitor},
 ];
 
@@ -43,6 +64,8 @@ const ThemeSubmenu = ({isOpen, onMouseEnter, onMouseLeave}) => {
                 className={`${styles.menuLink} ${theme === value ? styles.activeLink : ''}`}
                 onClick={() => setTheme(value)}
               >
+                {theme === value ? <Check size={16} /> :
+                  <div style={{width: 16}} />}
                 <Icon size={16} />
                 {label}
               </button>
