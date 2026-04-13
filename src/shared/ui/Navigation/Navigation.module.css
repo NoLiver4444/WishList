@@ -20,11 +20,24 @@
 
 .capsule {
   position: absolute;
-  top: -4px;
-  height: calc(100% + 8px);
+  height: 100%;
   background-color: var(--primary-color);
   border-radius: var(--big-border-radius);
   pointer-events: none;
+}
+
+.chapter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  border-radius: var(--big-border-radius);
+  transition: background-color var(--transition-duration) var(--function-time-transition-duration);
+  cursor: pointer;
+}
+
+.chapter:hover:not(.activeItem) {
+  background-color: var(--hover-color);
 }
 
 .item {
@@ -37,9 +50,7 @@
   outline-offset: 3px;
 }
 
-.chapter {
+
+.icon {
   color: var(--text-color);
-  font-size: 20px;
-  font-weight: 500;
-  text-decoration: none;
 }

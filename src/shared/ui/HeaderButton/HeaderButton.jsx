@@ -2,19 +2,20 @@ import {forwardRef} from 'react';
 import {NavLink} from "react-router-dom";
 import styles from '@/shared/ui/Navigation/Navigation.module.css';
 
-const HeaderButton = forwardRef(({item}, ref) => {
+const HeaderButton = forwardRef(({item, className}, ref) => {
   const Icon = item.icon;
   return (
     <li ref={ref}>
       <NavLink
         to={item.path}
         className={({isActive}) =>
-          `${styles.item} ${isActive ? styles.activeItem : ''}`}
+          `${styles.item} ${className} ${isActive ? styles.activeItem : ''}`
+        }
       >
         <Icon
           size={26}
           strokeWidth={2}
-          style={{color: "white"}}
+          className={styles.icon}
         />
       </NavLink>
     </li>

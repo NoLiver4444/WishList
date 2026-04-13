@@ -23,13 +23,23 @@ const Navigation = () => {
     const listRect = list.getBoundingClientRect();
 
     setCapsule({
-      left: elRect.left - listRect.left - 12,
-      width: elRect.width + 24,
+      left: elRect.left - listRect.left,
+      width: elRect.width,
     });
   };
 
   useEffect(() => {
     updateCapsule();
+    
+    const resizeObserver = new ResizeObserver(() => {
+      updateCapsule();
+    });
+
+    if (listRef.current) {
+      resizeObserver.observe(listRef.current);
+    }
+
+    return () => resizeObserver.disconnect();
   }, [location.pathname]);
 
   return (
@@ -48,6 +58,7 @@ const Navigation = () => {
             key={item.path}
             item={item}
             ref={(el) => (itemRefs.current[item.id] = el)}
+            className={styles.chapter}
           />
         ))}
       </ul>
