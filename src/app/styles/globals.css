@@ -48,8 +48,39 @@ button {
 }
 
 ::-webkit-scrollbar-track {
-  box-shadow:
-    inset 2px 2px 5px rgba(0, 0, 0, 0.05),
-    inset -1px -1px 2px rgba(0, 146, 255, 0.2);
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.05),
+  inset -1px -1px 2px rgba(0, 146, 255, 0.2);
   background-color: var(--background-color);
+}
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: 0.4s ease-out both slide-out;
+}
+
+::view-transition-new(root) {
+  animation: 0.4s ease-in both slide-in;
+}
+
+@keyframes slide-out {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }
