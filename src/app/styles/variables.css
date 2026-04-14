@@ -16,21 +16,24 @@
 }
 
 [data-theme='dark'] {
-  --background-color: #1f1f1f;
-  --text-color: #ddd;
-  --hover-color: #3b3b3b;
-  --split-line-color: #3b3b3b;
+  --background-color: #101010;
+  --main-background-color: #101010;
+  --text-color: #bbb;
+  --hover-color: #262626;
+  --split-line-color: #262626;
 }
 
 [data-theme='light'] {
   --background-color: #fff;
+  --main-background-color: #f5f5f5;
   --text-color: #1f1f1f;
   --hover-color: #cbcbcb;
-  --split-line-color: #cbcbcb;
+  --split-line-color: #f5f5f5;
 }
 
 [data-theme='contrast'] {
   --background-color: #081238;
+  --main-background-color: #081238;
   --text-color: #ddd;
   --hover-color: #041456;
   --split-line-color: #041456;
@@ -39,6 +42,7 @@
 
 [data-theme='banana'] {
   --background-color: #ffb700;
+  --main-background-color: #ffb700;
   --text-color: #8951ff;
   --hover-color: #ffcb49;
   --split-line-color: #ffcb49;
@@ -47,6 +51,7 @@
 
 [data-theme='megumin'] {
   --background-color: #181824;
+  --main-background-color: #181824;
   --text-color: #ddd;
   --hover-color: #f59442;
   --split-line-color: #f59442;
@@ -56,6 +61,7 @@
 
 [data-theme='maomao'] {
   --background-color: #2d5139;
+  --main-background-color: #2d5139;
   --text-color: #ddd;
   --hover-color: #5ba671;
   --split-line-color: #5ba671;
@@ -65,6 +71,7 @@
 
 [data-theme='rin'] {
   --background-color: #181824;
+  --main-background-color: #181824;
   --text-color: #ddd;
   --hover-color: #15577d;
   --split-line-color: #15577d;
@@ -74,6 +81,7 @@
 
 [data-theme='artoria'] {
   --background-color: #373755;
+  --main-background-color: #373755;
   --text-color: #fde0c8;
   --hover-color: #2f9a79;
   --split-line-color: #2f9a79;
@@ -83,6 +91,7 @@
 
 [data-theme='silfiea'] {
   --background-color: #3b6b5b;
+  --main-background-color: #3b6b5b;
   --text-color: #f5eeef;
   --hover-color: #0d8f6b;
   --split-line-color: #3f3838;

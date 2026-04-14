@@ -15,29 +15,27 @@ const Main = ({
   const [currentSort, setCurrentSort] = useState(sortOptions[0]?.value);
 
   return (
-    <main className={`${styles.main} ${styles[variant]}`}>
-      <div className={styles.container}>
-        <h1 className={styles.title}>{title}</h1>
+    <div className={`${styles.main} ${styles[variant]}`}>
+      <h1 className={styles.title}>{title}</h1>
 
-        {sortOptions.length > 0 && (
-          <SortCardsForm
-            options={sortOptions}
-            activeSort={currentSort}
-            onSortChange={setCurrentSort}
+      {sortOptions.length > 0 && (
+        <SortCardsForm
+          options={sortOptions}
+          activeSort={currentSort}
+          onSortChange={setCurrentSort}
+        />
+      )}
+
+      <div className={styles.content}>
+        {children ? children : (
+          <CardList
+            type={type}
+            items={data}
+            onAddClick={onAddClick}
           />
         )}
-
-        <div className={styles.content}>
-          {children ? children : (
-            <CardList
-              type={type}
-              items={data}
-              onAddClick={onAddClick}
-            />
-          )}
-        </div>
       </div>
-    </main>
+    </div>
   );
 };
 

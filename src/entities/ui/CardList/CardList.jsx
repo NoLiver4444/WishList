@@ -48,6 +48,123 @@ const CardList = ({type, items = [], onAddClick}) => {
             }}
             type={type}
           />
+          <Card
+            name="Подвал Севы"
+            date="10.04.2026"
+            counts={0}
+            wishes={[]}
+            onMenuClick={() => {
+            }}
+            type={type}
+          />
+          <Card
+            name="Подвал Севы"
+            date="10.04.2026"
+            counts={0}
+            wishes={[]}
+            onMenuClick={() => {
+            }}
+            type={type}
+          />
+          <Card
+            name="Подвал Севы"
+            date="10.04.2026"
+            counts={0}
+            wishes={[]}
+            onMenuClick={() => {
+            }}
+            type={type}
+          />
+          <Card
+            name="Подвал Севы"
+            date="10.04.2026"
+            counts={0}
+            wishes={[]}
+            onMenuClick={() => {
+            }}
+            type={type}
+          />
+          <Card
+            name="Подвал Севы"
+            date="10.04.2026"
+            counts={0}
+            wishes={[]}
+            onMenuClick={() => {
+            }}
+            type={type}
+          />
+          <Card
+            name="Подвал Севы"
+            date="10.04.2026"
+            counts={0}
+            wishes={[]}
+            onMenuClick={() => {
+            }}
+            type={type}
+          />
+          <Card
+            name="Подвал Севы"
+            date="10.04.2026"
+            counts={0}
+            wishes={[]}
+            onMenuClick={() => {
+            }}
+            type={type}
+          />
+          <Card
+            name="Подвал Севы"
+            date="10.04.2026"
+            counts={0}
+            wishes={[]}
+            onMenuClick={() => {
+            }}
+            type={type}
+          />
+          <Card
+            name="Подвал Севы"
+            date="10.04.2026"
+            counts={0}
+            wishes={[]}
+            onMenuClick={() => {
+            }}
+            type={type}
+          />
+          <Card
+            name="Подвал Севы"
+            date="10.04.2026"
+            counts={0}
+            wishes={[]}
+            onMenuClick={() => {
+            }}
+            type={type}
+          />
+          <Card
+            name="Подвал Севы"
+            date="10.04.2026"
+            counts={0}
+            wishes={[]}
+            onMenuClick={() => {
+            }}
+            type={type}
+          />
+          <Card
+            name="Подвал Севы"
+            date="10.04.2026"
+            counts={0}
+            wishes={[]}
+            onMenuClick={() => {
+            }}
+            type={type}
+          />
+          <Card
+            name="Подвал Севы"
+            date="10.04.2026"
+            counts={0}
+            wishes={[]}
+            onMenuClick={() => {
+            }}
+            type={type}
+          />
         </>
       )}
     </ul>

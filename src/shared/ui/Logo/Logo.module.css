@@ -15,7 +15,8 @@
 .icon {
   width: 24px;
   height: 24px;
-  transition: rotate var(--transition-duration) var(--function-time-transition-duration);
+  transition: rotate var(--transition-duration)
+    var(--function-time-transition-duration);
 }
 
 .icon:hover {
