@@ -10,8 +10,6 @@
   --small-border-radius: 5px;
   --big-border-radius: 10px;
 
-  --box-shadow: -1px 1px 7px 0 var(#000), 1px -1px 7px 0 var(#000);
-
   --transition-duration: 0.2s;
   --function-time-transition-duration: ease;
 }

@@ -1,1 +1,1 @@
-export { default } from './AccountSwitcher.jsx';
+export { default } from './AccountSwitcher';

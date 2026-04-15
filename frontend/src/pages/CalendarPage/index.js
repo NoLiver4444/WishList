@@ -1,1 +1,1 @@
-export { default } from './CalendarPage.jsx';
+export { default } from './CalendarPage';

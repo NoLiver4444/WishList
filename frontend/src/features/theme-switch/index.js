@@ -1,1 +1,1 @@
-export { default } from './ThemeSwitcher.jsx';
+export { default } from './ThemeSwitcher';

@@ -1,29 +1,29 @@
 import { Route, Routes } from 'react-router-dom';
-import ProductsPage from '../pages/ProductsPage/index.js';
-import WishlistsPage from '../pages/WishlistsPage/index.js';
-import FriendsPage from '../pages/FriendsPage/index.js';
-import CalendarPage from '../pages/CalendarPage/index.js';
-import SettingsPage from '../pages/SettingsPage/index.js';
-import Header from '../widgets/Header/index.js';
-import Footer from '../widgets/Footer/index.js';
-import './styles/index.js';
+import ProductsPage from '@/pages/ProductsPage';
+import WishlistsPage from '@/pages/WishlistsPage';
+import FriendsPage from '@/pages/FriendsPage';
+import CalendarPage from '@/pages/CalendarPage';
+import SettingsPage from '@/pages/SettingsPage';
+import Header from '@/widgets/Header';
+import Footer from '@/widgets/Footer';
+import './styles';
 
 const App = () => {
-	return (
-		<div className="app">
-			<Header/>
-			<main className="main">
-				<Routes>
-					<Route path="/" element={<ProductsPage/>}/>
-					<Route path="/wishlists" element={<WishlistsPage/>}/>
-					<Route path="/friends" element={<FriendsPage/>}/>
-					<Route path="/calendar" element={<CalendarPage/>}/>
-					<Route path="/settings" element={<SettingsPage/>}/>
-				</Routes>
-			</main>
-			<Footer/>
-		</div>
-	);
+  return (
+    <div className="app">
+      <Header />
+      <main className="main">
+        <Routes>
+          <Route path="/" element={<ProductsPage />} />
+          <Route path="/wishlists" element={<WishlistsPage />} />
+          <Route path="/friends" element={<FriendsPage />} />
+          <Route path="/calendar" element={<CalendarPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
+  );
 };
 
 export default App;

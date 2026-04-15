@@ -1,1 +1,1 @@
-export { default } from './SortCardsForm.jsx';
+export { default } from './SortCardsForm';

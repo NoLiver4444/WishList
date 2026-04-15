@@ -1,1 +1,1 @@
-export { ProfileDropdown, NotificationDropdown } from './Dropdowns.jsx';
+export { ProfileDropdown, NotificationDropdown } from './Dropdowns';

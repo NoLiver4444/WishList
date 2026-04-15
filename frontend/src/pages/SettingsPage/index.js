@@ -1,1 +1,1 @@
-export { default } from './SettingsPage.jsx';
+export { default } from './SettingsPage';

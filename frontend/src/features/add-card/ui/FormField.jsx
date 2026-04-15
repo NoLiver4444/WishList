@@ -33,13 +33,34 @@ export const FormField = ({
             className={`${styles.numberContainer} ${isError ? styles.inputError : ''}`}
           >
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
               className={styles.cleanInput}
               name={field.name}
               value={value}
-              onChange={onChange}
+              placeholder={field.placeholder}
+              onChange={(e) => {
+                let value = e.target.value;
+
+                value = value.replace(/\D/g, '');
+
+                onChange({
+                  target: {
+                    name: field.name,
+                    value,
+                  },
+                });
+              }}
               min={field.min}
               max={field.max}
+              onKeyDown={(e) => {
+                if (
+                  ['e', 'E', '+', '-', '.'].includes(e.key) &&
+                  field.type === 'number'
+                ) {
+                  e.preventDefault();
+                }
+              }}
             />
             <button
               type="button"
@@ -68,6 +89,7 @@ export const FormField = ({
             max={field.max}
             onBlur={onBlur}
             onClick={(e) => e.target.showPicker()}
+            onChange={onChange}
           />
         );
       default:
