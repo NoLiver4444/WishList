@@ -1,14 +1,12 @@
 .main {
   margin-block-start: 50px;
-  margin-inline: auto;
+  margin-inline: clamp(10px, -22.5px + 6.35vw, 140px);
   padding-block: 30px;
-  width: 90%;
   display: flex;
   flex-direction: column;
   align-items: start;
-  gap: 10px;
+  gap: 20px;
   flex: 1;
-  min-height: calc(87.5vh - 100px);
   border-radius: var(--small-border-radius);
   box-shadow: var(--box-shadow);
 }
@@ -26,8 +24,8 @@
 .content ul {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-  justify-content: start;
+  justify-content: space-between;
   align-items: center;
+  grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+  gap: clamp(0.3125rem, -0.0781rem + 1.2207vw, 1.875rem);
 }

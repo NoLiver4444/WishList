@@ -1,1 +1,1 @@
-export { default } from './AddCard';
+export { default } from './ui/AddCard';

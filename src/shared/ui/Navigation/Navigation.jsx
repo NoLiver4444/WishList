@@ -30,7 +30,7 @@ const Navigation = () => {
 
   useEffect(() => {
     updateCapsule();
-    
+
     const resizeObserver = new ResizeObserver(() => {
       updateCapsule();
     });

@@ -1,18 +1,22 @@
 .card {
   display: grid;
   grid-template-rows: 46px 1fr;
-  padding: 25px 20px;
+  padding: 20px 20px;
   width: 100%;
-  max-width: 230px;
   height: 270px;
   background-color: var(--hover-color);
+  outline: var(--border);
+  border-top: 8px solid var(--primary-color);
   border-radius: var(--small-border-radius);
-  transition: border var(--transition-duration)
-    var(--function-time-transition-duration);
+  transition: outline 0.1s var(--function-time-transition-duration);
+}
+
+.card.wishes {
+  height: 340px;
 }
 
 .card:hover {
-  border: 3px solid var(--primary-color);
+  outline: 3px solid var(--primary-color);
 }
 
 .header {
@@ -33,19 +37,22 @@
 
 .title {
   grid-area: title;
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 400;
 }
 
 .date {
   grid-area: date;
-  color: var(--color-light-pink);
-  font-size: 12px;
+  margin-block: auto;
+  border-radius: var(--big-border-radius);
+  color: var(--primary-color);
+  font-size: 14px;
 }
 
 .counts {
   grid-area: counts;
-  font-size: 12px;
+  margin-block: auto;
+  font-size: 14px;
 }
 
 .menuButton {
@@ -54,8 +61,13 @@
   align-items: center;
   width: 40px;
   height: 40px;
-  background-color: var(--color-light-blue);
-  color: var(--color-gray);
-  border: none;
+  background-color: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--text-color);
+  border-radius: var(--small-border-radius);
   cursor: pointer;
+}
+
+.menuButton:hover {
+  background-color: var(--dim-background-color);
 }

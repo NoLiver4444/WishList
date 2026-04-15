@@ -1,6 +1,12 @@
 import Main from "@/widgets/Main/index.js";
+import {useState} from "react";
+import AddCardModal from "@/features/add-card/AddCardModal.jsx";
 
 const WishlistsPage = () => {
+  const [items, setItems] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+
   const sortOptions = [
     {label: 'дате добавления', value: 'date_added'},
     {label: 'названию', value: 'name'},
@@ -8,19 +14,36 @@ const WishlistsPage = () => {
     {label: 'дедлайну', value: 'deadline'},
   ];
 
-  const handleAdd = () => {
-    console.log("Модалка добавления вишлиста");
+  const handleAdd = (newItem) => {
+    setItems((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        likes: 0,
+        ...newItem,
+      },
+    ]);
+    setIsModalOpen(false);
   };
 
   return (
-    <Main
-      title="Мои вишлисты"
-      variant="wishlists"
-      type="wishlists"
-      sortOptions={sortOptions}
-      onAddClick={handleAdd}
-      data={[]}
-    />
+    <>
+      <Main
+        title="Мои вишлисты"
+        variant="wishlists"
+        type="wishlists"
+        sortOptions={sortOptions}
+        onAddClick={() => setIsModalOpen(true)}
+        data={items}
+      />
+      <AddCardModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleAdd}
+        type="wishlists"
+        title="Создать вишлист"
+      />
+    </>
   );
 };
 

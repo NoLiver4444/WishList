@@ -1,15 +1,15 @@
 import {useEffect} from 'react';
 
-export const useEscClose = (onClose, isOpen = true) => {
+export const useEnterPress = (handleSubmit, isOpen = true) => {
   useEffect(() => {
     if (!isOpen) return;
 
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape' || e.key === 'Esc') {
-        onClose?.();
+      if (e.key === 'Enter') {
+        handleSubmit?.();
       }
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [onClose, isOpen]);
+  }, [handleSubmit, isOpen]);
 };
