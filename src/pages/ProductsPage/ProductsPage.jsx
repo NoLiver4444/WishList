@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Main from '@/widgets/Main';
-import AddCardModal from '@/features/add-card/AddCardModal';
+import AddCardModal from '@/features/add-card/ui/AddCardModal.jsx';
 
 const ProductsPage = () => {
   const [items, setItems] = useState([]);

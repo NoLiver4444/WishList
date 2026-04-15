@@ -1,4 +1,4 @@
-import AddCard from '@/features/add-card/ui/AddCard';
+import AddCard from '@/shared/ui/AddCard/AddCard.jsx';
 import Card from '@/shared/ui/Card';
 
 const CardList = ({ type, items = [], onAddClick }) => {
