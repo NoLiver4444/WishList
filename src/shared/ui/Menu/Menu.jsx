@@ -1,15 +1,15 @@
-import {useRef, useState} from 'react';
-import {AnimatePresence} from 'framer-motion';
-import {Bell, ChevronDown} from 'lucide-react';
-import {useClickOutside} from '@/shared/hooks/useClickOutside.jsx';
+import { useRef, useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
+import { Bell, ChevronDown } from 'lucide-react';
+import { useClickOutside } from '@/shared/hooks/useClickOutside.jsx';
 import {
   NotificationDropdown,
-  ProfileDropdown
+  ProfileDropdown,
 } from '@/shared/ui/Dropdowns/index.js';
 import ProfilePopup from '@/shared/ui/ProfilePopup/index.js';
 import styles from './Menu.module.css';
 
-const Menu = ({currentUser, users, onSelectUser, hasUnread = false}) => {
+const Menu = ({ currentUser, users, onSelectUser, hasUnread = false }) => {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
@@ -21,17 +21,19 @@ const Menu = ({currentUser, users, onSelectUser, hasUnread = false}) => {
     setIsProfileOpen(false);
   };
 
-  useClickOutside(notificationRef, () => activeDropdown === 'notification' && closeAll());
+  useClickOutside(
+    notificationRef,
+    () => activeDropdown === 'notification' && closeAll()
+  );
   useClickOutside(avatarRef, () => activeDropdown === 'avatar' && closeAll());
 
   return (
     <ul className={styles.menu}>
-      <li
-        className={styles.itemContainer}
-        ref={avatarRef}
-      >
+      <li className={styles.itemContainer} ref={avatarRef}>
         <button
-          onClick={() => setActiveDropdown(activeDropdown === 'avatar' ? null : 'avatar')}
+          onClick={() =>
+            setActiveDropdown(activeDropdown === 'avatar' ? null : 'avatar')
+          }
           className={`${styles.item} ${activeDropdown === 'avatar' ? styles.activeItem : ''}`}
         >
           <img
@@ -62,12 +64,13 @@ const Menu = ({currentUser, users, onSelectUser, hasUnread = false}) => {
         </AnimatePresence>
       </li>
 
-      <li
-        className={styles.itemContainer}
-        ref={notificationRef}
-      >
+      <li className={styles.itemContainer} ref={notificationRef}>
         <button
-          onClick={() => setActiveDropdown(activeDropdown === 'notification' ? null : 'notification')}
+          onClick={() =>
+            setActiveDropdown(
+              activeDropdown === 'notification' ? null : 'notification'
+            )
+          }
           className={`${styles.item} ${activeDropdown === 'notification' ? styles.activeItem : ''}`}
         >
           <Bell size={24} />
@@ -83,10 +86,7 @@ const Menu = ({currentUser, users, onSelectUser, hasUnread = false}) => {
 
       <AnimatePresence>
         {isProfileOpen && (
-          <ProfilePopup
-            user={currentUser}
-            onClose={closeAll}
-          />
+          <ProfilePopup user={currentUser} onClose={closeAll} />
         )}
       </AnimatePresence>
     </ul>

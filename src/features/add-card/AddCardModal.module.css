@@ -1,7 +1,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgb(0 0 0 / 0.2);
   backdrop-filter: blur(8px);
   display: flex;
   align-items: center;

@@ -1,17 +1,16 @@
-import Main from "@/widgets/Main/index.js";
-import {useState} from "react";
-import AddCardModal from "@/features/add-card/AddCardModal.jsx";
+import Main from '@/widgets/Main/index.js';
+import { useState } from 'react';
+import AddCardModal from '@/features/add-card/AddCardModal.jsx';
 
 const WishlistsPage = () => {
   const [items, setItems] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-
   const sortOptions = [
-    {label: 'дате добавления', value: 'date_added'},
-    {label: 'названию', value: 'name'},
-    {label: 'количеству желаний', value: 'count_products'},
-    {label: 'дедлайну', value: 'deadline'},
+    { label: 'дате добавления', value: 'date_added' },
+    { label: 'названию', value: 'name' },
+    { label: 'количеству желаний', value: 'count_products' },
+    { label: 'дедлайну', value: 'deadline' },
   ];
 
   const handleAdd = (newItem) => {

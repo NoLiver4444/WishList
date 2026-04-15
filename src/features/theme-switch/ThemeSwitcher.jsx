@@ -1,4 +1,4 @@
-import {AnimatePresence, motion} from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
   Check,
   ChevronRight,
@@ -6,26 +6,26 @@ import {
   Moon,
   Palette,
   Sun,
-  Tractor
+  Tractor,
 } from 'lucide-react';
-import {useTheme} from '@/shared/hooks/useTheme';
+import { useTheme } from '@/shared/hooks/useTheme';
 import styles from './ThemeSwitcher.module.css';
 
 const THEMES = [
-  {value: 'light', label: 'Светлая', Icon: Sun},
-  {value: 'dark', label: 'Тёмная', Icon: Moon},
-  {value: 'contrast', label: 'Контрастная', Icon: Tractor},
+  { value: 'light', label: 'Светлая', Icon: Sun },
+  { value: 'dark', label: 'Тёмная', Icon: Moon },
+  { value: 'contrast', label: 'Контрастная', Icon: Tractor },
   // {value: 'banana', label: 'Банан', Icon: Banana},
   // {value: 'megumin', label: 'Мегумин', Icon: Bomb},
   // {value: 'maomao', label: 'МаоМао', Icon: Cat},
   // {value: 'rin', label: 'Рин Тосака', Icon: Wand},
   // {value: 'artoria', label: 'Артория', Icon: Sword},
   // {value: 'silfiea', label: 'Сильфи', Icon: ScanHeart},
-  {value: 'system', label: 'Системная', Icon: Monitor},
+  { value: 'system', label: 'Системная', Icon: Monitor },
 ];
 
-const ThemeSubmenu = ({isOpen, onMouseEnter, onMouseLeave}) => {
-  const {theme, setTheme} = useTheme();
+const ThemeSubmenu = ({ isOpen, onMouseEnter, onMouseLeave }) => {
+  const { theme, setTheme } = useTheme();
 
   return (
     <div
@@ -39,7 +39,7 @@ const ThemeSubmenu = ({isOpen, onMouseEnter, onMouseLeave}) => {
         <ChevronRight
           size={14}
           className={`${styles.chevronSubmenu} ${isOpen ? styles.chevronSubmenuOpen : ''}`}
-          style={{marginLeft: 'auto'}}
+          style={{ marginLeft: 'auto' }}
         />
       </button>
 
@@ -47,19 +47,22 @@ const ThemeSubmenu = ({isOpen, onMouseEnter, onMouseLeave}) => {
         {isOpen && (
           <motion.div
             className={styles.submenu}
-            initial={{opacity: 0, x: -10}}
-            animate={{opacity: 1, x: 0}}
-            exit={{opacity: 0, x: -10}}
-            transition={{type: 'spring', damping: 25, stiffness: 400}}
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -10 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 400 }}
           >
-            {THEMES.map(({value, label, Icon}) => (
+            {THEMES.map(({ value, label, Icon }) => (
               <button
                 key={value}
                 className={`${styles.menuLink} ${theme === value ? styles.activeLink : ''}`}
                 onClick={() => setTheme(value)}
               >
-                {theme === value ? <Check size={16} /> :
-                  <div style={{width: 16}} />}
+                {theme === value ? (
+                  <Check size={16} />
+                ) : (
+                  <div style={{ width: 16 }} />
+                )}
                 <Icon size={16} />
                 {label}
               </button>

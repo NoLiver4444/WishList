@@ -1,9 +1,9 @@
-import {useRef, useState} from "react";
-import Logo from "@/shared/ui/Logo";
-import Navigation from "@/shared/ui/Navigation";
-import AccountSwitcher from "@/features/account-switch/AccountSwitcher";
-import SearchForm from "@/features/search-task/SearchForm";
-import ShareButton from "@/shared/ui/ShareButton";
+import { useRef, useState } from 'react';
+import Logo from '@/shared/ui/Logo';
+import Navigation from '@/shared/ui/Navigation';
+import AccountSwitcher from '@/features/account-switch/AccountSwitcher';
+import SearchForm from '@/features/search-task/SearchForm';
+import ShareButton from '@/shared/ui/ShareButton';
 import styles from './Header.module.css';
 
 const Header = () => {

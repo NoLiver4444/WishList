@@ -1,17 +1,17 @@
-import {useState} from "react";
-import SortCardsForm from "@/features/sort-cards";
-import CardList from "@/entities/ui/CardList";
+import { useState } from 'react';
+import SortCardsForm from '@/features/sort-cards';
+import CardList from '@/entities/ui/CardList';
 import styles from './Main.module.css';
 
 const Main = ({
-                title,
-                variant = 'default',
-                type,
-                sortOptions = [],
-                onAddClick,
-                data = [],
-                children
-              }) => {
+  title,
+  variant = 'default',
+  type,
+  sortOptions = [],
+  onAddClick,
+  data = [],
+  children,
+}) => {
   const [currentSort, setCurrentSort] = useState(sortOptions[0]?.value);
 
   return (
@@ -27,12 +27,10 @@ const Main = ({
       )}
 
       <div className={styles.content}>
-        {children ? children : (
-          <CardList
-            type={type}
-            items={data}
-            onAddClick={onAddClick}
-          />
+        {children ? (
+          children
+        ) : (
+          <CardList type={type} items={data} onAddClick={onAddClick} />
         )}
       </div>
     </div>

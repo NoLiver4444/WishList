@@ -1,16 +1,15 @@
-import Main from "@/widgets/Main";
-import {useState} from "react";
-import AddCardModal from "@/features/add-card/AddCardModal.jsx";
+import Main from '@/widgets/Main';
+import { useState } from 'react';
+import AddCardModal from '@/features/add-card/AddCardModal.jsx';
 
 const FriendsPage = () => {
   const [items, setItems] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-
   const sortOptions = [
-    {label: 'дате добавления', value: 'date_added'},
-    {label: 'имени', value: 'name'},
-    {label: 'дате рождения', value: 'birthday_date'},
+    { label: 'дате добавления', value: 'date_added' },
+    { label: 'имени', value: 'name' },
+    { label: 'дате рождения', value: 'birthday_date' },
   ];
 
   const handleAdd = (newItem) => {

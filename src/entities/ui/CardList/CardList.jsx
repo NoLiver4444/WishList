@@ -1,21 +1,17 @@
-import AddCard from "@/features/add-card/ui/AddCard";
-import Card from "@/shared/ui/Card";
+import AddCard from '@/features/add-card/ui/AddCard';
+import Card from '@/shared/ui/Card';
 
-const CardList = ({type, items = [], onAddClick, onLike}) => {
+const CardList = ({ type, items = [], onAddClick }) => {
   const titles = {
     wishes: 'Добавить желание',
     wishlists: 'Создать вишлист',
     friends: 'Добавить друга',
-  }
+  };
   const addCardTitle = titles[type] || 'Добавить';
 
   return (
     <ul>
-      <AddCard
-        title={addCardTitle}
-        onClick={onAddClick}
-        type={type}
-      />
+      <AddCard title={addCardTitle} onClick={onAddClick} type={type} />
 
       {items.map((item) => (
         <Card
@@ -28,10 +24,7 @@ const CardList = ({type, items = [], onAddClick, onLike}) => {
         />
       ))}
 
-      {items.length === 0 && (
-        <>
-        </>
-      )}
+      {items.length === 0 && <></>}
     </ul>
   );
 };

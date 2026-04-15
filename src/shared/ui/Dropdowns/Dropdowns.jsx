@@ -1,29 +1,31 @@
-import {Link} from 'react-router-dom';
-import {useState} from 'react';
-import {Check, LogOut, Plus, Settings} from 'lucide-react';
-import {useEscClose} from '@/shared/hooks/useEscClose';
-import DropdownContainer from "@/shared/ui/Dropdowns/DropdownContainer";
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Check, LogOut, Plus, Settings } from 'lucide-react';
+import { useEscClose } from '@/shared/hooks/useEscClose';
+import DropdownContainer from '@/shared/ui/Dropdowns/DropdownContainer';
 import ThemeSubmenu from '@/features/theme-switch/ThemeSwitcher';
 import styles from '@/shared/ui/Menu/Menu.module.css';
 
-export const NotificationDropdown = ({onClose}) => {
+export const NotificationDropdown = ({ onClose }) => {
   useEscClose(onClose);
 
   return (
     <DropdownContainer>
       <p className={styles.dropdownTitle}>Уведомления</p>
-      <div className={styles.notificationsSubtitle}>Пока нет новых сообщений</div>
+      <div className={styles.notificationsSubtitle}>
+        Пока нет новых сообщений
+      </div>
     </DropdownContainer>
   );
 };
 
 export const ProfileDropdown = ({
-                                  onClose,
-                                  currentUser,
-                                  users,
-                                  onSelectUser,
-                                  onOpenFullProfile,
-                                }) => {
+  onClose,
+  currentUser,
+  users,
+  onSelectUser,
+  onOpenFullProfile,
+}) => {
   useEscClose(onClose);
 
   const [showThemeSubmenu, setShowThemeSubmenu] = useState(false);
@@ -46,7 +48,7 @@ export const ProfileDropdown = ({
           <span
             className={styles.profileLogin}
             onClick={onOpenFullProfile}
-            style={{textDecoration: 'none'}}
+            style={{ textDecoration: 'none' }}
           >
             {currentUser?.login}
           </span>
@@ -56,11 +58,7 @@ export const ProfileDropdown = ({
       </div>
       <hr className={styles.divider} />
 
-      <Link
-        to="/settings"
-        className={styles.menuLink}
-        onClick={onClose}
-      >
+      <Link to="/settings" className={styles.menuLink} onClick={onClose}>
         <Settings size={16} />
         <span>Настройки</span>
       </Link>
@@ -81,7 +79,7 @@ export const ProfileDropdown = ({
             className={styles.menuLink}
             onClick={() => handleSelect(user)}
           >
-            {isSelected ? <Check size={16} /> : <div style={{width: 16}} />}
+            {isSelected ? <Check size={16} /> : <div style={{ width: 16 }} />}
             <span className={styles.switchAccount}>
               <img
                 className={styles.switchAccountIcon}

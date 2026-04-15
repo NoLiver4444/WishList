@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 
 const STORAGE_KEY = 'app-theme';
 
@@ -14,7 +14,7 @@ const applyTheme = (theme) => {
 
 export const useTheme = () => {
   const [theme, setTheme] = useState(
-    () => (localStorage.getItem(STORAGE_KEY) ?? 'system')
+    () => localStorage.getItem(STORAGE_KEY) ?? 'system'
   );
 
   useEffect(() => {
@@ -29,5 +29,5 @@ export const useTheme = () => {
     }
   }, [theme]);
 
-  return {theme, setTheme};
+  return { theme, setTheme };
 };

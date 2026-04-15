@@ -1,13 +1,16 @@
-import {useCallback, useMemo, useRef, useState} from "react";
-import {FIELDS} from "./AddCardModal.config.js";
-import {useClickOutside} from "@/shared/hooks/useClickOutside";
-import {useEscClose} from "@/shared/hooks/useEscClose";
-import {useEnterPress} from "@/shared/hooks/useEnterPress";
-import styles from "./AddCardModal.module.css";
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { FIELDS } from './AddCardModal.config.js';
+import { useClickOutside } from '@/shared/hooks/useClickOutside';
+import { useEscClose } from '@/shared/hooks/useEscClose';
+import { useEnterPress } from '@/shared/hooks/useEnterPress';
+import styles from './AddCardModal.module.css';
 
-const AddCardModal = ({isOpen, onClose, onSubmit, type, title}) => {
+const AddCardModal = ({ isOpen, onClose, onSubmit, type, title }) => {
   const fields = useMemo(() => FIELDS[type] ?? FIELDS.wishes, [type]);
-  const empty = useMemo(() => Object.fromEntries(fields.map((f) => [f.name, ""])), [fields]);
+  const empty = useMemo(
+    () => Object.fromEntries(fields.map((f) => [f.name, ''])),
+    [fields]
+  );
 
   const [form, setForm] = useState(empty);
   const [errors, setErrors] = useState({});
@@ -19,9 +22,13 @@ const AddCardModal = ({isOpen, onClose, onSubmit, type, title}) => {
       const value = form[field.name]?.trim();
 
       if (field.required && !value) {
-        newErrors[field.name] = "Это поле обязательно для заполнения";
-      } else if (field.pattern && value && !new RegExp(field.pattern).test(value)) {
-        newErrors[field.name] = field.errorText || "Неверный формат";
+        newErrors[field.name] = 'Это поле обязательно для заполнения';
+      } else if (
+        field.pattern &&
+        value &&
+        !new RegExp(field.pattern).test(value)
+      ) {
+        newErrors[field.name] = field.errorText || 'Неверный формат';
       }
     });
 
@@ -30,10 +37,10 @@ const AddCardModal = ({isOpen, onClose, onSubmit, type, title}) => {
   }, [fields, form]);
 
   const handleChange = (e) => {
-    const {name, value} = e.target;
-    setForm((prev) => ({...prev, [name]: value}));
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
-      setErrors((prev) => ({...prev, [name]: ""}));
+      setErrors((prev) => ({ ...prev, [name]: '' }));
     }
   };
 
@@ -48,7 +55,7 @@ const AddCardModal = ({isOpen, onClose, onSubmit, type, title}) => {
       onSubmit(form);
       handleClose();
     }
-  }, [form, onSubmit, validate, empty]);
+  }, [form, onSubmit, validate, handleClose]);
 
   useClickOutside(modalRef, handleClose);
   useEscClose(handleClose, isOpen);
@@ -58,54 +65,47 @@ const AddCardModal = ({isOpen, onClose, onSubmit, type, title}) => {
 
   return (
     <div className={styles.overlay}>
-      <div
-        ref={modalRef}
-        className={styles.modal}
-      >
+      <div ref={modalRef} className={styles.modal}>
         <h2>{title}</h2>
 
         <div className={styles.formContent}>
           {fields.map((field) => (
-            <div
-              key={field.name}
-              className={styles.field}
-            >
+            <div key={field.name} className={styles.field}>
               <label className={styles.label}>
-                {field.label} {field.required &&
-                <span className={styles.required}>*</span>}
+                {field.label}{' '}
+                {field.required && <span className={styles.required}>*</span>}
               </label>
 
-              {field.type === "select" ? (
-                  <select
-                    className={`${styles.input} ${styles.select} ${errors[field.name] ? styles.inputError : ""}`}
-                    name={field.name}
-                    value={form[field.name]}
-                    onChange={handleChange}
-                  >
-                    <option value="public">{field.placeholder}</option>
-                    <option value="private">Приватный</option>
-                    <option value="for_friedns">Только друзья</option>
-                  </select>
-                ) :
-                field.as === "textarea" ? (
-                  <textarea
-                    className={`${styles.input} ${styles.textarea} ${errors[field.name] ? styles.inputError : ""}`}
-                    name={field.name}
-                    value={form[field.name]}
-                    onChange={handleChange}
-                    placeholder={field.placeholder}
-                  />
-                ) : (
-                  <input
-                    type={field.type || "text"}
-                    className={`${styles.input} ${field.isSmall ? styles.inputSmall : ""} ${errors[field.name] ? styles.inputError : ""}`}
-                    min={field.min}
-                    name={field.name}
-                    value={form[field.name]}
-                    onChange={handleChange}
-                    placeholder={field.placeholder}
-                  />
-                )}
+              {field.type === 'select' ? (
+                <select
+                  className={`${styles.input} ${styles.select} ${errors[field.name] ? styles.inputError : ''}`}
+                  name={field.name}
+                  value={form[field.name]}
+                  onChange={handleChange}
+                >
+                  <option value="public">{field.placeholder}</option>
+                  <option value="private">Приватный</option>
+                  <option value="for_friedns">Только друзья</option>
+                </select>
+              ) : field.as === 'textarea' ? (
+                <textarea
+                  className={`${styles.input} ${styles.textarea} ${errors[field.name] ? styles.inputError : ''}`}
+                  name={field.name}
+                  value={form[field.name]}
+                  onChange={handleChange}
+                  placeholder={field.placeholder}
+                />
+              ) : (
+                <input
+                  type={field.type || 'text'}
+                  className={`${styles.input} ${field.isSmall ? styles.inputSmall : ''} ${errors[field.name] ? styles.inputError : ''}`}
+                  min={field.min}
+                  name={field.name}
+                  value={form[field.name]}
+                  onChange={handleChange}
+                  placeholder={field.placeholder}
+                />
+              )}
 
               {errors[field.name] && (
                 <span className={styles.errorText}>{errors[field.name]}</span>
@@ -115,16 +115,10 @@ const AddCardModal = ({isOpen, onClose, onSubmit, type, title}) => {
         </div>
 
         <div className={styles.actions}>
-          <button
-            className={styles.cancel}
-            onClick={handleClose}
-          >
+          <button className={styles.cancel} onClick={handleClose}>
             Отмена
           </button>
-          <button
-            className={styles.submit}
-            onClick={handleSubmit}
-          >
+          <button className={styles.submit} onClick={handleSubmit}>
             Добавить
           </button>
         </div>

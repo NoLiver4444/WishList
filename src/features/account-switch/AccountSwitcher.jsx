@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import Menu from '@/shared/ui/Menu';
 import profileAvatar from '@/shared/assets/govishka.png';
 

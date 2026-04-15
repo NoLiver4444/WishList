@@ -1,15 +1,15 @@
-import {useState} from "react";
-import Main from "@/widgets/Main";
-import AddCardModal from "@/features/add-card/AddCardModal";
+import { useState } from 'react';
+import Main from '@/widgets/Main';
+import AddCardModal from '@/features/add-card/AddCardModal';
 
 const ProductsPage = () => {
   const [items, setItems] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const sortOptions = [
-    {label: 'дате добавления', value: 'date_added'},
-    {label: 'названию', value: 'name'},
-    {label: 'цене', value: 'price'},
+    { label: 'дате добавления', value: 'date_added' },
+    { label: 'названию', value: 'name' },
+    { label: 'цене', value: 'price' },
   ];
 
   const handleAdd = (newItem) => {

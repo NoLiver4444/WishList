@@ -21,7 +21,7 @@ export const FIELDS = {
       pattern: '^https?://.+',
       errorText: 'Введите корректную ссылку с http/https',
     },
-    {name: 'price', label: 'Цена', placeholder: 'Цена', type: 'number'},
+    { name: 'price', label: 'Цена', placeholder: 'Цена', type: 'number' },
     {
       name: 'description',
       label: 'Описание',

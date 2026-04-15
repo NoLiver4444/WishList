@@ -1,11 +1,8 @@
-import Main from "@/widgets/Main";
+import Main from '@/widgets/Main';
 
 const CalendarPage = () => {
   return (
-    <Main
-      title="Календарь событий"
-      variant="calendar"
-    >
+    <Main title="Календарь событий" variant="calendar">
       <div></div>
     </Main>
   );
