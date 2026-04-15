@@ -12,6 +12,7 @@ export const FIELDS = {
       placeholder: 'К какому сроку хотите успеть?',
       type: 'date',
       min: new Date().toISOString().split('T')[0],
+      max: '2100-01-01',
     },
     {
       name: 'url',
@@ -21,12 +22,19 @@ export const FIELDS = {
       pattern: '^https?://.+',
       errorText: 'Введите корректную ссылку с http/https',
     },
-    { name: 'price', label: 'Цена', placeholder: 'Цена', type: 'number' },
+    {
+      name: 'price',
+      label: 'Цена',
+      placeholder: 'Цена',
+      type: 'number',
+      min: 0,
+      max: 1000000,
+    },
     {
       name: 'description',
       label: 'Описание',
       placeholder: 'Описание',
-      as: 'textarea',
+      type: 'textarea',
     },
     {
       name: 'image',
@@ -39,7 +47,11 @@ export const FIELDS = {
     {
       name: 'private',
       label: 'Приватность',
-      placeholder: 'Публичный',
+      options: [
+        { value: 'public', label: 'Публичный' },
+        { value: 'private', label: 'Приватный' },
+        { value: 'only_friends', label: 'Видят только друзья' },
+      ],
       type: 'select',
     },
   ],
@@ -56,11 +68,16 @@ export const FIELDS = {
       placeholder: 'К какому сроку хотите успеть?',
       type: 'date',
       min: new Date().toISOString().split('T')[0],
+      max: '2100-01-01',
     },
     {
       name: 'private',
       label: 'Приватность',
-      placeholder: 'Публичный',
+      options: [
+        { value: 'public', label: 'Публичный' },
+        { value: 'private', label: 'Приватный' },
+        { value: 'only_friends', label: 'Видят только друзья' },
+      ],
       type: 'select',
     },
   ],

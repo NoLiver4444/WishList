@@ -42,7 +42,7 @@ export const ProfileDropdown = ({
           className={styles.profileIcon}
           onClick={onOpenFullProfile}
           src={currentUser?.avatarURL}
-          alt=""
+          alt="Ваша аватарка"
         />
         <span className={styles.profileInfo}>
           <span

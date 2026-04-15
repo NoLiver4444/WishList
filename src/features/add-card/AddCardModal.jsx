@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import { FIELDS } from './AddCardModal.config.js';
 import { useClickOutside } from '@/shared/hooks/useClickOutside';
 import { useEscClose } from '@/shared/hooks/useEscClose';
@@ -19,15 +20,34 @@ const AddCardModal = ({ isOpen, onClose, onSubmit, type, title }) => {
   const validate = useCallback(() => {
     const newErrors = {};
     fields.forEach((field) => {
-      const value = form[field.name]?.trim();
+      const value = form[field.name];
+      const trimmedValue = typeof value === 'string' ? value.trim() : value;
 
-      if (field.required && !value) {
+      if (field.required && !trimmedValue && trimmedValue !== 0) {
         newErrors[field.name] = 'Это поле обязательно для заполнения';
-      } else if (
-        field.pattern &&
-        value &&
-        !new RegExp(field.pattern).test(value)
-      ) {
+        return;
+      }
+
+      if (!trimmedValue && trimmedValue !== 0) return;
+
+      if (field.type === 'number') {
+        const num = Number(trimmedValue);
+        if (field.min !== undefined && num < field.min) {
+          newErrors[field.name] = `Минимум: ${field.min}`;
+        } else if (field.max !== undefined && num > field.max) {
+          newErrors[field.name] = `Максимум: ${field.max}`;
+        }
+      }
+
+      if (field.type === 'date') {
+        if (field.min && trimmedValue < field.min) {
+          newErrors[field.name] = `Дата не может быть раньше ${field.min}`;
+        } else if (field.max && trimmedValue > field.max) {
+          newErrors[field.name] = `Дата не может быть позже ${field.max}`;
+        }
+      }
+
+      if (field.pattern && !new RegExp(field.pattern).test(trimmedValue)) {
         newErrors[field.name] = field.errorText || 'Неверный формат';
       }
     });
@@ -36,13 +56,24 @@ const AddCardModal = ({ isOpen, onClose, onSubmit, type, title }) => {
     return Object.keys(newErrors).length === 0;
   }, [fields, form]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: '' }));
-    }
-  };
+  const handleChange = useCallback(
+    (e) => {
+      const { name, value, type } = e.target;
+      let finalValue = value;
+
+      if (type === 'number') {
+        finalValue = value.replace(/\D/g, '');
+      }
+
+      setForm((prev) => ({
+        ...prev,
+        [name]: finalValue,
+      }));
+
+      if (errors[name]) setErrors((prev) => ({ ...prev, [name]: null }));
+    },
+    [errors]
+  );
 
   const handleClose = useCallback(() => {
     setErrors({});
@@ -57,6 +88,56 @@ const AddCardModal = ({ isOpen, onClose, onSubmit, type, title }) => {
     }
   }, [form, onSubmit, validate, handleClose]);
 
+  const handleNumberKeyPress = useCallback((e) => {
+    const allowedKeys = [
+      'Backspace',
+      'Delete',
+      'Tab',
+      'Escape',
+      'Enter',
+      'ArrowLeft',
+      'ArrowRight',
+    ];
+
+    if (allowedKeys.includes(e.key)) return;
+
+    if (!/\d/.test(e.key)) {
+      e.preventDefault();
+    }
+  }, []);
+
+  const handleStep = useCallback(
+    (name, step) => {
+      const currentValue = Number(form[name]) || 0;
+      const fieldConfig = fields.find((f) => f.name === name);
+      const newValue = currentValue + step;
+
+      if (fieldConfig.min !== undefined && newValue < fieldConfig.min) return;
+      if (fieldConfig.max !== undefined && newValue > fieldConfig.max) return;
+
+      setForm({
+        ...form,
+        [name]: newValue,
+      });
+    },
+    [fields, form]
+  );
+
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    const field = fields.find((f) => f.name === name);
+
+    if (!field || !value) return;
+
+    if (field.type === 'date') {
+      if (field.min && value < field.min) {
+        setForm((prev) => ({ ...prev, [name]: field.min }));
+      } else if (field.max && value > field.max) {
+        setForm((prev) => ({ ...prev, [name]: field.max }));
+      }
+    }
+  };
+
   useClickOutside(modalRef, handleClose);
   useEscClose(handleClose, isOpen);
   useEnterPress(handleSubmit, isOpen);
@@ -64,8 +145,25 @@ const AddCardModal = ({ isOpen, onClose, onSubmit, type, title }) => {
   if (!isOpen) return null;
 
   return (
-    <div className={styles.overlay}>
-      <div ref={modalRef} className={styles.modal}>
+    <motion.div
+      className={styles.overlay}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <motion.div
+        ref={modalRef}
+        className={styles.modal}
+        initial={{ scale: 0.9, opacity: 0, y: -100 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.9, opacity: 0, y: 100 }}
+        transition={{
+          type: 'spring',
+          damping: 25,
+          stiffness: 300,
+        }}
+      >
         <h2>{title}</h2>
 
         <div className={styles.formContent}>
@@ -83,11 +181,13 @@ const AddCardModal = ({ isOpen, onClose, onSubmit, type, title }) => {
                   value={form[field.name]}
                   onChange={handleChange}
                 >
-                  <option value="public">{field.placeholder}</option>
-                  <option value="private">Приватный</option>
-                  <option value="for_friedns">Только друзья</option>
+                  {field.options.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
                 </select>
-              ) : field.as === 'textarea' ? (
+              ) : field.type === 'textarea' ? (
                 <textarea
                   className={`${styles.input} ${styles.textarea} ${errors[field.name] ? styles.inputError : ''}`}
                   name={field.name}
@@ -95,11 +195,55 @@ const AddCardModal = ({ isOpen, onClose, onSubmit, type, title }) => {
                   onChange={handleChange}
                   placeholder={field.placeholder}
                 />
+              ) : field.type === 'number' ? (
+                <div
+                  className={`${styles.numberContainer} ${errors[field.name] ? styles.inputError : ''}`}
+                >
+                  <input
+                    type="number"
+                    className={styles.cleanInput}
+                    name={field.name}
+                    value={form[field.name]}
+                    onChange={handleChange}
+                    onKeyDown={handleNumberKeyPress}
+                    min={field.min}
+                    max={field.max}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleStep(field.name, -1)}
+                    className={styles.stepButton}
+                  >
+                    −
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleStep(field.name, 1)}
+                    className={styles.stepButton}
+                  >
+                    +
+                  </button>
+                </div>
+              ) : field.type === 'date' ? (
+                <input
+                  type="date"
+                  className={styles.dateInput}
+                  name={field.name}
+                  value={form[field.name]}
+                  min={field.min}
+                  max={field.max}
+                  onBlur={handleBlur}
+                  onClick={(e) => {
+                    e.target.showPicker();
+                  }}
+                  placeholder={field.placeholder}
+                />
               ) : (
                 <input
                   type={field.type || 'text'}
                   className={`${styles.input} ${field.isSmall ? styles.inputSmall : ''} ${errors[field.name] ? styles.inputError : ''}`}
                   min={field.min}
+                  max={field.max}
                   name={field.name}
                   value={form[field.name]}
                   onChange={handleChange}
@@ -122,8 +266,8 @@ const AddCardModal = ({ isOpen, onClose, onSubmit, type, title }) => {
             Добавить
           </button>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
