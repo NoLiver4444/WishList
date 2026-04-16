@@ -1,0 +1,49 @@
+.page {
+  min-height: 100vh;
+  background-color: var(--main-background-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  background-color: var(--background-color);
+  border: var(--border);
+  border-radius: var(--big-border-radius);
+  padding: 36px 32px;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.title {
+  margin: 0;
+  font-size: 24px;
+  color: var(--primary-color);
+  text-align: center;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: var(--border);
+}
+
+.tab,
+.activeTab {
+  flex: 1;
+  padding: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text-color);
+  transition: color var(--transition-duration);
+}
+
+.activeTab {
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
+  margin-bottom: -2px;
+}

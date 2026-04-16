@@ -4,25 +4,38 @@ import WishlistsPage from '@/pages/WishlistsPage';
 import FriendsPage from '@/pages/FriendsPage';
 import CalendarPage from '@/pages/CalendarPage';
 import SettingsPage from '@/pages/SettingsPage';
+import AuthPage from '@/pages/AuthPage';
+import ProtectedRoute from '@/app/routing/ProtectedRoute';
 import Header from '@/widgets/Header';
 import Footer from '@/widgets/Footer';
 import './styles';
 
 const App = () => {
   return (
-    <div className="app">
-      <Header />
-      <main className="main">
-        <Routes>
-          <Route path="/" element={<ProductsPage />} />
-          <Route path="/wishlists" element={<WishlistsPage />} />
-          <Route path="/friends" element={<FriendsPage />} />
-          <Route path="/calendar" element={<CalendarPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-        </Routes>
-      </main>
-      <Footer />
-    </div>
+    <Routes>
+      <Route path="/auth" element={<AuthPage />} />
+
+      <Route
+        path="/*"
+        element={
+          <ProtectedRoute>
+            <div className="app">
+              <Header />
+              <main className="main">
+                <Routes>
+                  <Route path="/" element={<ProductsPage />} />
+                  <Route path="/wishlists" element={<WishlistsPage />} />
+                  <Route path="/friends" element={<FriendsPage />} />
+                  <Route path="/calendar" element={<CalendarPage />} />
+                  <Route path="/settings" element={<SettingsPage />} />
+                </Routes>
+              </main>
+              <Footer />
+            </div>
+          </ProtectedRoute>
+        }
+      />
+    </Routes>
   );
 };
 

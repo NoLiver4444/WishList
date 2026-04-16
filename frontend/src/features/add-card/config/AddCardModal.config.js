@@ -50,7 +50,7 @@ export const FIELDS = {
       options: [
         { value: 'public', label: 'Публичный' },
         { value: 'private', label: 'Приватный' },
-        { value: 'only_friends', label: 'Видят только друзья' },
+        { value: 'friends', label: 'Видят только друзья' },
       ],
       type: 'select',
     },
@@ -76,7 +76,7 @@ export const FIELDS = {
       options: [
         { value: 'public', label: 'Публичный' },
         { value: 'private', label: 'Приватный' },
-        { value: 'only_friends', label: 'Видят только друзья' },
+        { value: 'friends', label: 'Видят только друзья' },
       ],
       type: 'select',
     },
