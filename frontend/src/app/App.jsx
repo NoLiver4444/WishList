@@ -11,32 +11,32 @@ import Footer from '@/widgets/Footer';
 import './styles';
 
 const App = () => {
-  return (
-    <Routes>
-      <Route path="/auth" element={<AuthPage />} />
+	return (
+		<Routes>
+			<Route path="/auth" element={<AuthPage/>}/>
 
-      <Route
-        path="/*"
-        element={
-          <ProtectedRoute>
-            <div className="app">
-              <Header />
-              <main className="main">
-                <Routes>
-                  <Route path="/" element={<ProductsPage />} />
-                  <Route path="/wishlists" element={<WishlistsPage />} />
-                  <Route path="/friends" element={<FriendsPage />} />
-                  <Route path="/calendar" element={<CalendarPage />} />
-                  <Route path="/settings" element={<SettingsPage />} />
-                </Routes>
-              </main>
-              <Footer />
-            </div>
-          </ProtectedRoute>
-        }
-      />
-    </Routes>
-  );
+			<Route
+				path="/*"
+				element={
+					<ProtectedRoute>
+						<div className="app">
+							<Header/>
+							<main className="main">
+								<Routes>
+									<Route path="/" element={<ProductsPage/>}/>
+									<Route path="/wishlists" element={<WishlistsPage/>}/>
+									<Route path="/friends" element={<FriendsPage/>}/>
+									<Route path="/calendar" element={<CalendarPage/>}/>
+									<Route path="/settings" element={<SettingsPage/>}/>
+								</Routes>
+							</main>
+							<Footer/>
+						</div>
+					</ProtectedRoute>
+				}
+			/>
+		</Routes>
+	);
 };
 
 export default App;
