@@ -43,3 +43,21 @@
   font-size: 13px;
   margin: 0;
 }
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fieldError {
+  color: var(--attention-color);
+  font-size: 12px;
+  margin: 0;
+  padding-left: 2px;
+}
+
+.inputError {
+  border-color: var(--attention-color);
+  outline-color: var(--attention-color);
+}

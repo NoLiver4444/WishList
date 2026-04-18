@@ -20,8 +20,22 @@ func New(
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("OK"))
 	})
-	mainMux.HandleFunc("POST /v1/auth/register", authHandler.Register)
-	mainMux.HandleFunc("POST /v1/auth/login", authHandler.Login)
+
+	mainMux.HandleFunc("/v1/auth/register", func(w http.ResponseWriter, r *http.Request) {
+    	if r.Method != http.MethodPost {
+    		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+    		return
+    	}
+    	authHandler.Register(w, r)
+    })
+
+    mainMux.HandleFunc("/v1/auth/login", func(w http.ResponseWriter, r *http.Request) {
+    	if r.Method != http.MethodPost {
+    		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+    		return
+    	}
+    	authHandler.Login(w, r)
+    })
 
 	// Роутер для защищенных ресурсов
 	protectedMux := http.NewServeMux()
@@ -48,8 +62,23 @@ func New(
 
 	mainMux.Handle("/v1/users/", protectedHandler)
 	mainMux.Handle("/v1/wishlists", protectedHandler)
-	mainMux.Handle("/v1/wishlists/", protectedHandler)
 	mainMux.Handle("/v1/items/", protectedHandler)
 
-	return mainMux
+	return applyCORS(mainMux)
+}
+
+func applyCORS(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
 }
