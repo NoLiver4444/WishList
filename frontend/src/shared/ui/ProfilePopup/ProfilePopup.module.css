@@ -31,8 +31,7 @@
   border: none;
   cursor: pointer;
   color: var(--text-color);
-  transition: color var(--transition-duration)
-    var(--function-time-transition-duration);
+  transition: color var(--transition-duration) var(--function-time-transition-duration);
 }
 
 .closeButton:hover {
@@ -40,8 +39,8 @@
 }
 
 .avatar {
-  width: 150px;
-  height: 150px;
+  width: 150px !important;
+  height: 150px !important;
   border-radius: 50%;
   object-fit: cover;
   border: var(--border);

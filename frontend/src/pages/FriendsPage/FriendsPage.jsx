@@ -1,48 +1,58 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Main from '@/widgets/Main';
 import AddCardModal from '@/features/add-card/ui/AddCardModal';
 
 const FriendsPage = () => {
-  const [items, setItems] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+	const [items, setItems] = useState(() => {
+		try {
+			return JSON.parse(localStorage.getItem('friends')) ?? []
+		} catch {
+			return []
+		}
+	})
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const sortOptions = [
-    { label: 'дате добавления', value: 'date_added' },
-    { label: 'имени', value: 'name' },
-    { label: 'дате рождения', value: 'birthday_date' },
-  ];
+	useEffect(() => {
+		localStorage.setItem('friends', JSON.stringify(items))
+	}, [items])
 
-  const handleAdd = (newItem) => {
-    setItems((prev) => [
-      ...prev,
-      {
-        id: crypto.randomUUID(),
-        likes: 0,
-        ...newItem,
-      },
-    ]);
-    setIsModalOpen(false);
-  };
+	const sortOptions = [
+		{label: 'по имени', value: 'name'},
+		{label: 'по дате рождения', value: 'birthday_date'},
+	];
 
-  return (
-    <>
-      <Main
-        title="Мои друзья"
-        variant="friends"
-        type="friends"
-        sortOptions={sortOptions}
-        onAddClick={() => setIsModalOpen(true)}
-        data={items}
-      />
-      <AddCardModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSubmit={handleAdd}
-        type="friends"
-        title="Добавить друга"
-      />
-    </>
-  );
+	const handleAdd = (newItem) => {
+		setItems((prev) => [
+			...prev,
+			{
+				id: crypto.randomUUID(),
+				name: newItem.login,
+				friendId: newItem.id,
+				avatarUrl: null,
+			},
+		]);
+		setIsModalOpen(false);
+	};
+
+	return (
+		<>
+			<Main
+				title="Мои друзья"
+				variant="friends"
+				type="friends"
+				sortOptions={sortOptions}
+				onAddClick={() => setIsModalOpen(true)}
+				data={items}
+			/>
+			<AddCardModal
+				isOpen={isModalOpen}
+				onClose={() => setIsModalOpen(false)}
+				onSubmit={handleAdd}
+				type="friends"
+				title="Добавить друга"
+			/>
+		</>
+	);
 };
 
 export default FriendsPage;

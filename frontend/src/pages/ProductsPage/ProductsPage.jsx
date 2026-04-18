@@ -1,49 +1,60 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Main from '@/widgets/Main';
 import AddCardModal from '@/features/add-card/ui/AddCardModal';
 
 const ProductsPage = () => {
-  const [items, setItems] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+	const [items, setItems] = useState(() => {
+		try {
+			return JSON.parse(localStorage.getItem('wishes')) ?? [];
+		} catch {
+			return [];
+		}
+	});
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const sortOptions = [
-    { label: 'дате добавления', value: 'date_added' },
-    { label: 'названию', value: 'name' },
-    { label: 'цене', value: 'price' },
-  ];
+	useEffect(() => {
+		localStorage.setItem('wishes', JSON.stringify(items));
+	}, [items]);
 
-  const handleAdd = (newItem) => {
-    setItems((prev) => [
-      ...prev,
-      {
-        id: crypto.randomUUID(),
-        likes: 0,
-        ...newItem,
-      },
-    ]);
-    setIsModalOpen(false);
-  };
+	const sortOptions = [
+		{label: 'по дате добавления', value: 'date_added'},
+		{label: 'по названию', value: 'name'},
+		{label: 'по цене', value: 'price'},
+		{label: 'по дате события', value: 'deadline'},
+	];
 
-  return (
-    <>
-      <Main
-        title="Мои желания"
-        variant="wishes"
-        type="wishes"
-        sortOptions={sortOptions}
-        onAddClick={() => setIsModalOpen(true)}
-        data={items}
-      />
+	const handleAdd = (newItem) => {
+		setItems((prev) => [
+			...prev,
+			{
+				id: crypto.randomUUID(),
+				likes: 0,
+				...newItem,
+			},
+		]);
+		setIsModalOpen(false);
+	};
 
-      <AddCardModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSubmit={handleAdd}
-        type="wishes"
-        title="Добавить желание"
-      />
-    </>
-  );
+	return (
+		<>
+			<Main
+				title="Мои желания"
+				variant="wishes"
+				type="wishes"
+				sortOptions={sortOptions}
+				onAddClick={() => setIsModalOpen(true)}
+				data={items}
+			/>
+
+			<AddCardModal
+				isOpen={isModalOpen}
+				onClose={() => setIsModalOpen(false)}
+				onSubmit={handleAdd}
+				type="wishes"
+				title="Добавить желание"
+			/>
+		</>
+	);
 };
 
 export default ProductsPage;

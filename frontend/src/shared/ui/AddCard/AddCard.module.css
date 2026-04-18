@@ -12,6 +12,10 @@
   height: 340px;
 }
 
+.card.friends {
+  height: 200px;
+}
+
 .card:hover {
   outline: 3px solid var(--primary-color);
 }
