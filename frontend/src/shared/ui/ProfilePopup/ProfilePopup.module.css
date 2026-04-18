@@ -31,7 +31,8 @@
   border: none;
   cursor: pointer;
   color: var(--text-color);
-  transition: color var(--transition-duration) var(--function-time-transition-duration);
+  transition: color var(--transition-duration)
+    var(--function-time-transition-duration);
 }
 
 .closeButton:hover {
