@@ -41,7 +41,8 @@
   cursor: pointer;
   padding: 4px 8px;
   border-radius: var(--small-border-radius);
-  transition: background-color var(--transition-duration) var(--function-time-transition-duration);
+  transition: background-color var(--transition-duration)
+    var(--function-time-transition-duration);
   line-height: 1;
 }
 

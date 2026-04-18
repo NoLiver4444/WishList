@@ -8,7 +8,8 @@
   flex-direction: column;
   gap: 3px;
   cursor: pointer;
-  transition: background-color var(--transition-duration) var(--function-time-transition-duration);
+  transition: background-color var(--transition-duration)
+    var(--function-time-transition-duration);
 }
 
 .day:hover {

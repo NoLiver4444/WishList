@@ -30,8 +30,10 @@
   border: var(--border);
   border-radius: var(--small-border-radius);
   cursor: pointer;
-  transition: background-color var(--transition-duration) var(--function-time-transition-duration),
-  color var(--transition-duration) var(--function-time-transition-duration);
+  transition:
+    background-color var(--transition-duration)
+      var(--function-time-transition-duration),
+    color var(--transition-duration) var(--function-time-transition-duration);
 }
 
 .btn:hover {

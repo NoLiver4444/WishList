@@ -10,7 +10,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
-  transition: background-color var(--transition-duration) var(--function-time-transition-duration);
+  transition: background-color var(--transition-duration)
+    var(--function-time-transition-duration);
 }
 
 .chip:hover {

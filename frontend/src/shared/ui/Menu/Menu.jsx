@@ -6,90 +6,97 @@ import { NotificationDropdown, ProfileDropdown } from '@/shared/ui/Dropdowns';
 import ProfilePopup from '@/shared/ui/ProfilePopup';
 import styles from './Menu.module.css';
 
-const Menu = ({currentUser, users, onSelectUser, onAddAccount, onLogout, hasUnread = false}) => {
-	const [activeDropdown, setActiveDropdown] = useState(null);
-	const [isProfileOpen, setIsProfileOpen] = useState(false);
+const Menu = ({
+  currentUser,
+  users,
+  onSelectUser,
+  onAddAccount,
+  onLogout,
+  hasUnread = false,
+}) => {
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-	const notificationRef = useRef(null);
-	const avatarRef = useRef(null);
+  const notificationRef = useRef(null);
+  const avatarRef = useRef(null);
 
-	const closeAll = () => {
-		setActiveDropdown(null);
-		setIsProfileOpen(false);
-	};
+  const closeAll = () => {
+    setActiveDropdown(null);
+    setIsProfileOpen(false);
+  };
 
-	useClickOutside(
-		notificationRef,
-		() => activeDropdown === 'notification' && closeAll(),
-	);
-	useClickOutside(avatarRef, () => activeDropdown === 'avatar' && closeAll());
+  useClickOutside(
+    notificationRef,
+    () => activeDropdown === 'notification' && closeAll()
+  );
+  useClickOutside(avatarRef, () => activeDropdown === 'avatar' && closeAll());
 
-	return (
-		<ul className={styles.menu}>
-			<li className={styles.itemContainer} ref={avatarRef}>
-				<button
-					onClick={() =>
-						setActiveDropdown(activeDropdown === 'avatar' ? null : 'avatar')
-					}
-					className={`${styles.item} ${activeDropdown === 'avatar' ? styles.activeItem : ''}`}
-				>
-					<img
-						src={currentUser?.avatarURL}
-						alt="Аватар"
-						className={styles.avatar}
-					/>
-					<span className={styles.avatarLabel}>{currentUser?.login}</span>
-					<ChevronDown
-						size={16}
-						className={`${styles.chevron} ${activeDropdown === 'avatar' ? styles.chevronOpen : ''}`}
-					/>
-				</button>
+  return (
+    <ul className={styles.menu}>
+      <li className={styles.itemContainer} ref={avatarRef}>
+        <button
+          onClick={() =>
+            setActiveDropdown(activeDropdown === 'avatar' ? null : 'avatar')
+          }
+          className={`${styles.item} ${activeDropdown === 'avatar' ? styles.activeItem : ''}`}
+        >
+          <img
+            src={currentUser?.avatarURL}
+            alt="Аватар"
+            className={styles.avatar}
+          />
+          <span className={styles.avatarLabel}>{currentUser?.login}</span>
+          <ChevronDown
+            size={16}
+            className={`${styles.chevron} ${activeDropdown === 'avatar' ? styles.chevronOpen : ''}`}
+          />
+        </button>
 
-				<AnimatePresence>
-					{activeDropdown === 'avatar' && (
-						<ProfileDropdown
-							onClose={closeAll}
-							currentUser={currentUser}
-							users={users}
-							onSelectUser={onSelectUser}
-							onAddAccount={onAddAccount}
-							onLogout={onLogout}
-							onOpenFullProfile={() => {
-								setActiveDropdown(null);
-								setIsProfileOpen(true);
-							}}
-						/>
-					)}
-				</AnimatePresence>
-			</li>
+        <AnimatePresence>
+          {activeDropdown === 'avatar' && (
+            <ProfileDropdown
+              onClose={closeAll}
+              currentUser={currentUser}
+              users={users}
+              onSelectUser={onSelectUser}
+              onAddAccount={onAddAccount}
+              onLogout={onLogout}
+              onOpenFullProfile={() => {
+                setActiveDropdown(null);
+                setIsProfileOpen(true);
+              }}
+            />
+          )}
+        </AnimatePresence>
+      </li>
 
-			<li className={styles.itemContainer} ref={notificationRef}>
-				<button
-					onClick={() =>
-						setActiveDropdown(
-							activeDropdown === 'notification' ? null : 'notification',
-						)
-					}
-					className={`${styles.item} ${activeDropdown === 'notification' ? styles.activeItem : ''}`}
-				>
-					<Bell size={24}/>
-					{hasUnread && <span className={styles.badge}/>}
-				</button>
+      <li className={styles.itemContainer} ref={notificationRef}>
+        <button
+          onClick={() =>
+            setActiveDropdown(
+              activeDropdown === 'notification' ? null : 'notification'
+            )
+          }
+          className={`${styles.item} ${activeDropdown === 'notification' ? styles.activeItem : ''}`}
+        >
+          <Bell size={24} />
+          {hasUnread && <span className={styles.badge} />}
+        </button>
 
-				<AnimatePresence>
-					{activeDropdown === 'notification' && (
-						<NotificationDropdown onClose={closeAll}/>
-					)}
-				</AnimatePresence>
-			</li>
+        <AnimatePresence>
+          {activeDropdown === 'notification' && (
+            <NotificationDropdown onClose={closeAll} />
+          )}
+        </AnimatePresence>
+      </li>
 
-			<AnimatePresence>
-				{isProfileOpen && (
-					<ProfilePopup user={currentUser} onClose={closeAll}/>
-				)}
-			</AnimatePresence>
-		</ul>
-	);
+      <AnimatePresence>
+        {isProfileOpen && (
+          <ProfilePopup user={currentUser} onClose={closeAll} />
+        )}
+      </AnimatePresence>
+    </ul>
+  );
 };
 
 export default Menu;
