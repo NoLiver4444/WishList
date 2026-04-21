@@ -328,3 +328,41 @@ func (h *WishlistHandler) RemoveItem(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusNoContent)
 }
+
+func (h *WishlistHandler) GetPublic(w http.ResponseWriter, r *http.Request) {
+	wlIDStr := r.PathValue("id")
+	wlID, err := uuid.Parse(wlIDStr)
+	if err != nil {
+		RespondError(w, http.StatusBadRequest, "Invalid wishlist ID", "PARSE_ERROR")
+		return
+	}
+
+	result, err := h.Service.GetWishlistPublic(r.Context(), wlID)
+	if err != nil {
+		if err == service.ErrWishlistNotFound {
+			RespondError(w, http.StatusNotFound, "Wishlist not found", "NOT_FOUND")
+			return
+		}
+		RespondError(w, http.StatusInternalServerError, "Failed to get wishlist", "INTERNAL_ERROR")
+		return
+	}
+
+	RespondJSON(w, http.StatusOK, result)
+}
+
+func (h *WishlistHandler) ListItemsPublic(w http.ResponseWriter, r *http.Request) {
+	wlIDStr := r.PathValue("id")
+	wlID, err := uuid.Parse(wlIDStr)
+	if err != nil {
+		RespondError(w, http.StatusBadRequest, "Invalid wishlist ID", "PARSE_ERROR")
+		return
+	}
+
+	items, err := h.Service.ListItemsPublic(r.Context(), wlID)
+	if err != nil {
+		RespondError(w, http.StatusInternalServerError, "Failed to list items", "INTERNAL_ERROR")
+		return
+	}
+
+	RespondJSON(w, http.StatusOK, items)
+}

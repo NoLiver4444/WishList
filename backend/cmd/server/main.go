@@ -37,13 +37,16 @@ func main() {
 
 	val := validator.New()
 
+	// Auth
 	userRepo := repository.NewUserRepo(pool)
 	authService := service.NewAuthService(userRepo, cfg.Auth.JWTSecret)
 	authHandler := &handler.AuthHandler{Service: authService, Validator: val}
 
+	// Users
 	userService := service.NewUserService(userRepo)
 	userHandler := &handler.UserHandler{Service: userService, Validator: val}
 
+	// Wishlists
 	wishlistRepo := repository.NewWishlistRepo(pool)
 	itemRepo := repository.NewWishlistItemRepo(pool)
 	productRepo := repository.NewProductRepo(pool)
@@ -54,7 +57,18 @@ func main() {
 		Validator: val,
 	}
 
-	r := router.New(authHandler, userHandler, wishlistHandler, cfg.Auth.JWTSecret)
+	// Products
+	userProductRepo := repository.NewUserProductRepo(pool)
+	productService := &service.ProductService{
+		ProductRepo:     productRepo,
+		UserProductRepo: userProductRepo,
+	}
+	productHandler := &handler.ProductHandler{
+		Service:   productService,
+		Validator: val,
+	}
+
+	r := router.New(authHandler, userHandler, wishlistHandler, productHandler, cfg.Auth.JWTSecret)
 
 	srv := &http.Server{Addr: fmt.Sprintf(":%d", cfg.App.Port), Handler: r}
 	go func() {
