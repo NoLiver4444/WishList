@@ -10,6 +10,9 @@
   --small-border-radius: 5px;
   --big-border-radius: 10px;
 
+  --header-z-index: 1;
+  --modal-z-index: 1;
+
   --transition-duration: 0.2s;
   --function-time-transition-duration: ease;
 }

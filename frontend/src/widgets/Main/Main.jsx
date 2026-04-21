@@ -5,8 +5,7 @@ import styles from './Main.module.css';
 
 const Main = ({
   title,
-  variant = 'default',
-  type,
+  type = 'wishes',
   sortOptions = [],
   onAddClick,
   data = [],
@@ -15,7 +14,7 @@ const Main = ({
   const [currentSort, setCurrentSort] = useState(sortOptions[0]?.value);
 
   return (
-    <div className={`${styles.main} ${styles[variant]}`}>
+    <div className={`${styles.main} ${styles[type]}`}>
       <h1 className={styles.title}>{title}</h1>
 
       {sortOptions.length > 0 && (
@@ -26,7 +25,7 @@ const Main = ({
         />
       )}
 
-      <div className={styles.content}>
+      <div className={`${styles.content} ${styles[type]}`}>
         {children ? (
           children
         ) : (

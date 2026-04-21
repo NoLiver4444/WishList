@@ -41,7 +41,7 @@ const ProfilePopup = ({ user, onClose }) => {
           <Avatar
             src={user?.avatarURL}
             alt={user?.login}
-            size={32}
+            size={150}
             className={styles.avatar}
           />
           <h2 className={styles.name}>{user?.login}</h2>

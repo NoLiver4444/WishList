@@ -12,6 +12,10 @@
   height: 340px;
 }
 
+.card.wishlists {
+  min-width: 290px;
+}
+
 .card.friends {
   height: 200px;
 }

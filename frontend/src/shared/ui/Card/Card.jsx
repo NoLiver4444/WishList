@@ -1,4 +1,4 @@
-import { ArrowRight, Ellipsis, Plus } from 'lucide-react';
+import { Ellipsis, Plus } from 'lucide-react';
 import { FriendHeader, WishHeader, WishlistHeader } from './CardHeaders';
 import Avatar from '@/shared/ui/Avatar';
 import styles from './Card.module.css';
@@ -73,7 +73,7 @@ const Card = ({ item, onMenuClick, onAddWish, type }) => {
                 rel="noopener noreferrer"
                 className={styles.link}
               >
-                Перейти <ArrowRight size={14} />
+                Перейти
               </a>
             )}
           </div>

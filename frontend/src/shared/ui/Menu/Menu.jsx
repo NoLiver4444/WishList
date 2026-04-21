@@ -41,7 +41,12 @@ const Menu = ({
           }
           className={`${styles.item} ${activeDropdown === 'avatar' ? styles.activeItem : ''}`}
         >
-          <Avatar src={users?.avatarURL} alt={users?.login} size={32} />
+          <Avatar
+            classname={styles.avatar}
+            src={users?.avatarURL}
+            alt={users?.login}
+            size={32}
+          />
           <span className={styles.avatarLabel}>{currentUser?.login}</span>
           <ChevronDown
             size={16}

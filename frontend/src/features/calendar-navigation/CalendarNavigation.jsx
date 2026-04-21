@@ -1,3 +1,4 @@
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import styles from './CalendarNavigation.module.css';
 
 const MONTHS_RU = [
@@ -33,14 +34,14 @@ const CalendarNavigation = ({ currentDate, onPrev, onNext, onToday }) => {
           onClick={onPrev}
           aria-label="Предыдущий месяц"
         >
-          ←
+          <ArrowLeft size={16} />
         </button>
         <button
           className={styles.btn}
           onClick={onNext}
           aria-label="Следующий месяц"
         >
-          →
+          <ArrowRight size={16} />
         </button>
       </div>
     </div>

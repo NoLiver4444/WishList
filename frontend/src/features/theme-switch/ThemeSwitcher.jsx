@@ -12,8 +12,8 @@ import { useTheme } from '@/shared/hooks/useTheme';
 import styles from './ThemeSwitcher.module.css';
 
 const THEMES = [
-  { value: 'light', label: 'Светлая', Icon: Sun },
   { value: 'dark', label: 'Тёмная', Icon: Moon },
+  { value: 'light', label: 'Светлая', Icon: Sun },
   { value: 'contrast', label: 'Контрастная', Icon: Tractor },
   // {value: 'banana', label: 'Банан', Icon: Banana},
   // {value: 'megumin', label: 'Мегумин', Icon: Bomb},

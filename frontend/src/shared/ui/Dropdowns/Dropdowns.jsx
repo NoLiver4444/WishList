@@ -79,7 +79,12 @@ export const ProfileDropdown = ({
           >
             {isSelected ? <Check size={16} /> : <div style={{ width: 16 }} />}
             <span className={styles.switchAccount}>
-              <Avatar src={users?.avatarURL} alt={user?.login} size={32} />
+              <Avatar
+                className={styles.switchAccountIcon}
+                src={users?.avatarURL}
+                alt={user?.login}
+                size={32}
+              />
               <span className={styles.switchAccountLogin}>{user?.login}</span>
               <span className={styles.switchAccountEmail}>{user?.email}</span>
             </span>

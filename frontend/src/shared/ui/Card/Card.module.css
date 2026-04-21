@@ -9,13 +9,18 @@
   border-top: 8px solid var(--primary-color);
   border-radius: var(--small-border-radius);
   overflow: hidden;
-  transition:
-    outline 0.1s var(--function-time-transition-duration),
-    box-shadow 0.2s var(--function-time-transition-duration);
+  transition: outline 0.1s var(--function-time-transition-duration);
 }
 
 .card.wishes {
   height: 340px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 65px auto;
+}
+
+.card.wishlists {
+  min-width: 290px;
 }
 
 .card.friends {
@@ -24,7 +29,7 @@
 
 .card:hover {
   outline: 3px solid var(--primary-color);
-  box-shadow: 0 4px 20px rgba(137, 81, 255, 0.15);
+  box-shadow: 0 0 7px var(--primary-color);
 }
 
 .header {
@@ -139,7 +144,7 @@
 }
 
 .priceRow {
-  margin-top: auto;
+  margin-block-start: auto;
   padding: 10px 16px 14px;
   display: flex;
   align-items: center;

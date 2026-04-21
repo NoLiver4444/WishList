@@ -2,8 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import Menu from '@/shared/ui/Menu';
 import { useSessionStore } from '@/entities/session';
 
-const HAS_UNREAD = true;
-
 const AccountSwitcher = () => {
   const navigate = useNavigate();
   const accounts = useSessionStore((s) => s.accounts);

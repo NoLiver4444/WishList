@@ -43,7 +43,6 @@
   border-radius: var(--big-border-radius);
   padding: 8px;
   box-shadow: 0 4px 15px rgb(0 0 0 / 0.2);
-  z-index: 101;
 }
 
 .submenu::before {

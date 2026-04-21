@@ -61,6 +61,7 @@
 }
 
 .dropdown {
+  z-index: var(--modal-z-index);
   position: absolute;
   top: calc(100% + 3px);
   left: 0;
@@ -182,7 +183,7 @@
   display: grid;
   justify-items: start;
   align-items: center;
-  grid-template-columns: 24px 1fr;
+  grid-template-columns: 36px 1fr;
   grid-template-areas:
     'switchIcon switchLogin'
     'switchIcon switchEmail';
@@ -197,6 +198,7 @@
 }
 
 .switchAccountLogin {
+  font-size: 16px;
   grid-area: switchLogin;
 }
 
