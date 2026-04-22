@@ -14,47 +14,50 @@ import Footer from '@/widgets/Footer';
 import './styles';
 
 const App = () => {
-	return (
-		<>
-			<Toaster position="bottom-center"/>
-			<Routes>
-				<Route path="/auth" element={<AuthPage/>}/>
-				<Route path="/view/:id" element={<PublicWishlistPage/>}/>
-				<Route path="/wishlists/:id" element={
-					<ProtectedRoute>
-						<div className="app">
-							<Header/>
-							<main className="main">
-								<WishlistPage/>
-							</main>
-							<Footer/>
-						</div>
-					</ProtectedRoute>
-				}/>
+  return (
+    <>
+      <Toaster position="bottom-center" />
+      <Routes>
+        <Route path="/auth" element={<AuthPage />} />
+        <Route path="/view/:id" element={<PublicWishlistPage />} />
+        <Route
+          path="/wishlists/:id"
+          element={
+            <ProtectedRoute>
+              <div className="app">
+                <Header />
+                <main className="main">
+                  <WishlistPage />
+                </main>
+                <Footer />
+              </div>
+            </ProtectedRoute>
+          }
+        />
 
-				<Route
-					path="/*"
-					element={
-						<ProtectedRoute>
-							<div className="app">
-								<Header/>
-								<main className="main">
-									<Routes>
-										<Route path="/" element={<ProductsPage/>}/>
-										<Route path="/wishlists" element={<WishlistsPage/>}/>
-										<Route path="/friends" element={<FriendsPage/>}/>
-										<Route path="/calendar" element={<CalendarPage/>}/>
-										<Route path="/settings" element={<SettingsPage/>}/>
-									</Routes>
-								</main>
-								<Footer/>
-							</div>
-						</ProtectedRoute>
-					}
-				/>
-			</Routes>
-		</>
-	);
+        <Route
+          path="/*"
+          element={
+            <ProtectedRoute>
+              <div className="app">
+                <Header />
+                <main className="main">
+                  <Routes>
+                    <Route path="/" element={<ProductsPage />} />
+                    <Route path="/wishlists" element={<WishlistsPage />} />
+                    <Route path="/friends" element={<FriendsPage />} />
+                    <Route path="/calendar" element={<CalendarPage />} />
+                    <Route path="/settings" element={<SettingsPage />} />
+                  </Routes>
+                </main>
+                <Footer />
+              </div>
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </>
+  );
 };
 
 export default App;

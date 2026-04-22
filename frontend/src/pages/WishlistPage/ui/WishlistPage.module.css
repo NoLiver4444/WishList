@@ -142,8 +142,9 @@
   border-radius: var(--small-border-radius);
   cursor: pointer;
   color: var(--subtext-color);
-  transition: color var(--transition-duration),
-  background-color var(--transition-duration);
+  transition:
+    color var(--transition-duration),
+    background-color var(--transition-duration);
 }
 
 .reserveButton:hover {
@@ -172,8 +173,9 @@
   font-size: 13px;
   cursor: pointer;
   min-height: 200px;
-  transition: border-color var(--transition-duration),
-  color var(--transition-duration);
+  transition:
+    border-color var(--transition-duration),
+    color var(--transition-duration);
 }
 
 .addCard:hover {

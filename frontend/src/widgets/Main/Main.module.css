@@ -30,6 +30,6 @@
 }
 
 .content.wishlists ul {
-  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
   gap: clamp(1rem, 0.7rem + 1.5vw, 2.3rem);
 }
