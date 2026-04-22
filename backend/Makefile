@@ -15,55 +15,55 @@ NC     := \033[0m # No Color
 
 # Цель по умолчанию: показать помощь
 help:
-	@echo "$(YELLOW)Доступные команды:$(NC)"
-	@echo "  make run          - Запуск сервера в режиме разработки"
-	@echo "  make build        - Сборка бинарного файла"
-	@echo "  make test         - Запуск тестов с покрытием"
-	@echo "  make clean        - Очистка артефактов сборки"
-	@echo "  make docs         - Генерация и просмотр документации (GoDoc)"
-	@echo "  make deps         - Установка зависимостей (go mod tidy)"
-	@echo "  make migrate-up   - Накатка миграций БД"
-	@echo "  make migrate-down - Откат миграций (очистка схемы)"
+	@echo "$(YELLOW)Available scripts:$(NC)"
+	@echo "  make run          - Run server in development mode"
+	@echo "  make build        - Build binary file"
+	@echo "  make test         - Run tests with coverage"
+	@echo "  make clean        - Clean build artifacts"
+	@echo "  make docs         - Generate and view documentation (GoDoc)"
+	@echo "  make deps         - Install dependencies (go mod tidy)"
+	@echo "  make migrate-up   - Apply database migrations"
+	@echo "  make migrate-down - Rollback migrations (clear schema)"
 
 # 1. Запуск сервера
 run:
-	@echo "$(GREEN) Запуск сервера...$(NC)"
+	@echo "$(GREEN) Starting server...$(NC)"
 	go run $(MAIN_PATH)
 
 # 2. Сборка проекта
 build:
-	@echo "$(GREEN) Сборка бинарного файла: $(BINARY_NAME)$(NC)"
+	@echo "$(GREEN) Build binary file: $(BINARY_NAME)$(NC)"
 	go build -o bin/$(BINARY_NAME) $(MAIN_PATH)
-	@echo "$(GREEN) Сборка завершена. Бинарник: bin/$(BINARY_NAME)$(NC)"
+	@echo "$(GREEN) Build successful. Binary file: bin/$(BINARY_NAME)$(NC)"
 
 # 3. Тестирование
 test:
-	@echo "$(GREEN) Запуск тестов...$(NC)"
+	@echo "$(GREEN) Starting tests...$(NC)"
 	go test ./... -v -coverprofile=coverage.out
-	@echo "$(GREEN) Покрытие кода:$(NC)"
+	@echo "$(GREEN) Code coverage:$(NC)"
 	go tool cover -func=coverage.out | grep total
 
 # 4. Генерация документации
 docs:
-	@echo "$(GREEN) Генерация документации на http://localhost:6060$(NC)"
-	@echo "Откройте браузер по адресу: http://localhost:6060/pkg/wish-piece/"
+	@echo "$(GREEN) Generating documentation at http://localhost:6060$(NC)"
+	@echo "Open browser: http://localhost:6060/pkg/wish-piece/"
 	godoc -http=:6060
 
 # 5. Управление зависимостями
 deps:
-	@echo "$(GREEN) Обновление зависимостей...$(NC)"
+	@echo "$(GREEN) Update dependencies...$(NC)"
 	go mod tidy
 
 # 6. Очистка
 clean:
-	@echo "$(YELLOW) Очистка артефактов...$(NC)"
+	@echo "$(YELLOW) Clear artifacts...$(NC)"
 	rm -rf bin/ coverage.out
 
 # 7. Миграции БД
 migrate-up:
-	@echo "$(GREEN)⬆ Накатка миграций...$(NC)"
+	@echo "$(GREEN) Applying migrations...$(NC)"
 	psql $(DB_URL) -f migrations/001_init.sql
 
 migrate-down:
-	@echo "$(RED)⬇ Откат миграций (ВНИМАНИЕ: данные будут удалены!)$(NC)"
+	@echo "$(RED) Rolling back migrations (Warning: all data will be deleted!)$(NC)"
 	psql $(DB_URL) -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"

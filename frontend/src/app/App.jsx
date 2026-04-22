@@ -19,7 +19,18 @@ const App = () => {
       <Toaster position="bottom-center" />
       <Routes>
         <Route path="/auth" element={<AuthPage />} />
-        <Route path="/view/:id" element={<PublicWishlistPage />} />
+        <Route
+          path="/view/:id"
+          element={
+            <div className="app">
+              <Header />
+              <main className="main">
+                <PublicWishlistPage />
+              </main>
+              <Footer />
+            </div>
+          }
+        />
         <Route
           path="/wishlists/:id"
           element={

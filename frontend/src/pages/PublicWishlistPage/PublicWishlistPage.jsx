@@ -31,7 +31,7 @@ const PublicWishlistPage = () => {
 
   return (
     <div className="public-container">
-      <h1>{data.name}</h1> {/* name, не title */}
+      <h1>{data.name}</h1>
       {data.deadline && (
         <p>До {new Date(data.deadline).toLocaleDateString('ru-RU')}</p>
       )}
