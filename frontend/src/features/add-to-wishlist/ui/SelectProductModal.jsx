@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Plus, Search, X } from 'lucide-react';
 import { fetchMyProducts } from '@/entities/wishlist/api/wishlistApi';
@@ -111,4 +111,4 @@ const SelectProductModal = ({ isOpen, onClose, onSelect }) => {
   );
 };
 
-export default SelectProductModal;
+export default memo(SelectProductModal);

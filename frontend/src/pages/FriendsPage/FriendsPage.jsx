@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { memo, useEffect, useState } from 'react';
 import Main from '@/widgets/Main';
 import AddCardModal from '@/features/add-card/ui/AddCardModal';
 
@@ -55,4 +55,4 @@ const FriendsPage = () => {
   );
 };
 
-export default FriendsPage;
+export default memo(FriendsPage);

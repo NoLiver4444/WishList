@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import Main from '@/widgets/Main';
 import AddCardModal from '@/features/add-card/ui/AddCardModal';
 import {
@@ -92,4 +92,4 @@ const ProductsPage = () => {
   );
 };
 
-export default ProductsPage;
+export default memo(ProductsPage);

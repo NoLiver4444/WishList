@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import styles from './CalendarNavigation.module.css';
 
@@ -48,4 +49,4 @@ const CalendarNavigation = ({ currentDate, onPrev, onNext, onToday }) => {
   );
 };
 
-export default CalendarNavigation;
+export default memo(CalendarNavigation);

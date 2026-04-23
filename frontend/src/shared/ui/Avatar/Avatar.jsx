@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { UserRound } from 'lucide-react';
 import styles from './Avatar.module.css';
 
@@ -23,4 +24,4 @@ const Avatar = ({ src, alt, size = 32, className }) => {
   );
 };
 
-export default Avatar;
+export default memo(Avatar);

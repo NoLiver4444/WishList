@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import styles from './CalendarDay.module.css';
 
 const CalendarDay = ({ date, isCurrentMonth, isToday, children, onClick }) => {
@@ -18,4 +19,4 @@ const CalendarDay = ({ date, isCurrentMonth, isToday, children, onClick }) => {
   );
 };
 
-export default CalendarDay;
+export default memo(CalendarDay);

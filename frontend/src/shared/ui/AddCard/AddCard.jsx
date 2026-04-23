@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Plus } from 'lucide-react';
 import styles from './AddCard.module.css';
 
@@ -19,4 +20,4 @@ const AddCard = ({ title, onClick, type }) => {
   );
 };
 
-export default AddCard;
+export default memo(AddCard);

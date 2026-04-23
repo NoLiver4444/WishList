@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { memo, useMemo, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useClickOutside } from '@/shared/hooks/useClickOutside';
 import { useEscClose } from '@/shared/hooks/useEscClose';
@@ -73,4 +73,4 @@ const AddCardModal = ({ isOpen, onClose, onSubmit, type, title }) => {
   );
 };
 
-export default AddCardModal;
+export default memo(AddCardModal);

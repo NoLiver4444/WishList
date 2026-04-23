@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { memo, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Eye, Pencil, Trash2 } from 'lucide-react';
 import { useClickOutside } from '@/shared/hooks/useClickOutside';
@@ -55,4 +55,4 @@ const CardMenu = ({ type, isOpen, onClose, onAction }) => {
   );
 };
 
-export default CardMenu;
+export default memo(CardMenu);

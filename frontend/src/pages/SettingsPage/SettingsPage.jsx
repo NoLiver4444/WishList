@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import Main from '@/widgets/Main';
 
 const SettingsPage = () => {
@@ -12,4 +13,4 @@ const SettingsPage = () => {
   );
 };
 
-export default SettingsPage;
+export default memo(SettingsPage);

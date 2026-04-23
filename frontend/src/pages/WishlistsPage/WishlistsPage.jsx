@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import Main from '@/widgets/Main';
 import AddCardModal from '@/features/add-card/ui/AddCardModal';
 import {
@@ -116,4 +116,4 @@ const WishlistsPage = () => {
   );
 };
 
-export default WishlistsPage;
+export default memo(WishlistsPage);

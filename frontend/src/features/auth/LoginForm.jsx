@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { loginRequest, useSessionStore } from '@/entities/session';
 import styles from './AuthForm.module.css';
 
-export const LoginForm = ({ onSuccess }) => {
+export const LoginForm = memo(({ onSuccess }) => {
   const addAccount = useSessionStore((s) => s.addAccount);
   const [form, setForm] = useState({ login_or_email: '', password: '' });
   const [error, setError] = useState(null);
@@ -50,4 +50,4 @@ export const LoginForm = ({ onSuccess }) => {
       </button>
     </form>
   );
-};
+});

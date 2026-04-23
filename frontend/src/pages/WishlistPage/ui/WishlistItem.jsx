@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Bookmark, BookmarkCheck, Trash2 } from 'lucide-react';
 import styles from './WishlistPage.module.css';
 
@@ -58,4 +59,4 @@ const WishlistItem = ({ item, onRemove, onReserve }) => {
   );
 };
 
-export default WishlistItem;
+export default memo(WishlistItem);

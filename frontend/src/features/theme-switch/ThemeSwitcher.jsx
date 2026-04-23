@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   Check,
@@ -74,4 +75,4 @@ const ThemeSubmenu = ({ isOpen, onMouseEnter, onMouseLeave }) => {
   );
 };
 
-export default ThemeSubmenu;
+export default memo(ThemeSubmenu);

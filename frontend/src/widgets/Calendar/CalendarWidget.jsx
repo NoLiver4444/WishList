@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import CalendarNavigation from '@/features/calendar-navigation';
 import DayDeadlinesModal from '@/features/day-deadlines-modal';
 import CalendarDay from '@/shared/ui/CalendarDay';
@@ -123,4 +123,4 @@ const CalendarWidget = () => {
   );
 };
 
-export default CalendarWidget;
+export default memo(CalendarWidget);

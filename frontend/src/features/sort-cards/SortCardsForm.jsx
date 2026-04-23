@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import styles from './SortCardsForm.module.css';
 
 const SortCardsForm = ({ options, activeSort, onSortChange }) => {
@@ -23,4 +24,4 @@ const SortCardsForm = ({ options, activeSort, onSortChange }) => {
   );
 };
 
-export default SortCardsForm;
+export default memo(SortCardsForm);

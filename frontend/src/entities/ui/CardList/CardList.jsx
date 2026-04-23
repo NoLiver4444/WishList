@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import AddCard from '@/shared/ui/AddCard';
 import Card from '@/shared/ui/Card';
 
@@ -25,4 +26,4 @@ const CardList = ({ type, items = [], onAddClick, onEdit, onDelete }) => {
   );
 };
 
-export default CardList;
+export default memo(CardList);

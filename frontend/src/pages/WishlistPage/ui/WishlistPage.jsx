@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Plus } from 'lucide-react';
 import {
@@ -137,4 +137,4 @@ const WishlistPage = () => {
   );
 };
 
-export default WishlistPage;
+export default memo(WishlistPage);

@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, memo } from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from '@/shared/ui/Navigation/Navigation.module.css';
 
@@ -18,4 +18,4 @@ const HeaderButton = forwardRef(({ item, className }, ref) => {
   );
 });
 
-export default HeaderButton;
+export default memo(HeaderButton);

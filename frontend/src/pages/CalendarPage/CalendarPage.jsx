@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import Main from '@/widgets/Main';
 import Calendar from '@/widgets/Calendar';
 
@@ -9,4 +10,4 @@ const CalendarPage = () => {
   );
 };
 
-export default CalendarPage;
+export default memo(CalendarPage);

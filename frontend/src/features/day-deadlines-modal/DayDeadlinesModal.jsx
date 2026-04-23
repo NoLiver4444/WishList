@@ -1,7 +1,7 @@
-import styles from './DayDeadlinesModal.module.css';
-import { useRef } from 'react';
+import { memo, useRef } from 'react';
 import { useEscClose } from '@/shared/hooks/useEscClose.jsx';
 import { useClickOutside } from '@/shared/hooks/useClickOutside.jsx';
+import styles from './DayDeadlinesModal.module.css';
 
 const MONTHS_RU = [
   'января',
@@ -72,4 +72,4 @@ const DayDeadlinesModal = ({ date, wishlists, onClose }) => {
   );
 };
 
-export default DayDeadlinesModal;
+export default memo(DayDeadlinesModal);

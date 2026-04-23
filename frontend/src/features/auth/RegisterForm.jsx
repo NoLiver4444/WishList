@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { registerRequest, useSessionStore } from '@/entities/session';
 import styles from './AuthForm.module.css';
 
@@ -24,7 +24,7 @@ const getServerError = (err) => {
   return err.message ?? 'Ошибка регистрации';
 };
 
-export const RegisterForm = ({ onSuccess }) => {
+export const RegisterForm = memo(({ onSuccess }) => {
   const addAccount = useSessionStore((s) => s.addAccount);
   const [form, setForm] = useState({ login: '', email: '', password: '' });
   const [errors, setErrors] = useState({});
@@ -117,4 +117,4 @@ export const RegisterForm = ({ onSuccess }) => {
       </button>
     </form>
   );
-};
+});

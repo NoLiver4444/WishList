@@ -13,6 +13,8 @@ func RespondJSON(w http.ResponseWriter, status int, payload any) {
 	}
 }
 
+// main
+// 1
 func RespondError(w http.ResponseWriter, status int, message, code string) {
 	RespondJSON(w, status, map[string]any{
 		"status":  status,

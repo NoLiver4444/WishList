@@ -1,5 +1,5 @@
+import { memo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
 import { Check, LogOut, Plus, Settings } from 'lucide-react';
 import Avatar from '@/shared/ui/Avatar';
 import { useEscClose } from '@/shared/hooks/useEscClose';
@@ -7,7 +7,7 @@ import DropdownContainer from './DropdownContainer.jsx';
 import ThemeSubmenu from '@/features/theme-switch/ThemeSwitcher';
 import styles from '@/shared/ui/Menu/Menu.module.css';
 
-export const NotificationDropdown = ({ onClose }) => {
+export const NotificationDropdown = memo(({ onClose }) => {
   useEscClose(onClose);
 
   return (
@@ -18,103 +18,105 @@ export const NotificationDropdown = ({ onClose }) => {
       </div>
     </DropdownContainer>
   );
-};
+});
 
-export const ProfileDropdown = ({
-  onClose,
-  currentUser,
-  users,
-  onSelectUser,
-  onOpenFullProfile,
-  onAddAccount,
-  onLogout,
-}) => {
-  useEscClose(onClose);
+export const ProfileDropdown = memo(
+  ({
+    onClose,
+    currentUser,
+    users,
+    onSelectUser,
+    onOpenFullProfile,
+    onAddAccount,
+    onLogout,
+  }) => {
+    useEscClose(onClose);
 
-  const [showThemeSubmenu, setShowThemeSubmenu] = useState(false);
+    const [showThemeSubmenu, setShowThemeSubmenu] = useState(false);
 
-  const handleSelect = (user) => {
-    onSelectUser(user);
-    onClose();
-  };
+    const handleSelect = (user) => {
+      onSelectUser(user);
+      onClose();
+    };
 
-  return (
-    <DropdownContainer>
-      <div className={styles.profileData}>
-        <Avatar src={users?.avatarURL} alt={users?.login} size={32} />
-        <span className={styles.profileInfo}>
-          <span
-            className={styles.profileLogin}
-            onClick={onOpenFullProfile}
-            style={{ textDecoration: 'none' }}
-          >
-            {currentUser?.login}
-          </span>
-          <span className={styles.profileEmail}>{currentUser?.email}</span>
-          <span className={styles.viewProfileLabel}>Посмотреть профиль</span>
-        </span>
-      </div>
-      <hr className={styles.divider} />
-
-      <Link to="/settings" className={styles.menuLink} onClick={onClose}>
-        <Settings size={16} />
-        <span>Настройки</span>
-      </Link>
-
-      <ThemeSubmenu
-        isOpen={showThemeSubmenu}
-        onMouseEnter={() => setShowThemeSubmenu(true)}
-        onMouseLeave={() => setShowThemeSubmenu(false)}
-      />
-      <hr className={styles.divider} />
-
-      <h3 className={styles.subtitle}>Сменить аккаунт</h3>
-      {users?.map((user) => {
-        const isSelected = user.id === currentUser?.id;
-        return (
-          <button
-            key={user.id}
-            className={styles.menuLink}
-            onClick={() => handleSelect(user)}
-          >
-            {isSelected ? <Check size={16} /> : <div style={{ width: 16 }} />}
-            <span className={styles.switchAccount}>
-              <Avatar
-                className={styles.switchAccountIcon}
-                src={users?.avatarURL}
-                alt={user?.login}
-                size={32}
-              />
-              <span className={styles.switchAccountLogin}>{user?.login}</span>
-              <span className={styles.switchAccountEmail}>{user?.email}</span>
+    return (
+      <DropdownContainer>
+        <div className={styles.profileData}>
+          <Avatar src={users?.avatarURL} alt={users?.login} size={32} />
+          <span className={styles.profileInfo}>
+            <span
+              className={styles.profileLogin}
+              onClick={onOpenFullProfile}
+              style={{ textDecoration: 'none' }}
+            >
+              {currentUser?.login}
             </span>
-          </button>
-        );
-      })}
-      <hr className={styles.divider} />
+            <span className={styles.profileEmail}>{currentUser?.email}</span>
+            <span className={styles.viewProfileLabel}>Посмотреть профиль</span>
+          </span>
+        </div>
+        <hr className={styles.divider} />
 
-      <button
-        className={styles.menuLink}
-        onClick={() => {
-          onAddAccount?.();
-          onClose();
-        }}
-      >
-        <Plus size={16} />
-        <span>Добавить аккаунт</span>
-      </button>
-      <hr className={styles.divider} />
+        <Link to="/settings" className={styles.menuLink} onClick={onClose}>
+          <Settings size={16} />
+          <span>Настройки</span>
+        </Link>
 
-      <button
-        className={styles.menuLink}
-        onClick={() => {
-          onLogout?.();
-          onClose();
-        }}
-      >
-        <LogOut size={16} />
-        <span>Выйти</span>
-      </button>
-    </DropdownContainer>
-  );
-};
+        <ThemeSubmenu
+          isOpen={showThemeSubmenu}
+          onMouseEnter={() => setShowThemeSubmenu(true)}
+          onMouseLeave={() => setShowThemeSubmenu(false)}
+        />
+        <hr className={styles.divider} />
+
+        <h3 className={styles.subtitle}>Сменить аккаунт</h3>
+        {users?.map((user) => {
+          const isSelected = user.id === currentUser?.id;
+          return (
+            <button
+              key={user.id}
+              className={styles.menuLink}
+              onClick={() => handleSelect(user)}
+            >
+              {isSelected ? <Check size={16} /> : <div style={{ width: 16 }} />}
+              <span className={styles.switchAccount}>
+                <Avatar
+                  className={styles.switchAccountIcon}
+                  src={users?.avatarURL}
+                  alt={user?.login}
+                  size={32}
+                />
+                <span className={styles.switchAccountLogin}>{user?.login}</span>
+                <span className={styles.switchAccountEmail}>{user?.email}</span>
+              </span>
+            </button>
+          );
+        })}
+        <hr className={styles.divider} />
+
+        <button
+          className={styles.menuLink}
+          onClick={() => {
+            onAddAccount?.();
+            onClose();
+          }}
+        >
+          <Plus size={16} />
+          <span>Добавить аккаунт</span>
+        </button>
+        <hr className={styles.divider} />
+
+        <button
+          className={styles.menuLink}
+          onClick={() => {
+            onLogout?.();
+            onClose();
+          }}
+        >
+          <LogOut size={16} />
+          <span>Выйти</span>
+        </button>
+      </DropdownContainer>
+    );
+  }
+);

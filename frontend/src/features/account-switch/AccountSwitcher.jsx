@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Menu from '@/shared/ui/Menu';
 import { useSessionStore } from '@/entities/session';
@@ -37,4 +38,4 @@ const AccountSwitcher = () => {
   );
 };
 
-export default AccountSwitcher;
+export default memo(AccountSwitcher);

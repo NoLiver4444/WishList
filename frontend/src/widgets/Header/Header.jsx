@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { memo, useRef, useState } from 'react';
 import Logo from '@/shared/ui/Logo';
 import Navigation from '@/shared/ui/Navigation';
 import AccountSwitcher from '@/features/account-switch/AccountSwitcher';
@@ -39,4 +39,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default memo(Header);

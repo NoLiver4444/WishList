@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { motion } from 'framer-motion';
 import styles from '@/shared/ui/Menu/Menu.module.css';
 
@@ -13,4 +14,4 @@ export const DropdownContainer = ({ children }) => (
   </motion.div>
 );
 
-export default DropdownContainer;
+export default memo(DropdownContainer);

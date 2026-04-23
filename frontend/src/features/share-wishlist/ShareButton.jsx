@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import styles from './ShareButton.module.css';
@@ -32,4 +33,4 @@ const ShareButton = () => {
   );
 };
 
-export default ShareButton;
+export default memo(ShareButton);

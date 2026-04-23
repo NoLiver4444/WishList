@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/go-playground/validator/v10"
 	"wish-piece/internal/dto"
 	"wish-piece/internal/service"
+
+	"github.com/go-playground/validator/v10"
 )
 
 type AuthHandler struct {
@@ -14,6 +15,8 @@ type AuthHandler struct {
 	Validator *validator.Validate
 }
 
+// main
+// 1
 func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 	var req dto.CreateUserRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {

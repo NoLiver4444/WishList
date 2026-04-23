@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LoginForm, RegisterForm } from '@/features/auth';
 import styles from './AuthPage.module.css';
@@ -37,4 +37,4 @@ const AuthPage = () => {
   );
 };
 
-export default AuthPage;
+export default memo(AuthPage);

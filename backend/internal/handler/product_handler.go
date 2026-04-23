@@ -17,6 +17,8 @@ type ProductHandler struct {
 	Validator *validator.Validate
 }
 
+// main
+// 1
 func (h *ProductHandler) Create(w http.ResponseWriter, r *http.Request) {
 	userIDStr, ok := middleware.GetUserIDFromContext(r.Context())
 	if !ok {

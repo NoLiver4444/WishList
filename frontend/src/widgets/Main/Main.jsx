@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import SortCardsForm from '@/features/sort-cards/SortCardsForm';
 import CardList from '@/entities/ui/CardList';
 import styles from './Main.module.css';
@@ -36,4 +36,4 @@ const Main = ({
   );
 };
 
-export default Main;
+export default memo(Main);

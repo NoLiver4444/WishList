@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   fetchPublicItems,
@@ -53,4 +53,4 @@ const PublicWishlistPage = () => {
   );
 };
 
-export default PublicWishlistPage;
+export default memo(PublicWishlistPage);

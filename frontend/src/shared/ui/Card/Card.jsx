@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Ellipsis, Plus } from 'lucide-react';
 import { FriendHeader, WishHeader, WishlistHeader } from './CardHeaders';
@@ -137,4 +137,4 @@ const Card = ({ item, type, onAddWish, onEdit, onDelete }) => {
   );
 };
 
-export default Card;
+export default memo(Card);

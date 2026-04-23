@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import ProductsPage from '@/pages/ProductsPage';
@@ -71,4 +72,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default memo(App);

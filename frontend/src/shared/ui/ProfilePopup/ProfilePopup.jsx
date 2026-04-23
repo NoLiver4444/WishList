@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { memo, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion } from 'framer-motion';
 import { X } from 'lucide-react';
@@ -56,4 +56,4 @@ const ProfilePopup = ({ user, onClose }) => {
   return createPortal(modalContent, document.body);
 };
 
-export default ProfilePopup;
+export default memo(ProfilePopup);

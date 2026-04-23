@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { memo, useRef, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { Bell, ChevronDown } from 'lucide-react';
 import Avatar from '@/shared/ui/Avatar';
@@ -101,4 +101,4 @@ const Menu = ({
   );
 };
 
-export default Menu;
+export default memo(Menu);

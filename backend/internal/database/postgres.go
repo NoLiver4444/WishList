@@ -5,10 +5,13 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/jackc/pgx/v5/pgxpool"
 	"wish-piece/internal/config"
+
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
+// main
+// 1
 func NewPool(cfg *config.DBConfig) (*pgxpool.Pool, func(), error) {
 	pool, err := pgxpool.New(context.Background(), cfg.DSN())
 	if err != nil {
