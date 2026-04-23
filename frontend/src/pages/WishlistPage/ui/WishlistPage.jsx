@@ -9,7 +9,7 @@ import {
   removeItem,
   reserveItem,
 } from '@/entities/wishlist/api/wishlistApi.js';
-import AddCardModal from '@/features/add-card/ui/AddCardModal.jsx';
+import SelectProductModal from '@/features/add-to-wishlist/ui/SelectProductModal'; // ← новый импорт
 import WishlistItem from './WishlistItem';
 import styles from './WishlistPage.module.css';
 
@@ -21,7 +21,7 @@ const WishlistPage = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSelectOpen, setIsSelectOpen] = useState(false); // ← вместо isModalOpen
 
   useEffect(() => {
     Promise.all([fetchWishlist(id), fetchWishlistItems(id)])
@@ -35,14 +35,11 @@ const WishlistPage = () => {
       .finally(() => setLoading(false));
   }, [id]);
 
-  const handleAddItem = async (formData) => {
+  // ← теперь принимает product_id напрямую
+  const handleAddItem = async (productId) => {
     try {
-      const created = await addItem(id, {
-        product_id: formData.product_id,
-        comment: formData.description || undefined,
-      });
+      const created = await addItem(id, { product_id: productId });
       setItems((prev) => [...prev, created]);
-      setIsModalOpen(false);
     } catch (err) {
       console.error('Ошибка добавления:', err);
     }
@@ -121,7 +118,7 @@ const WishlistPage = () => {
           />
         ))}
 
-        <li className={styles.addCard} onClick={() => setIsModalOpen(true)}>
+        <li className={styles.addCard} onClick={() => setIsSelectOpen(true)}>
           <Plus size={32} strokeWidth={1.5} />
           <span>Добавить желание</span>
         </li>
@@ -131,12 +128,10 @@ const WishlistPage = () => {
         <p className={styles.empty}>В этом вишлисте пока нет желаний</p>
       )}
 
-      <AddCardModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSubmit={handleAddItem}
-        type="wishes"
-        title="Добавить желание"
+      <SelectProductModal
+        isOpen={isSelectOpen}
+        onClose={() => setIsSelectOpen(false)}
+        onSelect={handleAddItem}
       />
     </div>
   );
