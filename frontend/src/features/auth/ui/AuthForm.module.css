@@ -26,7 +26,9 @@
   padding: 10px 14px;
   font-size: 14px;
   width: 100%;
-  transition: border-color var(--transition-duration), opacity var(--transition-duration);
+  transition:
+    border-color var(--transition-duration),
+    opacity var(--transition-duration);
 }
 
 .passwordInfo {
@@ -38,8 +40,9 @@
   font-size: 14px;
   border: var(--border);
   border-radius: var(--small-border-radius);
-  transition: border-color var(--transition-duration), opacity var(--transition-duration);
-
+  transition:
+    border-color var(--transition-duration),
+    opacity var(--transition-duration);
 }
 
 .input:focus,
