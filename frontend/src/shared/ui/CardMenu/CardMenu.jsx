@@ -40,8 +40,8 @@ const CardMenu = ({ type, isOpen, onClose, onAction }) => {
             <button
               key={id}
               className={`${styles.item} ${danger ? styles.danger : ''}`}
-              onClick={() => {
-                onAction(id);
+              onClick={(e) => {
+                onAction(id, e);
                 onClose();
               }}
             >

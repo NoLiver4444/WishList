@@ -3,7 +3,7 @@
   flex-direction: column;
   padding: 0;
   width: 100%;
-  height: 270px;
+  height: 340px;
   background-color: var(--background-color);
   outline: var(--border);
   border-top: 8px solid var(--primary-color);
@@ -13,7 +13,6 @@
 }
 
 .card.wishes {
-  height: 340px;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 65px auto;
@@ -27,9 +26,12 @@
   height: 200px;
 }
 
+.card.loading {
+  opacity: 0.7;
+}
+
 .card:hover {
   outline: 3px solid var(--primary-color);
-  box-shadow: 0 0 7px var(--primary-color);
 }
 
 .header {
@@ -165,8 +167,11 @@
 .wishlistBody {
   flex: 1;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: start;
+  justify-content: start;
+  overflow: hidden;
+  padding: 0 14px 14px;
+  min-height: 0;
 }
 
 .addWish {
@@ -175,23 +180,57 @@
   justify-content: center;
   align-items: center;
   gap: 8px;
-  background: var(--dim-background-color);
-  border-inline: none;
-  border-block: var(--border);
+  background: transparent;
+  border: var(--border);
+  border-radius: var(--small-border-radius);
   color: var(--subtext-color);
   padding: 20px 32px;
   cursor: pointer;
   font-size: 13px;
   transition:
     border-color var(--transition-duration),
-    color var(--transition-duration);
-  height: 80%;
+    background-color var(--transition-duration);
+  height: 100%;
   width: 100%;
 }
 
 .addWish:hover {
   border-color: var(--primary-color);
-  color: var(--primary-color);
+  background-color: var(--dim-background-color);
+}
+
+.previewGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 4px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--small-border-radius);
+  padding: 0;
+}
+
+.previewCell {
+  background-color: var(--dim-background-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--small-border-radius);
+  min-width: 0;
+  min-height: 0;
+}
+
+.previewImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: var(--small-border-radius);
+}
+
+.previewIcon {
+  color: var(--subtext-color);
 }
 
 .friendBody {

@@ -287,3 +287,9 @@
 .submit:hover {
   background-color: var(--dim-primary-color);
 }
+
+.submit:disabled,
+.cancel:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

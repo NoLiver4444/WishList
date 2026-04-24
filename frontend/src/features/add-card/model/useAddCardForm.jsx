@@ -1,9 +1,14 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { validate } from '../lib/validate.js';
 
 export const useAddCardForm = ({ fields, onSubmit, onClose, emptyForm }) => {
   const [form, setForm] = useState(emptyForm);
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    setForm(emptyForm);
+    setErrors({});
+  }, [emptyForm]);
 
   const handleChange = useCallback(
     (e) => {

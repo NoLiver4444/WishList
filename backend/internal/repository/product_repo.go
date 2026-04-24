@@ -42,6 +42,22 @@ func (r *ProductRepo) Delete(ctx context.Context, id uuid.UUID) error {
 	return nil
 }
 
+func (r *ProductRepo) Update(ctx context.Context, p *models.Product) error {
+    query := `UPDATE products SET
+    title = $1, url = $2, image_url = $3, description = $4, price = $5
+    WHERE id = $6`
+
+    result, err := r.Pool.Exec(ctx, query,
+        p.Title, p.URL, p.ImageURL, p.Description, p.Price, p.ID)
+    if err != nil {
+        return err
+    }
+    if result.RowsAffected() == 0 {
+        return ErrProductNotFound
+    }
+    return nil
+}
+
 // repository/user_product_repo.go
 type UserProductRepo struct {
 	Pool *pgxpool.Pool

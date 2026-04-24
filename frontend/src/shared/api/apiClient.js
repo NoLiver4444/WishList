@@ -12,6 +12,8 @@ export const apiClient = (url, options = {}) => {
       ...options.headers,
     },
   }).then(async (r) => {
+    if (r.status === 204) return null;
+
     const data = await r.json();
     if (!r.ok) throw { status: r.status, ...data };
     return data;

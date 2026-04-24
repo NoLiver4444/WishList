@@ -5,17 +5,20 @@ import {
   createProduct,
   deleteProduct,
   fetchMyProducts,
+  updateProduct,
 } from '@/entities/wishlist/api/wishlistApi';
 
 const ProductsPage = () => {
   const [items, setItems] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editItem, setEditItem] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const sortOptions = [
     { label: 'по дате добавления', value: 'date_added' },
     { label: 'по названию', value: 'name' },
     { label: 'по цене', value: 'price' },
+    { label: 'по дате события', value: 'deadline' },
   ];
 
   useEffect(() => {
@@ -39,22 +42,46 @@ const ProductsPage = () => {
   }, []);
 
   const handleAdd = async (formData) => {
+    const tempId = crypto.randomUUID();
+    const localImage =
+      formData.image instanceof File
+        ? URL.createObjectURL(formData.image)
+        : formData.imageUrl || null;
+
+    setItems((prev) => [
+      ...prev,
+      {
+        id: tempId,
+        name: formData.name,
+        url: formData.url,
+        image: localImage,
+        imageUrl: localImage,
+        description: formData.description,
+        price: formData.price,
+        _loading: true,
+      },
+    ]);
+    setIsModalOpen(false);
+
     try {
       const created = await createProduct(formData);
-      setItems((prev) => [
-        ...prev,
-        {
-          id: created.id,
-          name: created.title,
-          url: created.url,
-          image: created.image_url,
-          imageUrl: created.image_url,
-          description: created.description,
-          price: created.price,
-        },
-      ]);
-      setIsModalOpen(false);
+      setItems((prev) =>
+        prev.map((i) =>
+          i.id === tempId
+            ? {
+                id: created.id,
+                name: created.title,
+                url: created.url,
+                image: created.image_url,
+                imageUrl: created.image_url,
+                description: created.description,
+                price: created.price,
+              }
+            : i
+        )
+      );
     } catch (err) {
+      setItems((prev) => prev.filter((i) => i.id !== tempId));
       console.error('Ошибка создания желания:', err);
     }
   };
@@ -68,6 +95,63 @@ const ProductsPage = () => {
     }
   };
 
+  const handleEdit = (item) => setEditItem(item);
+
+  const handleEditSubmit = async (formData) => {
+    const localImage =
+      formData.image instanceof File
+        ? URL.createObjectURL(formData.image)
+        : formData.imageUrl || editItem.imageUrl || null;
+
+    setItems((prev) =>
+      prev.map((i) =>
+        i.id === editItem.id
+          ? {
+              ...i,
+              name: formData.name,
+              url: formData.url,
+              image: localImage,
+              imageUrl: localImage,
+              description: formData.description,
+              price: formData.price,
+              _loading: formData.image instanceof File,
+            }
+          : i
+      )
+    );
+    setEditItem(null);
+
+    try {
+      let imageUrl = formData.imageUrl || undefined;
+      if (formData.image instanceof File) {
+        imageUrl = await uploadImage(formData.image);
+      }
+
+      const updated = await updateProduct(editItem.id, {
+        ...formData,
+        imageUrl,
+      });
+
+      setItems((prev) =>
+        prev.map((i) =>
+          i.id === editItem.id
+            ? {
+                id: updated.id,
+                name: updated.title,
+                url: updated.url,
+                image: updated.image_url,
+                imageUrl: updated.image_url,
+                description: updated.description,
+                price: updated.price,
+              }
+            : i
+        )
+      );
+    } catch (err) {
+      console.error('Ошибка обновления желания:', err);
+    }
+  };
+
   return (
     <>
       <Main
@@ -77,6 +161,7 @@ const ProductsPage = () => {
         sortOptions={sortOptions}
         onAddClick={() => setIsModalOpen(true)}
         onDelete={handleDelete}
+        onEdit={handleEdit}
         data={items}
         loading={loading}
       />
@@ -87,6 +172,26 @@ const ProductsPage = () => {
         onSubmit={handleAdd}
         type="wishes"
         title="Добавить желание"
+      />
+
+      <AddCardModal
+        isOpen={editItem}
+        onClose={() => setEditItem(null)}
+        onSubmit={handleEditSubmit}
+        type="wishes"
+        title="Изменить желание"
+        initialValues={
+          editItem
+            ? {
+                name: editItem.name,
+                url: editItem.url ?? '',
+                imageUrl: editItem.imageUrl ?? '',
+                description: editItem.description ?? '',
+                price: editItem.price ?? '',
+                private: editItem.privacy ?? 'public',
+              }
+            : null
+        }
       />
     </>
   );

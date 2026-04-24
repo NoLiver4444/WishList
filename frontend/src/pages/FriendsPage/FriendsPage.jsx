@@ -34,6 +34,10 @@ const FriendsPage = () => {
     setIsModalOpen(false);
   };
 
+  const handleDelete = (id) => {
+    setItems((prev) => prev.filter((i) => i.id !== id));
+  };
+
   return (
     <>
       <Main
@@ -42,8 +46,10 @@ const FriendsPage = () => {
         type="friends"
         sortOptions={sortOptions}
         onAddClick={() => setIsModalOpen(true)}
+        onDelete={handleDelete}
         data={items}
       />
+
       <AddCardModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

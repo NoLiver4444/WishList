@@ -167,7 +167,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border: 2px dashed var(--split-line-color);
+  border: var(--border);
   border-radius: var(--big-border-radius);
   color: var(--subtext-color);
   font-size: 13px;

@@ -1,4 +1,5 @@
 import { apiClient } from '@/shared/api/apiClient';
+import { uploadImage } from '@/shared/lib/uploadImage';
 
 const BASE = import.meta.env.VITE_API_URL;
 
@@ -65,17 +66,42 @@ export const reserveItem = (itemId, action) =>
 
 export const fetchMyProducts = () => apiClient('/v1/products/me');
 
-export const createProduct = (body) =>
-  apiClient('/v1/products', {
+export const createProduct = async (body) => {
+  let imageUrl =
+    typeof body.imageUrl === 'string' && body.imageUrl
+      ? body.imageUrl
+      : undefined;
+
+  if (body.image instanceof File) {
+    imageUrl = await uploadImage(body.image);
+  }
+
+  return apiClient('/v1/products', {
     method: 'POST',
     body: JSON.stringify({
       title: body.name,
       url: body.url || undefined,
-      image_url: body.image || undefined,
+      image_url: imageUrl,
       description: body.description || undefined,
       price: body.price ? Number(body.price) : undefined,
     }),
   });
+};
 
 export const deleteProduct = (id) =>
   apiClient(`/v1/products/${id}`, { method: 'DELETE' });
+
+export const updateProduct = (id, body) =>
+  apiClient(`/v1/products/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify({
+      title: body.name,
+      url: body.url || undefined,
+      image_url:
+        typeof body.imageUrl === 'string' && body.imageUrl
+          ? body.imageUrl
+          : undefined,
+      description: body.description || undefined,
+      price: body.price ? Number(body.price) : undefined,
+    }),
+  });

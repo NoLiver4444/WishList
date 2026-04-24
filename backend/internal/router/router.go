@@ -52,6 +52,7 @@ func New(
 	// Продукты (желания пользователя)
 	protectedMux.HandleFunc("GET /v1/products/me", productHandler.ListMine)
 	protectedMux.HandleFunc("POST /v1/products", productHandler.Create)
+	protectedMux.HandleFunc("PATCH /v1/products/{id}", productHandler.Update)
 	protectedMux.HandleFunc("DELETE /v1/products/{id}", productHandler.Delete)
 
 	// Вишлисты

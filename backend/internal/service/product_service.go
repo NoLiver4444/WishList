@@ -84,3 +84,35 @@ func (s *ProductService) DeleteProduct(ctx context.Context, userID uuid.UUID, pr
 
 	return s.ProductRepo.Delete(ctx, productID)
 }
+
+func (s *ProductService) UpdateProduct(ctx context.Context, userID, productID uuid.UUID, req dto.CreateProductRequest) (*dto.ProductResponseDTO, error) {
+    owned, err := s.UserProductRepo.IsOwner(ctx, userID, productID)
+    if err != nil {
+        return nil, err
+    }
+    if !owned {
+        return nil, ErrProductNotOwned
+    }
+
+    product := &models.Product{
+        ID:          productID,
+        Title:       req.Title,
+        URL:         req.URL,
+        ImageURL:    req.ImageURL,
+        Description: req.Description,
+        Price:       req.Price,
+    }
+
+    if err := s.ProductRepo.Update(ctx, product); err != nil {
+        return nil, err
+    }
+
+    return &dto.ProductResponseDTO{
+        ID:          product.ID,
+        Title:       product.Title,
+        URL:         product.URL,
+        ImageURL:    product.ImageURL,
+        Description: product.Description,
+        Price:       product.Price,
+    }, nil
+}

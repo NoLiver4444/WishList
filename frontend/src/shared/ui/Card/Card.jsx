@@ -1,6 +1,6 @@
 import { memo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Ellipsis, Plus } from 'lucide-react';
+import { Ellipsis, Gift, Plus } from 'lucide-react';
 import { FriendHeader, WishHeader, WishlistHeader } from './CardHeaders';
 import Avatar from '@/shared/ui/Avatar';
 import CardMenu from '@/shared/ui/CardMenu';
@@ -24,7 +24,6 @@ const Card = ({ item, type, onAddWish, onEdit, onDelete }) => {
     description,
     counts,
     friendId,
-    previewImage,
   } = item;
 
   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -33,10 +32,10 @@ const Card = ({ item, type, onAddWish, onEdit, onDelete }) => {
 
   const handleCardClick = (e) => {
     if (e.target.closest(`.${styles.menuButton}`)) return;
-    if (cardWishlist) navigate(`/wishlists/${item.id}`);
   };
 
-  const handleAction = (action) => {
+  const handleAction = (action, e) => {
+    e?.stopPropagation();
     if (action === 'view') navigate(`/wishlists/${item.id}`);
     if (action === 'edit') onEdit?.(item);
     if (action === 'delete') onDelete?.(item.id);
@@ -44,9 +43,8 @@ const Card = ({ item, type, onAddWish, onEdit, onDelete }) => {
 
   return (
     <li
-      className={`${styles.card} ${styles[type]}`}
+      className={`${styles.card} ${styles[type]} ${item._loading ? styles.loading : ''}}`}
       onClick={handleCardClick}
-      style={{ cursor: cardWishlist ? 'pointer' : 'default' }}
     >
       <div className={styles.header}>
         {cardWish && (
@@ -114,15 +112,50 @@ const Card = ({ item, type, onAddWish, onEdit, onDelete }) => {
 
         {cardWishlist && (
           <div className={styles.wishlistBody}>
-            {previewImage ? (
-              <img src={previewImage} alt={name} className={styles.image} />
-            ) : counts === 0 ? (
-              <button className={styles.addWish} onClick={onAddWish}>
-                <Plus size={32} strokeWidth={1.5} />
+            {counts === 0 ? (
+              <button
+                className={styles.addWish}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/wishlists/${item.id}`);
+                }}
+              >
+                <Plus size={40} strokeWidth={2} />
                 <span>Добавить желание</span>
               </button>
             ) : (
-              <div className={styles.imagePlaceholder} />
+              <div
+                className={styles.previewGrid}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/wishlists/${item.id}`);
+                }}
+                style={{ cursor: 'pointer' }}
+              >
+                {(
+                  item.previews ?? [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                  ]
+                )
+                  .slice(0, 9)
+                  .map((src, i) => (
+                    <div key={i} className={styles.previewCell}>
+                      {src ? (
+                        <img src={src} alt="" className={styles.previewImg} />
+                      ) : (
+                        <Gift size={20} className={styles.previewIcon} />
+                      )}
+                    </div>
+                  ))}
+              </div>
             )}
           </div>
         )}

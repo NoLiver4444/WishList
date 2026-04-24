@@ -3,12 +3,15 @@ import Main from '@/widgets/Main';
 import AddCardModal from '@/features/add-card/ui/AddCardModal';
 import {
   createWishlist,
+  deleteWishlist,
   fetchWishlistItems,
   fetchWishlists,
+  updateWishlist,
 } from '@/entities/wishlist';
 
 const WishlistsPage = () => {
   const [wishlists, setWishlists] = useState([]);
+  const [editItem, setEditItem] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -45,13 +48,15 @@ const WishlistsPage = () => {
       fetchWishlistItems(wishlist.id)
         .then((data) => {
           const items = Array.isArray(data) ? data : (data.items ?? []);
-          const first = items.find((i) => i.product?.image_url);
-          if (!first) return;
+
+          const previews = items
+            .map((i) => i.product?.image_url ?? null)
+            .slice(0, 9);
 
           setWishlists((prev) =>
             prev.map((w) =>
               w.id === wishlist.id
-                ? { ...w, previewImage: first.product.image_url }
+                ? { ...w, counts: items.length, previews }
                 : w
             )
           );
@@ -85,11 +90,41 @@ const WishlistsPage = () => {
   };
 
   const handleDelete = async (id) => {
-    setWishlists((prev) => prev.filter((w) => w.id !== id));
+    try {
+      await deleteWishlist(id);
+      setWishlists((prev) => prev.filter((w) => w.id !== id));
+    } catch (err) {
+      console.error('Ошибка удаления:', err);
+    }
   };
 
   const handleEdit = (item) => {
-    console.log('edit', item);
+    setEditItem(item);
+  };
+
+  const handleEditSubmit = async (formData) => {
+    try {
+      const updated = await updateWishlist(editItem.id, {
+        name: formData.name,
+        deadline: formData.date || undefined,
+        privacy: formData.private || 'public',
+      });
+      setWishlists((prev) =>
+        prev.map((w) =>
+          w.id === editItem.id
+            ? {
+                ...w,
+                name: updated.name,
+                date: updated.deadline ?? null,
+                privacy: updated.privacy,
+              }
+            : w
+        )
+      );
+      setEditItem(null);
+    } catch (err) {
+      console.error('Ошибка обновления:', err);
+    }
   };
 
   return (
@@ -105,12 +140,32 @@ const WishlistsPage = () => {
         data={wishlists}
         loading={loading}
       />
+
       <AddCardModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleAdd}
         type="wishlists"
         title="Создать вишлист"
+      />
+
+      <AddCardModal
+        isOpen={editItem}
+        onClose={() => setEditItem(null)}
+        onSubmit={handleEditSubmit}
+        type="wishlists"
+        title="Изменить вишлист"
+        initialValues={
+          editItem
+            ? {
+                name: editItem.name,
+                date: editItem.date
+                  ? new Date(editItem.date).toISOString().split('T')[0]
+                  : '',
+                private: editItem.privacy ?? 'public',
+              }
+            : null
+        }
       />
     </>
   );

@@ -1,4 +1,4 @@
-import { memo, useMemo, useRef } from 'react';
+import { memo, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useClickOutside } from '@/shared/hooks/useClickOutside';
 import { useEscClose } from '@/shared/hooks/useEscClose';
@@ -8,13 +8,35 @@ import { useAddCardForm } from '../model/useAddCardForm';
 import { FormField } from './FormField.jsx';
 import styles from './AddCardModal.module.css';
 
-const AddCardModal = ({ isOpen, onClose, onSubmit, type, title }) => {
+const AddCardModal = ({
+  isOpen,
+  onClose,
+  onSubmit,
+  type,
+  title,
+  initialValues,
+}) => {
+  const [submitting, setSubmitting] = useState(false);
   const modalRef = useRef(null);
   const fields = useMemo(() => FIELDS[type] ?? FIELDS.wishes, [type]);
+
   const emptyForm = useMemo(
     () => Object.fromEntries(fields.map((f) => [f.name, ''])),
     [fields]
   );
+  const defaultForm = useMemo(
+    () => (initialValues ? { ...emptyForm, ...initialValues } : emptyForm),
+    [emptyForm, initialValues]
+  );
+
+  const handleSubmitWithLoading = async (formData) => {
+    setSubmitting(true);
+    try {
+      await onSubmit(formData);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const {
     form,
@@ -24,7 +46,12 @@ const AddCardModal = ({ isOpen, onClose, onSubmit, type, title }) => {
     handleBlur,
     handleSubmit,
     handleClose,
-  } = useAddCardForm({ fields, onSubmit, onClose, emptyForm });
+  } = useAddCardForm({
+    fields,
+    onSubmit: handleSubmitWithLoading,
+    onClose,
+    emptyForm: defaultForm,
+  });
 
   useClickOutside(modalRef, handleClose);
   useEscClose(handleClose, isOpen);
@@ -65,7 +92,11 @@ const AddCardModal = ({ isOpen, onClose, onSubmit, type, title }) => {
             Отмена
           </button>
           <button className={styles.submit} onClick={handleSubmit}>
-            Добавить
+            {submitting
+              ? 'Загрузка...'
+              : initialValues
+                ? 'Сохранить'
+                : 'Добавить'}
           </button>
         </div>
       </motion.div>

@@ -57,6 +57,11 @@
   gap: 8px;
   padding: 12px 20px;
   border-bottom: var(--border);
+  border-radius: var(--small-border-radius);
+}
+
+.search:focus-within {
+  border: 2px solid var(--primary-color);
 }
 
 .searchIcon {
@@ -70,6 +75,10 @@
   color: var(--text-color);
   font-size: 14px;
   width: 100%;
+  outline: none;
+}
+
+.searchInput:focus {
   outline: none;
 }
 

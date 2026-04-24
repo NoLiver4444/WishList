@@ -8,6 +8,8 @@ const Main = ({
   type = 'wishes',
   sortOptions = [],
   onAddClick,
+  onEdit,
+  onDelete,
   data = [],
   children,
 }) => {
@@ -29,7 +31,13 @@ const Main = ({
         {children ? (
           children
         ) : (
-          <CardList type={type} items={data} onAddClick={onAddClick} />
+          <CardList
+            type={type}
+            items={data}
+            onAddClick={onAddClick}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
         )}
       </div>
     </div>
