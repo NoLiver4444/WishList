@@ -43,7 +43,7 @@ const Card = ({ item, type, onAddWish, onEdit, onDelete }) => {
 
   return (
     <li
-      className={`${styles.card} ${styles[type]} ${item._loading ? styles.loading : ''}}`}
+      className={`${styles.card} ${styles[type]} ${item._loading ? styles.loading : ''}`}
       onClick={handleCardClick}
     >
       <div className={styles.header}>
