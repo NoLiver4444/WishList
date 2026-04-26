@@ -1,0 +1,44 @@
+# Stage 1: Build
+FROM golang:1.21-alpine AS builder
+
+WORKDIR /app
+
+# Установляем необходимые инструменты
+RUN apk add --no-cache git make
+
+# Копируем go.mod и go.sum
+COPY backend/go.mod .
+COPY backend/go.sum .
+
+# Загружаем зависимости
+RUN go mod download
+
+# Копируем весь код бэкенда
+COPY backend/ .
+
+# Компилируем приложение
+RUN go build -o server cmd/server/main.go
+
+# Stage 2: Runtime
+FROM alpine:latest
+
+WORKDIR /app
+
+# Устанавливаем необходимые утилиты (postgresql-client для миграций)
+RUN apk add --no-cache postgresql-client curl
+
+# Копируем скомпилированное приложение из stage 1
+COPY --from=builder /app/server .
+
+# Копируем миграции
+COPY backend/migrations ./migrations
+
+# Открываем порт
+EXPOSE 8080
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD curl -f http://localhost:8080/health || exit 1
+
+# Запускаем приложение
+CMD ["./server"]
