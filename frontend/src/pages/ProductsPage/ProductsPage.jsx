@@ -21,7 +21,6 @@ const ProductsPage = () => {
     { label: 'по дате добавления', value: 'date_added' },
     { label: 'по названию', value: 'name' },
     { label: 'по цене', value: 'price' },
-    { label: 'по дате события', value: 'deadline' },
   ];
 
   useEffect(() => {

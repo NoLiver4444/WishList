@@ -1,6 +1,7 @@
-import { memo, useState } from 'react';
+import { memo, useMemo, useState } from 'react';
 import SortCardsForm from '@/features/sort-cards/SortCardsForm';
 import CardList from '@/entities/ui/CardList';
+import { sortItems } from '@/shared/lib/sortItems';
 import styles from './Main.module.css';
 
 const Main = ({
@@ -14,6 +15,11 @@ const Main = ({
   children,
 }) => {
   const [currentSort, setCurrentSort] = useState(sortOptions[0]?.value);
+
+  const sortedData = useMemo(
+    () => sortItems(data, currentSort),
+    [data, currentSort]
+  );
 
   return (
     <div className={`${styles.main} ${styles[type]}`}>
@@ -33,7 +39,7 @@ const Main = ({
         ) : (
           <CardList
             type={type}
-            items={data}
+            items={sortedData}
             onAddClick={onAddClick}
             onEdit={onEdit}
             onDelete={onDelete}

@@ -11,7 +11,7 @@ import {
 import { useSearch } from '@/shared/context/SearchContext.jsx';
 
 const WishlistsPage = () => {
-  const [wishlists, setWishlists] = useState([]);
+  const [items, setItems] = useState([]);
   const [editItem, setEditItem] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -28,7 +28,7 @@ const WishlistsPage = () => {
     fetchWishlists()
       .then((data) => {
         const list = Array.isArray(data) ? data : (data.wishlists ?? []);
-        setWishlists(
+        setItems(
           list.map((w) => ({
             id: w.id,
             name: w.name,
@@ -46,10 +46,10 @@ const WishlistsPage = () => {
   }, []);
 
   const filteredItems = useMemo(() => {
-    return wishlists.filter((item) =>
+    return items.filter((item) =>
       item.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
-  }, [wishlists, searchQuery]);
+  }, [items, searchQuery]);
 
   const loadPreviews = async (list) => {
     for (const wishlist of list) {
@@ -61,7 +61,7 @@ const WishlistsPage = () => {
             .map((i) => i.product?.image_url ?? null)
             .slice(0, 9);
 
-          setWishlists((prev) =>
+          setItems((prev) =>
             prev.map((w) =>
               w.id === wishlist.id
                 ? { ...w, counts: items.length, previews }
@@ -80,7 +80,7 @@ const WishlistsPage = () => {
         deadline: formData.date || undefined,
         privacy: formData.private || 'public',
       });
-      setWishlists((prev) => [
+      setItems((prev) => [
         ...prev,
         {
           id: created.id,
@@ -100,7 +100,7 @@ const WishlistsPage = () => {
   const handleDelete = async (id) => {
     try {
       await deleteWishlist(id);
-      setWishlists((prev) => prev.filter((w) => w.id !== id));
+      setItems((prev) => prev.filter((w) => w.id !== id));
     } catch (err) {
       console.error('Ошибка удаления:', err);
     }
@@ -117,7 +117,7 @@ const WishlistsPage = () => {
         deadline: formData.date || undefined,
         privacy: formData.private || 'public',
       });
-      setWishlists((prev) =>
+      setItems((prev) =>
         prev.map((w) =>
           w.id === editItem.id
             ? {
