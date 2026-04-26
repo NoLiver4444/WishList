@@ -1,5 +1,7 @@
 # Makefile для сборки и управления проектом WishPiece Backend
 # Язык: Go
+include .env
+export $(shell sed 's/=.*//' .env)
 
 # Переменные
 BINARY_NAME=wishpiece-server
@@ -60,9 +62,14 @@ clean:
 
 # 7. Миграции БД
 migrate-up:
-	@echo "$(GREEN) Applying migrations...$(NC)"
-	psql $(DB_URL) -f migrations/001_init.sql
+	@echo "$(GREEN)Applying migrations...$(NC)"
+	@for f in migrations/*.sql; do \
+		echo "Applying $$f..."; \
+		PGPASSWORD=$(DB_PASSWORD) psql -h $(DB_HOST) -p $(DB_PORT) -U $(DB_USER) -d $(DB_NAME) -f "$$f"; \
+	done
 
+# Откат миграций
 migrate-down:
-	@echo "$(RED) Rolling back migrations (Warning: all data will be deleted!)$(NC)"
-	psql $(DB_URL) -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+	@echo "$(YELLOW)Rolling back migrations (Warning: all data will be deleted!)$(NC)"
+	@PGPASSWORD=$(DB_PASSWORD) psql -h $(DB_HOST) -p $(DB_PORT) -U $(DB_USER) -d $(DB_NAME) \
+		-c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"

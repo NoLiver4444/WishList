@@ -1,4 +1,5 @@
 import { memo, useEffect, useState } from 'react';
+import { uploadImage } from '@/shared/lib/uploadImage';
 import Main from '@/widgets/Main';
 import AddCardModal from '@/features/add-card/ui/AddCardModal';
 import {

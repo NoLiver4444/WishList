@@ -7,14 +7,6 @@ export const FIELDS = {
       required: true,
     },
     {
-      name: 'date',
-      label: 'Дедлайн',
-      placeholder: 'К какому сроку хотите успеть?',
-      type: 'date',
-      min: new Date().toISOString().split('T')[0],
-      max: '2100-01-01',
-    },
-    {
       name: 'url',
       label: 'Ссылка',
       placeholder: 'Ссылка на желание',

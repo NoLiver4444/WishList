@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/go-playground/validator/v10"
 	"wish-piece/internal/dto"
 	"wish-piece/internal/middleware"
 	"wish-piece/internal/service"
+
+	"github.com/go-playground/validator/v10"
 )
 
 type UserHandler struct {

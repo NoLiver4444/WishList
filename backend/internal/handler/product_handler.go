@@ -101,39 +101,39 @@ func (h *ProductHandler) Delete(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *ProductHandler) Update(w http.ResponseWriter, r *http.Request) {
-    userIDStr, ok := middleware.GetUserIDFromContext(r.Context())
-    if !ok {
-        RespondError(w, http.StatusUnauthorized, "User ID not found", "UNAUTHORIZED")
-        return
-    }
-    userID, _ := uuid.Parse(userIDStr)
+	userIDStr, ok := middleware.GetUserIDFromContext(r.Context())
+	if !ok {
+		RespondError(w, http.StatusUnauthorized, "User ID not found", "UNAUTHORIZED")
+		return
+	}
+	userID, _ := uuid.Parse(userIDStr)
 
-    productIDStr := r.PathValue("id")
-    productID, err := uuid.Parse(productIDStr)
-    if err != nil {
-        RespondError(w, http.StatusBadRequest, "Invalid product ID", "PARSE_ERROR")
-        return
-    }
+	productIDStr := r.PathValue("id")
+	productID, err := uuid.Parse(productIDStr)
+	if err != nil {
+		RespondError(w, http.StatusBadRequest, "Invalid product ID", "PARSE_ERROR")
+		return
+	}
 
-    var req dto.CreateProductRequest
-    if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-        RespondError(w, http.StatusBadRequest, "Invalid JSON", "PARSE_ERROR")
-        return
-    }
+	var req dto.CreateProductRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		RespondError(w, http.StatusBadRequest, "Invalid JSON", "PARSE_ERROR")
+		return
+	}
 
-    result, err := h.Service.UpdateProduct(r.Context(), userID, productID, req)
-    if err != nil {
-        if err == service.ErrProductNotFound {
-            RespondError(w, http.StatusNotFound, "Product not found", "NOT_FOUND")
-            return
-        }
-        if err == service.ErrProductNotOwned {
-            RespondError(w, http.StatusForbidden, "Access denied", "FORBIDDEN")
-            return
-        }
-        RespondError(w, http.StatusInternalServerError, "Failed to update product", "INTERNAL_ERROR")
-        return
-    }
+	result, err := h.Service.UpdateProduct(r.Context(), userID, productID, req)
+	if err != nil {
+		if err == service.ErrProductNotFound {
+			RespondError(w, http.StatusNotFound, "Product not found", "NOT_FOUND")
+			return
+		}
+		if err == service.ErrProductNotOwned {
+			RespondError(w, http.StatusForbidden, "Access denied", "FORBIDDEN")
+			return
+		}
+		RespondError(w, http.StatusInternalServerError, "Failed to update product", "INTERNAL_ERROR")
+		return
+	}
 
-    RespondJSON(w, http.StatusOK, result)
+	RespondJSON(w, http.StatusOK, result)
 }

@@ -42,13 +42,13 @@ func (r *WishlistItemRepo) ListItems(ctx context.Context, wishlistID uuid.UUID) 
 
 // ListItemsWithProducts — JOIN с таблицей products
 func (r *WishlistItemRepo) ListItemsWithProducts(ctx context.Context, wishlistID uuid.UUID) ([]*models.WishlistItem, error) {
-	query := `SELECT 
-  wi.id, wi.wishlist_id, wi.product_id, wi.reserved_by, wi.comment, wi."order", wi.created_at, wi.updated_at,
-  p.id, p.title, p.url, p.image_url, p.description, p.price, p.created_at
-  FROM wishlist_items wi
-  JOIN products p ON wi.product_id = p.id
-  WHERE wi.wishlist_id = $1
-  ORDER BY wi."order" ASC, wi.created_at ASC`
+	query := `SELECT
+    wi.id, wi.wishlist_id, wi.product_id, wi.reserved_by, wi.comment, wi."order", wi.created_at, wi.updated_at,
+    p.id, p.title, p.url, p.image_url, p.description, p.price, p.created_at
+    FROM wishlist_items wi
+    JOIN products p ON wi.product_id = p.id
+    WHERE wi.wishlist_id = $1
+    ORDER BY wi."order" ASC, wi.created_at ASC`
 
 	rows, err := r.Pool.Query(ctx, query, wishlistID)
 	if err != nil {

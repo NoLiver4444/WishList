@@ -47,9 +47,7 @@ const Card = ({ item, type, onAddWish, onEdit, onDelete }) => {
       onClick={handleCardClick}
     >
       <div className={styles.header}>
-        {cardWish && (
-          <WishHeader name={name} date={date} dateOptions={dateOptions} />
-        )}
+        {cardWish && <WishHeader name={name} dateOptions={dateOptions} />}
         {cardWishlist && (
           <WishlistHeader
             name={name}

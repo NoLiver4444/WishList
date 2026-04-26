@@ -4,11 +4,12 @@ import (
 	"context"
 	"errors"
 
-	"github.com/google/uuid"
-	"golang.org/x/crypto/bcrypt"
 	"wish-piece/internal/dto"
 	"wish-piece/internal/models"
 	"wish-piece/internal/repository"
+
+	"github.com/google/uuid"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var ErrUserNotFound = errors.New("user not found")
@@ -69,7 +70,7 @@ func (s *UserService) UpdateUser(ctx context.Context, userIDStr string, req dto.
 	if err := s.Repo.Update(ctx, user); err != nil {
 		return nil, err
 	}
-	
+
 	return s.Repo.FindByID(ctx, id)
 }
 

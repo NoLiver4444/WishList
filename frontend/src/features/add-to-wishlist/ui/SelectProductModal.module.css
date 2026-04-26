@@ -57,11 +57,11 @@
   gap: 8px;
   padding: 12px 20px;
   border-bottom: var(--border);
-  border-radius: var(--small-border-radius);
 }
 
 .search:focus-within {
   border: 2px solid var(--primary-color);
+  border-radius: var(--small-border-radius);
 }
 
 .searchIcon {

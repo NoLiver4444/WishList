@@ -5,12 +5,13 @@ import (
 	"errors"
 	"time"
 
-	"github.com/golang-jwt/jwt/v5"
-	"github.com/google/uuid"
-	"golang.org/x/crypto/bcrypt"
 	"wish-piece/internal/dto"
 	"wish-piece/internal/models"
 	"wish-piece/internal/repository"
+
+	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var ErrUserAlreadyExists = errors.New("user already exists")

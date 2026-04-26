@@ -3,8 +3,9 @@ package models
 import (
 	"time"
 
-	"github.com/google/uuid"
 	"wish-piece/internal/dto"
+
+	"github.com/google/uuid"
 )
 
 type User struct {

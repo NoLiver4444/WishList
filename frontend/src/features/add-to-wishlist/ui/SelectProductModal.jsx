@@ -1,13 +1,29 @@
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Plus, Search, X } from 'lucide-react';
 import { fetchMyProducts } from '@/entities/wishlist/api/wishlistApi';
+import { useClickOutside } from '@/shared/hooks/useClickOutside.jsx';
+import { useEscClose } from '@/shared/hooks/useEscClose.jsx';
 import styles from './SelectProductModal.module.css';
 
-const SelectProductModal = ({ isOpen, onClose, onSelect }) => {
+const SelectProductModal = ({
+  isOpen,
+  onClose,
+  onSelect,
+  existingProductIds,
+}) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState('');
+  const modalRef = useRef(null);
+
+  const handleClose = () => {
+    setQuery('');
+    onClose();
+  };
+
+  useClickOutside([modalRef], handleClose);
+  useEscClose(handleClose, isOpen);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -20,9 +36,20 @@ const SelectProductModal = ({ isOpen, onClose, onSelect }) => {
       .finally(() => setLoading(false));
   }, [isOpen]);
 
-  const filtered = products.filter((p) =>
-    p.title.toLowerCase().includes(query.toLowerCase())
-  );
+  useEffect(() => {
+    if (!isOpen) return;
+    setLoading(true);
+    fetchMyProducts()
+      .then((data) =>
+        setProducts(Array.isArray(data) ? data : (data.products ?? []))
+      )
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, [isOpen]);
+
+  const filtered = products
+    .filter((p) => !existingProductIds?.includes(p.id))
+    .filter((p) => p.title.toLowerCase().includes(query.toLowerCase()));
 
   if (!isOpen) return null;
 
@@ -33,15 +60,14 @@ const SelectProductModal = ({ isOpen, onClose, onSelect }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        onClick={onClose}
       >
         <motion.div
+          ref={modalRef}
           className={styles.modal}
           initial={{ y: -40, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -40, opacity: 0 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          onClick={(e) => e.stopPropagation()}
         >
           <div className={styles.header}>
             <h2 className={styles.title}>Выбрать желание</h2>

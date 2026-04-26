@@ -41,7 +41,7 @@ CREATE TABLE wishlists (
 CREATE TABLE wishlist_items (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     wishlist_id UUID NOT NULL REFERENCES wishlists(id) ON DELETE CASCADE,
-    product_id UUID NOT NULL REFERENCES products(id),
+    product_id UUID NOT NULL REFERENCES products(id) ON DELETE CASCADE,
     reserved_by UUID REFERENCES users(id),
     comment TEXT,
     "order" INT,

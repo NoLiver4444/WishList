@@ -147,20 +147,20 @@ func (s *WishlistService) DeleteWishlist(ctx context.Context, userID, wlID uuid.
 }
 
 func (s *WishlistService) GetWishlistPublic(ctx context.Context, wlID uuid.UUID) (*dto.WishlistDTO, error) {
-    wishlist, err := s.WishlistRepo.FindByID(ctx, wlID)
-    if err != nil {
-        return nil, err
-    }
+	wishlist, err := s.WishlistRepo.FindByID(ctx, wlID)
+	if err != nil {
+		return nil, err
+	}
 
-    return &dto.WishlistDTO{
-        ID:          wishlist.ID,
-        Name:        wishlist.Name,
-        Description: wishlist.Description,
-        Privacy:     string(wishlist.Privacy),
-        Deadline:    wishlist.Deadline,
-        CreatedAt:   wishlist.CreatedAt,
-        UpdatedAt:   wishlist.UpdatedAt,
-    }, nil
+	return &dto.WishlistDTO{
+		ID:          wishlist.ID,
+		Name:        wishlist.Name,
+		Description: wishlist.Description,
+		Privacy:     string(wishlist.Privacy),
+		Deadline:    wishlist.Deadline,
+		CreatedAt:   wishlist.CreatedAt,
+		UpdatedAt:   wishlist.UpdatedAt,
+	}, nil
 }
 
 // ============ ITEMS ============
@@ -267,35 +267,35 @@ func (s *WishlistService) RemoveItem(ctx context.Context, userID, itemID uuid.UU
 }
 
 func (s *WishlistService) ListItemsPublic(ctx context.Context, wlID uuid.UUID) ([]dto.WishlistItemDTO, error) {
-    items, err := s.ItemRepo.ListItemsWithProducts(ctx, wlID)
-    if err != nil {
-        return nil, err
-    }
+	items, err := s.ItemRepo.ListItemsWithProducts(ctx, wlID)
+	if err != nil {
+		return nil, err
+	}
 
-    result := make([]dto.WishlistItemDTO, 0, len(items))
-    for _, item := range items {
-        var product dto.ProductDTO
-        if item.Product != nil {
-            product = dto.ProductDTO{
-                ID:          item.Product.ID,
-                Title:       item.Product.Title,
-                URL:         item.Product.URL,
-                ImageURL:    item.Product.ImageURL,
-                Description: item.Product.Description,
-                Price:       item.Product.Price,
-                CreatedAt:   item.Product.CreatedAt,
-            }
-        }
-        result = append(result, dto.WishlistItemDTO{
-            ID:         item.ID,
-            Product:    product,
-            Comment:    item.Comment,
-            Order:      item.Order,
-            IsReserved: item.ReservedBy != nil,
-            ReservedBy: item.ReservedBy,
-            CreatedAt:  item.CreatedAt,
-            UpdatedAt:  item.UpdatedAt,
-        })
-    }
-    return result, nil
+	result := make([]dto.WishlistItemDTO, 0, len(items))
+	for _, item := range items {
+		var product dto.ProductDTO
+		if item.Product != nil {
+			product = dto.ProductDTO{
+				ID:          item.Product.ID,
+				Title:       item.Product.Title,
+				URL:         item.Product.URL,
+				ImageURL:    item.Product.ImageURL,
+				Description: item.Product.Description,
+				Price:       item.Product.Price,
+				CreatedAt:   item.Product.CreatedAt,
+			}
+		}
+		result = append(result, dto.WishlistItemDTO{
+			ID:         item.ID,
+			Product:    product,
+			Comment:    item.Comment,
+			Order:      item.Order,
+			IsReserved: item.ReservedBy != nil,
+			ReservedBy: item.ReservedBy,
+			CreatedAt:  item.CreatedAt,
+			UpdatedAt:  item.UpdatedAt,
+		})
+	}
+	return result, nil
 }
