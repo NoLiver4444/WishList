@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import Main from '@/widgets/Main';
 import AddCardModal from '@/features/add-card/ui/AddCardModal';
 import {
@@ -8,12 +8,14 @@ import {
   fetchWishlists,
   updateWishlist,
 } from '@/entities/wishlist';
+import { useSearch } from '@/shared/context/SearchContext.jsx';
 
 const WishlistsPage = () => {
   const [wishlists, setWishlists] = useState([]);
   const [editItem, setEditItem] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const { searchQuery } = useSearch();
 
   const sortOptions = [
     { label: 'по дате добавления', value: 'date_added' },
@@ -42,6 +44,12 @@ const WishlistsPage = () => {
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);
+
+  const filteredItems = useMemo(() => {
+    return wishlists.filter((item) =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [wishlists, searchQuery]);
 
   const loadPreviews = async (list) => {
     for (const wishlist of list) {
@@ -137,8 +145,9 @@ const WishlistsPage = () => {
         onAddClick={() => setIsModalOpen(true)}
         onEdit={handleEdit}
         onDelete={handleDelete}
-        data={wishlists}
+        data={filteredItems}
         loading={loading}
+        searchQuery={searchQuery}
       />
 
       <AddCardModal

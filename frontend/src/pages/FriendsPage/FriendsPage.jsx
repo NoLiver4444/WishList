@@ -1,6 +1,7 @@
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import Main from '@/widgets/Main';
 import AddCardModal from '@/features/add-card/ui/AddCardModal';
+import { useSearch } from '@/shared/context/SearchContext.jsx';
 
 const FriendsPage = () => {
   const [items, setItems] = useState(() => {
@@ -11,15 +12,22 @@ const FriendsPage = () => {
     }
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  useEffect(() => {
-    localStorage.setItem('friends', JSON.stringify(items));
-  }, [items]);
+  const { searchQuery } = useSearch();
 
   const sortOptions = [
     { label: 'по имени', value: 'name' },
     { label: 'по дате рождения', value: 'birthday_date' },
   ];
+
+  useEffect(() => {
+    localStorage.setItem('friends', JSON.stringify(items));
+  }, [items]);
+
+  const filteredItems = useMemo(() => {
+    return items.filter((item) =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [items, searchQuery]);
 
   const handleAdd = (newItem) => {
     setItems((prev) => [
@@ -47,7 +55,8 @@ const FriendsPage = () => {
         sortOptions={sortOptions}
         onAddClick={() => setIsModalOpen(true)}
         onDelete={handleDelete}
-        data={items}
+        data={filteredItems}
+        searchQuery={searchQuery}
       />
 
       <AddCardModal

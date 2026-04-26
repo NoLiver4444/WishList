@@ -1,4 +1,5 @@
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
+import { useSearch } from '@/shared/context/SearchContext';
 import { uploadImage } from '@/shared/lib/uploadImage';
 import Main from '@/widgets/Main';
 import AddCardModal from '@/features/add-card/ui/AddCardModal';
@@ -14,6 +15,7 @@ const ProductsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editItem, setEditItem] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { searchQuery } = useSearch();
 
   const sortOptions = [
     { label: 'по дате добавления', value: 'date_added' },
@@ -41,6 +43,12 @@ const ProductsPage = () => {
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);
+
+  const filteredItems = useMemo(() => {
+    return items.filter((item) =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [items, searchQuery]);
 
   const handleAdd = async (formData) => {
     const tempId = crypto.randomUUID();
@@ -163,8 +171,9 @@ const ProductsPage = () => {
         onAddClick={() => setIsModalOpen(true)}
         onDelete={handleDelete}
         onEdit={handleEdit}
-        data={items}
+        data={filteredItems}
         loading={loading}
+        searchQuery={searchQuery}
       />
 
       <AddCardModal

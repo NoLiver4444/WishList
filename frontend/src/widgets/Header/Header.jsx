@@ -1,4 +1,5 @@
-import { memo, useRef, useState } from 'react';
+import { memo, useRef } from 'react';
+import { useSearch } from '@/shared/context/SearchContext';
 import Logo from '@/shared/ui/Logo';
 import Navigation from '@/shared/ui/Navigation';
 import AccountSwitcher from '@/features/account-switch/AccountSwitcher';
@@ -7,17 +8,17 @@ import ShareButton from '@/features/share-wishlist/index.js';
 import styles from './Header.module.css';
 
 const Header = () => {
-  const [query, setQuery] = useState('');
   const searchRef = useRef(null);
   const inputRef = useRef(null);
+  const { searchQuery, setSearchQuery } = useSearch();
 
   const handleSearch = () => {
-    if (!query.trim()) return;
-    console.log('Поиск:', query);
+    if (!searchQuery.trim()) return;
+    console.log('Поиск:', searchQuery);
   };
 
   const handleClose = () => {
-    setQuery('');
+    setSearchQuery('');
     inputRef.current?.blur();
   };
 
@@ -29,8 +30,8 @@ const Header = () => {
       <SearchForm
         ref={searchRef}
         inputRef={inputRef}
-        query={query}
-        setQuery={setQuery}
+        query={searchQuery}
+        setQuery={setSearchQuery}
         onSearch={handleSearch}
         onClose={handleClose}
       />
