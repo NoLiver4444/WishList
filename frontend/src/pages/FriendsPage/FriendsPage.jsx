@@ -1,8 +1,19 @@
-import { memo, useEffect, useMemo, useState } from 'react';
-import Main from '@/widgets/Main';
-import AddCardModal from '@/features/add-card/ui/AddCardModal';
-import { useSearch } from '@/shared/context/SearchContext.jsx';
+/**
+ * @file Страница списка друзей.
+ * @module pages/FriendsPage
+ */
 
+import { memo, useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import Main from '@/widgets/Main';
+import AddCardModal from '@/features/cards/add-card/ui/AddCardModal';
+import { useSearch } from '@/shared/hooks/useSearch.js';
+
+/**
+ * Компонент FriendsPage.
+ * Позволяет искать и добавлять друзей по их ID.
+ * * @component
+ */
 const FriendsPage = () => {
   const [items, setItems] = useState(() => {
     try {
@@ -12,22 +23,28 @@ const FriendsPage = () => {
     }
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { searchQuery } = useSearch();
+  const { searchQuery, setSearchQuery } = useSearch();
+
+  const location = useLocation();
+
+  useEffect(() => {
+    setSearchQuery('');
+  }, [location.pathname, setSearchQuery]);
 
   const sortOptions = [
     { label: 'по имени', value: 'name' },
     { label: 'по дате рождения', value: 'birthday_date' },
   ];
 
-  useEffect(() => {
-    localStorage.setItem('friends', JSON.stringify(items));
-  }, [items]);
-
   const filteredItems = useMemo(() => {
     return items.filter((item) =>
       item.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [items, searchQuery]);
+
+  useEffect(() => {
+    localStorage.setItem('friends', JSON.stringify(items));
+  }, [items]);
 
   const handleAdd = (newItem) => {
     setItems((prev) => [

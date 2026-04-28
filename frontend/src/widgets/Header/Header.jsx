@@ -1,10 +1,16 @@
+/**
+ * @file Компонент шапки сайта.
+ * Содержит навигацию, поиск, переключатель аккаунтов и кнопку "поделиться".
+ * @module widgets/Header
+ */
+
 import { memo, useRef } from 'react';
-import { useSearch } from '@/shared/context/SearchContext';
-import Logo from '@/shared/ui/Logo';
-import Navigation from '@/shared/ui/Navigation';
-import AccountSwitcher from '@/features/account-switch/AccountSwitcher';
-import SearchForm from '@/features/search-task/SearchForm';
-import ShareButton from '@/features/share-wishlist/index.js';
+import { useSearch } from '@/shared/hooks/useSearch.js';
+import Logo from '@/shared/ui/Interface/Logo';
+import Navigation from '@/shared/ui/Interface/Navigation';
+import AccountSwitcher from '@/features/account/account-switch/AccountSwitcher';
+import SearchForm from '@/features/interface/search-task/SearchForm';
+import ShareButton from '@/features/interface/share-wishlist/index.js';
 import styles from './Header.module.css';
 
 const Header = () => {

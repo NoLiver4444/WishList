@@ -1,14 +1,8 @@
-import { createContext, useContext, useState } from 'react';
+/**
+ * @file Контекст глобального состояния поиска.
+ * @module shared/context/SearchContext
+ */
 
-const SearchContext = createContext();
+import { createContext } from 'react';
 
-export const SearchProvider = ({ children }) => {
-  const [searchQuery, setSearchQuery] = useState('');
-  return (
-    <SearchContext.Provider value={{ searchQuery, setSearchQuery }}>
-      {children}
-    </SearchContext.Provider>
-  );
-};
-
-export const useSearch = () => useContext(SearchContext);
+export const SearchContext = createContext(null);

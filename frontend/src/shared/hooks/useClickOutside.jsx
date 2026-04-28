@@ -1,3 +1,10 @@
+/**
+ * @file Хук для обработки клика вне элемента.
+ * @module shared/hooks/useClickOutside
+ * @param {React.RefObject|React.RefObject[]} refs - Реф или массив рефов элементов-исключений.
+ * @param {Function} handler - Функция, вызываемая при клике вне указанных элементов.
+ */
+
 import { useEffect } from 'react';
 
 export const useClickOutside = (refs, handler) => {

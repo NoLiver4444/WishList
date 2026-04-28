@@ -1,8 +1,26 @@
+/**
+ * @file Универсальный компонент-контейнер для страниц списков.
+ * @module widgets/Main
+ */
+
 import { memo, useMemo, useState } from 'react';
-import SortCardsForm from '@/features/sort-cards/SortCardsForm';
+import SortCardsForm from '@/features/cards/sort-cards/SortCardsForm';
 import CardList from '@/entities/ui/CardList';
 import { sortItems } from '@/shared/lib/sortItems';
 import styles from './Main.module.css';
+
+/**
+ * Компонент Main.
+ * Автоматически сортирует данные и отображает либо CardList, либо переданный children.
+ * * @component
+ * @param {Object} props - Свойства компонента.
+ * @param {string} props.title - Заголовок страницы.
+ * @param {'wishes'|'wishlists'} [props.type='wishes'] - Тип отображаемого контента для стилизации.
+ * @param {Array<{label: string, value: string}>} [props.sortOptions=[]] - Опции для выпадающего списка сортировки.
+ * @param {Array} [props.data=[]] - Массив данных для отображения.
+ * @param {Function} [props.onAddClick] - Коллбэк для кнопки добавления новой карточки.
+ * @param {React.ReactNode} [props.children] - Возможность переопределить стандартный список карточек.
+ */
 
 const Main = ({
   title,

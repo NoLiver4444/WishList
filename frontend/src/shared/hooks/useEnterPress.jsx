@@ -1,3 +1,9 @@
+/**
+ * @file Хук для обработки нажатия клавиши Enter.
+ * @param {Function} handleSubmit - Функция обратного вызова.
+ * @param {boolean} [isOpen=true] - Флаг активности слушателя.
+ */
+
 import { useEffect } from 'react';
 
 export const useEnterPress = (handleSubmit, isOpen = true) => {

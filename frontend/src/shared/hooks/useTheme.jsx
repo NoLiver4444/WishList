@@ -1,3 +1,11 @@
+/**
+ * @file Хук для управления темой оформления (светлая/темная/системная).
+ * @module shared/hooks/useTheme
+ * @returns {Object} Объект с текущей темой и функцией её изменения.
+ * @property {string} theme - Текущая тема ('light', 'dark' или 'system').
+ * @property {function(string): void} setTheme - Функция обновления темы.
+ */
+
 import { useEffect, useState } from 'react';
 
 const STORAGE_KEY = 'app-theme';

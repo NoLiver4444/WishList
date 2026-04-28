@@ -1,3 +1,9 @@
+/**
+ * @file Хук для закрытия по нажатию клавиши Esc.
+ * @param {Function} onClose - Функция закрытия.
+ * @param {boolean} [isOpen=true] - Флаг активности слушателя.
+ */
+
 import { useEffect } from 'react';
 
 export const useEscClose = (onClose, isOpen = true) => {

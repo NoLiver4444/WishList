@@ -1,7 +1,12 @@
+/**
+ * @file Виджет календаря для отображения дедлайнов.
+ * @module widgets/CalendarWidget
+ */
+
 import { memo, useState } from 'react';
-import CalendarNavigation from '@/features/calendar-navigation';
-import DayDeadlinesModal from '@/features/day-deadlines-modal';
-import CalendarDay from '@/shared/ui/CalendarDay';
+import CalendarNavigation from '@/features/calendar/calendar-navigation';
+import DayDeadlinesModal from '@/features/calendar/day-deadlines-modal';
+import CalendarDay from '@/shared/ui/Calendar/CalendarDay';
 import {
   getDeadlinesByDate,
   selectWishlists,
@@ -12,6 +17,13 @@ import styles from './CalendarWidget.module.css';
 
 const DAYS_OF_WEEK = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
+/**
+ * Генерирует массив дат для отображения в сетке календаря на месяц.
+ * Включает в себя смещение для начала недели (Пн) и заполнение пустых ячеек в конце.
+ * * @function buildCalendarDays
+ * @param {Date} date - Дата текущего выбранного месяца.
+ * @returns {Date[]} Массив объектов Date для сетки 7x5 или 7x6.
+ */
 const buildCalendarDays = (date) => {
   const year = date.getFullYear();
   const month = date.getMonth();
@@ -37,6 +49,11 @@ const buildCalendarDays = (date) => {
   return days;
 };
 
+/**
+ * Компонент CalendarWidget.
+ * Позволяет перемещаться по месяцам и просматривать списки желаний, привязанные к датам.
+ * * @component
+ */
 const CalendarWidget = () => {
   const wishlists = useWishlistStore(selectWishlists);
 

@@ -1,27 +1,45 @@
+/**
+ * @file Страница списка всех желаний пользователя.
+ * @module pages/ProductsPage
+ */
+
 import { memo, useEffect, useMemo, useState } from 'react';
-import { useSearch } from '@/shared/context/SearchContext';
+import { useLocation } from 'react-router-dom';
+import { useSearch } from '@/shared/hooks/useSearch.js';
 import { uploadImage } from '@/shared/lib/uploadImage';
 import Main from '@/widgets/Main';
-import AddCardModal from '@/features/add-card/ui/AddCardModal';
+import AddCardModal from '@/features/cards/add-card/ui/AddCardModal';
 import {
   createProduct,
   deleteProduct,
   fetchMyProducts,
   updateProduct,
-} from '@/entities/wishlist/api/wishlistApi';
+} from '@/entities/api/products.api.js';
 
+/**
+ * Компонент ProductsPage.
+ * Интегрирует API для работы с продуктами (fetch, create, update, delete).
+ * Управляет состоянием модальных окон для добавления и редактирования.
+ * * @component
+ */
 const ProductsPage = () => {
   const [items, setItems] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editItem, setEditItem] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { searchQuery } = useSearch();
+  const { searchQuery, setSearchQuery } = useSearch();
+
+  const location = useLocation();
 
   const sortOptions = [
     { label: 'по дате добавления', value: 'date_added' },
     { label: 'по названию', value: 'name' },
     { label: 'по цене', value: 'price' },
   ];
+
+  useEffect(() => {
+    setSearchQuery('');
+  }, [location.pathname, setSearchQuery]);
 
   useEffect(() => {
     fetchMyProducts()

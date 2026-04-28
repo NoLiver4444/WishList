@@ -1,0 +1,166 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.modal {
+  background-color: var(--background-color);
+  border: var(--border);
+  border-radius: var(--big-border-radius);
+  width: 100%;
+  max-width: 480px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: var(--border);
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.close {
+  background: none;
+  border: none;
+  color: var(--subtext-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: var(--small-border-radius);
+  transition: color var(--transition-duration);
+}
+
+.close:hover {
+  color: var(--text-color);
+}
+
+.avatarSection {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border-bottom: var(--border);
+}
+
+.avatarWrapper {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.avatar,
+.avatarPlaceholder {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatarPlaceholder {
+  background-color: var(--dim-background-color);
+}
+
+.avatarOverlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  opacity: 0;
+  transition: opacity var(--transition-duration);
+}
+
+.avatarWrapper:hover .avatarOverlay {
+  opacity: 1;
+}
+
+.avatarInput {
+  display: none;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.userName {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.userEmail {
+  font-size: 13px;
+  color: var(--subtext-color);
+}
+
+.tabs {
+  display: flex;
+  border-bottom: var(--border);
+  padding: 0 20px;
+}
+
+.tab {
+  padding: 10px 12px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--subtext-color);
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: -1px;
+  transition: color var(--transition-duration);
+}
+
+.activeTab {
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+}
+
+.dangerTab {
+  color: var(--attention-color);
+}
+
+.dangerTab.activeTab {
+  border-bottom-color: var(--attention-color);
+}
+
+.content {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.dangerZone {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dangerText {
+  font-size: 13px;
+  color: var(--subtext-color);
+  margin: 0;
+}

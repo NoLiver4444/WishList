@@ -1,8 +1,18 @@
+/**
+ * @file Страница аутентификации.
+ * @module pages/AuthPage
+ */
+
 import { memo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LoginForm, RegisterForm } from '@/features/auth';
+import { LoginForm, RegisterForm } from '@/features/account/auth';
 import styles from './AuthPage.module.css';
 
+/**
+ * Компонент AuthPage.
+ * Предоставляет интерфейс для входа в систему и создания нового аккаунта.
+ * * @component
+ */
 const AuthPage = () => {
   const [mode, setMode] = useState('login');
   const navigate = useNavigate();

@@ -1,21 +1,35 @@
+/**
+ * @file Страница списков желаний (Вишлистов).
+ * @module pages/WishlistsPage
+ */
+
 import { memo, useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import Main from '@/widgets/Main';
-import AddCardModal from '@/features/add-card/ui/AddCardModal';
+import AddCardModal from '@/features/cards/add-card/ui/AddCardModal';
 import {
   createWishlist,
   deleteWishlist,
   fetchWishlistItems,
   fetchWishlists,
   updateWishlist,
-} from '@/entities/wishlist';
-import { useSearch } from '@/shared/context/SearchContext.jsx';
+} from '@/entities/api/index.js';
+import { useSearch } from '@/shared/hooks/useSearch.js';
 
+/**
+ * Компонент WishlistsPage.
+ * Позволяет просматривать, создавать и редактировать вишлисты.
+ * Каждый вишлист может иметь дату события (дедлайн) и настройки приватности.
+ * * @component
+ */
 const WishlistsPage = () => {
   const [items, setItems] = useState([]);
   const [editItem, setEditItem] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const { searchQuery } = useSearch();
+  const { searchQuery, setSearchQuery } = useSearch();
+
+  const location = useLocation();
 
   const sortOptions = [
     { label: 'по дате добавления', value: 'date_added' },
@@ -23,6 +37,10 @@ const WishlistsPage = () => {
     { label: 'по количеству желаний', value: 'count_products' },
     { label: 'по дате события', value: 'deadline' },
   ];
+
+  useEffect(() => {
+    setSearchQuery('');
+  }, [location.pathname, setSearchQuery]);
 
   useEffect(() => {
     fetchWishlists()

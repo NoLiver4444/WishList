@@ -1,0 +1,108 @@
+.page {
+  margin-block-start: 50px;
+  margin-inline: clamp(10px, -22.5px + 6.35vw, 140px);
+  padding-block: 30px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: var(--border);
+  border-radius: var(--small-border-radius);
+  color: var(--text-color);
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color var(--transition-duration);
+}
+
+.back:hover {
+  background-color: var(--dim-background-color);
+}
+
+.info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.deadline {
+  color: var(--primary-color);
+  font-size: 14px;
+}
+
+.deleteButton {
+  background: none;
+  border: 1px solid var(--attention-color);
+  color: var(--attention-color);
+  border-radius: var(--small-border-radius);
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background-color var(--transition-duration);
+}
+
+.deleteButton:hover {
+  background-color: rgba(231, 13, 39, 0.1);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.addCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: var(--border);
+  border-radius: var(--big-border-radius);
+  color: var(--subtext-color);
+  font-size: 13px;
+  cursor: pointer;
+  min-height: 200px;
+  transition:
+    border-color var(--transition-duration),
+    color var(--transition-duration);
+}
+
+.addCard:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.notWishes {
+  margin: auto;
+  color: var(--subtext-color);
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.state {
+  text-align: center;
+  padding: 40px;
+  color: var(--subtext-color);
+}

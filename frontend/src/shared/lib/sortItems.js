@@ -1,3 +1,16 @@
+/**
+ * @file Утилита для сортировки списков.
+ * @module shared/lib/sortItems
+ */
+
+/**
+ * Сортирует массив элементов по заданному критерию.
+ * Поддерживает сортировку по имени, цене, дедлайну, количеству товаров и дате рождения.
+ * * @function sortItems
+ * @param {Array<Object>} items - Исходный массив элементов.
+ * @param {string} sortBy - Ключ сортировки ('name', 'price', 'deadline', 'count_products', 'birthday_date').
+ * @returns {Array<Object>} Новый отсортированный массив.
+ */
 export const sortItems = (items, sortBy) => {
   const sorted = [...items];
 

@@ -1,8 +1,12 @@
+/**
+ * @file Конфигурация сборщика Vite.
+ */
+
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { fileURLToPath, URL } from 'node:url';
 
-// https://vite.dev/config/
+/** @type {import('vite').UserConfig} */
 export default defineConfig({
 	plugins: [react()],
 	resolve: {
@@ -11,6 +15,7 @@ export default defineConfig({
 		},
 	},
 	server: {
+		host: true,
 		proxy: {
 			'/api': {
 				target: 'http://backend:8080',

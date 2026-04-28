@@ -1,3 +1,9 @@
+/**
+ * @file Компонент подвала сайта.
+ * Содержит копирайт и ссылки на поддержку и GitHub.
+ * @module widgets/Footer
+ */
+
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Footer.module.css';
