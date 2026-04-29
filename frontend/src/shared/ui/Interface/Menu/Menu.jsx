@@ -66,8 +66,8 @@ const Menu = ({
         >
           <Avatar
             classname={styles.avatar}
-            src={users?.avatarURL}
-            alt={users?.login}
+            src={currentUser?.avatar_url}
+            alt={currentUser?.login}
             size={32}
           />
           <span className={styles.avatarLabel}>{currentUser?.login}</span>

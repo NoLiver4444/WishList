@@ -10,11 +10,18 @@ import { apiClient } from '@/shared/api/apiClient.js';
  * @param {Object} body - Объект с обновляемыми полями.
  * @returns {Promise<Object>} Обновленный объект пользователя.
  */
-export const updateUserRequest = (body) =>
-  apiClient('/v1/users/me', {
+export const updateUserRequest = (body) => {
+  const cleaned = Object.fromEntries(
+    Object.entries(body).filter(
+      ([, v]) => v !== '' && v !== undefined && v !== null
+    )
+  );
+
+  return apiClient('/v1/users/me', {
     method: 'PATCH',
-    body: JSON.stringify(body),
+    body: JSON.stringify(cleaned),
   });
+};
 
 /**
  * Удаляет текущий аккаунт пользователя.

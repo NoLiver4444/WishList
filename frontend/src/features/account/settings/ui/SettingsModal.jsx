@@ -3,14 +3,13 @@
  * @module features/account/settings/ui/SettingsModal
  */
 
-import { memo, useRef, useState } from 'react';
+import { memo, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Camera, X } from 'lucide-react';
 import { useClickOutside } from '@/shared/hooks/useClickOutside.jsx';
 import { useEscClose } from '@/shared/hooks/useEscClose.jsx';
 import { useSessionStore } from '@/entities/session/index.js';
 import { uploadImage } from '@/shared/lib/uploadImage.js';
-import { AuthForm } from '@/features/account/auth/ui/AuthForm.jsx';
 import { validateSettingsField } from '../lib/validate.js';
 import { deleteUserRequest, updateUserRequest } from '../api/settingsApi.js';
 import {
@@ -18,6 +17,7 @@ import {
   getProfileFields,
   passwordFields,
 } from '../config/SettingsForm.config.js';
+import { useSettingsForm } from '@/features/account/settings/model/useSettingsForm.jsx';
 import styles from './SettingsModal.module.css';
 
 /**
@@ -37,8 +37,60 @@ const SettingsModal = ({ isOpen, onClose }) => {
   const [avatarLoading, setAvatarLoading] = useState(false);
   const profileFields = getProfileFields();
 
+  const currentConfig = useMemo(() => {
+    switch (tab) {
+      case 'password':
+        return {
+          fields: passwordFields,
+          initial: { current_password: '', new_password: '' },
+          submit: async (form) => {
+            await updateUserRequest({ password: form.new_password });
+            onClose();
+          },
+        };
+      case 'danger':
+        return {
+          fields: dangerFields,
+          initial: { password: '' },
+          submit: async (form) => {
+            await deleteUserRequest({ password: form.password });
+            logout();
+          },
+        };
+      default:
+        return {
+          fields: profileFields,
+          initial: {
+            login: currentUser?.login || '',
+            email: currentUser?.email || '',
+            phone: currentUser?.phone || '',
+            birthday: currentUser?.birthday
+              ? currentUser.birthday.split('T')[0]
+              : '',
+          },
+          submit: async (formData) => {
+            const updated = await updateUserRequest({
+              login: formData.login || undefined,
+              email: formData.email || undefined,
+              phone: formData.phone || undefined,
+              ...(formData.birthday ? { birthday: formData.birthday } : {}),
+            });
+            updateUser(updated);
+            onClose();
+          },
+        };
+    }
+  }, [tab, currentUser, onClose, updateUser, logout, profileFields]);
+
   useClickOutside([modalRef], onClose);
   useEscClose(onClose, isOpen);
+
+  const { form, errors, handleChange, handleSubmit } = useSettingsForm({
+    fields: currentConfig.fields,
+    initialValues: currentConfig.initial,
+    validateField: validateSettingsField,
+    onSubmit: currentConfig.submit,
+  });
 
   if (!isOpen) return null;
 
@@ -124,51 +176,36 @@ const SettingsModal = ({ isOpen, onClose }) => {
           </div>
 
           <div className={styles.content}>
-            {tab === 'profile' && (
-              <AuthForm
-                fields={profileFields}
-                submitText="Сохранить"
-                validateField={validateSettingsField}
-                onSubmit={async (form) => {
-                  const updated = await updateUserRequest({
-                    login: form.login || undefined,
-                    email: form.email || undefined,
-                    phone: form.phone || undefined,
-                  });
-                  updateUser(updated);
-                  onClose();
-                }}
-              />
-            )}
+            <form onSubmit={handleSubmit} className={styles.content}>
+              {currentConfig.fields.map((field) => (
+                <div key={field.name} className={styles.field}>
+                  <label className={styles.label}>{field.label}</label>
+                  <input
+                    className={`${styles.input} ${errors[field.name] ? styles.inputError : ''}`}
+                    name={field.name}
+                    type={field.type}
+                    value={form[field.name] || ''}
+                    placeholder={field.placeholder}
+                    onChange={handleChange}
+                    min={field.min}
+                    max={field.max}
+                  />
+                  {errors[field.name] && (
+                    <span className={styles.errorText}>
+                      {errors[field.name]}
+                    </span>
+                  )}
+                </div>
+              ))}
 
-            {tab === 'password' && (
-              <AuthForm
-                fields={passwordFields}
-                submitText="Изменить пароль"
-                validateField={validateSettingsField}
-                onSubmit={async (form) => {
-                  await updateUserRequest({ password: form.new_password });
-                  onClose();
-                }}
-              />
-            )}
-
-            {tab === 'danger' && (
-              <div className={styles.dangerZone}>
-                <p className={styles.dangerText}>
-                  Это действие необратимо. Все ваши данные будут удалены.
-                </p>
-                <AuthForm
-                  fields={dangerFields}
-                  submitText="Удалить аккаунт"
-                  validateField={validateSettingsField}
-                  onSubmit={async (form) => {
-                    await deleteUserRequest({ password: form.password });
-                    logout();
-                  }}
-                />
-              </div>
-            )}
+              <button type="submit" className={styles.submit}>
+                {tab === 'profile'
+                  ? 'Сохранить'
+                  : tab === 'password'
+                    ? 'Сменить пароль'
+                    : 'Удалить'}
+              </button>
+            </form>
           </div>
         </motion.div>
       </motion.div>

@@ -27,6 +27,8 @@ const ProfilePopup = ({ user, onClose }) => {
   useEscClose(onClose);
   useClickOutside([popupRef], onClose);
 
+  console.log(user);
+
   const modalContent = (
     <motion.div
       className={styles.overlay}
@@ -53,14 +55,21 @@ const ProfilePopup = ({ user, onClose }) => {
 
         <div className={styles.profileInfo}>
           <Avatar
-            src={user?.avatarURL}
+            src={user?.avatar_url}
             alt={user?.login}
             size={150}
             className={styles.avatar}
           />
           <h2 className={styles.name}>{user?.login}</h2>
           <p className={styles.birthday}>
-            Дата рождения: {user?.birthday || 'Не указана'}
+            Дата рождения:{' '}
+            {user?.birthday
+              ? new Date(user.birthday).toLocaleDateString('ru-RU', {
+                  day: '2-digit',
+                  month: 'long',
+                  year: 'numeric',
+                })
+              : 'не указана'}
           </p>
         </div>
       </motion.div>

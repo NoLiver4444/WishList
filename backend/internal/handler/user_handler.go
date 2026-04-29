@@ -2,6 +2,9 @@ package handler
 
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
+	"log"
 	"net/http"
 
 	"wish-piece/internal/dto"
@@ -43,24 +46,34 @@ func (h *UserHandler) UpdateMe(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	r.Body = http.MaxBytesReader(w, r.Body, 1048576)
+
 	var req dto.UpdateUserRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		RespondError(w, http.StatusBadRequest, "Invalid JSON", "PARSE_ERROR")
 		return
 	}
 
-	if err := h.Validator.Struct(req); err != nil { // ← Теперь работает
-		RespondError(w, http.StatusBadRequest, "Validation error", "VALIDATION_ERROR")
+	if err := h.Validator.Struct(req); err != nil {
+		RespondError(w, http.StatusBadRequest, fmt.Sprintf("Validation failed: %v", err), "VALIDATION_ERROR")
+		return
+	}
+
+	if req.Login == nil && req.Email == nil && req.Phone == nil && req.AvatarURL == nil && req.Birthday == nil {
+		RespondError(w, http.StatusBadRequest, "No fields to update", "EMPTY UPDATE")
 		return
 	}
 
 	user, err := h.Service.UpdateUser(r.Context(), userID, req)
 	if err != nil {
-		if err == service.ErrUserAlreadyExists {
-			RespondError(w, http.StatusConflict, "Login or email already exists", "CONFLICT")
-			return
+		switch {
+		case errors.Is(err, service.ErrUserAlreadyExists):
+			RespondError(w, http.StatusConflict, "Login or email already taken", "CONFLICT")
+		default:
+			log.Printf("Update error: %v", err)
+			RespondError(w, http.StatusInternalServerError, "Internal error", "INTERNAL_ERROR")
 		}
-		RespondError(w, http.StatusInternalServerError, "Internal error", "INTERNAL_ERROR")
+
 		return
 	}
 

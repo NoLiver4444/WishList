@@ -36,7 +36,7 @@ type WishlistDTO struct {
 	Description *string    `json:"description,omitempty"`
 	Privacy     string     `json:"privacy"`
 	Deadline    *time.Time `json:"deadline,omitempty"`
-	ItemCount   int        `json:"item_count,omitempty"` // опционально: кол-во товаров
+	ItemCount   int        `json:"item_count,omitempty"`
 	CreatedAt   time.Time  `json:"created_at"`
 	UpdatedAt   time.Time  `json:"updated_at"`
 }

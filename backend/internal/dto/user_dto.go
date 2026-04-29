@@ -5,6 +5,7 @@ type UpdateUserRequest struct {
 	Email     *string `json:"email,omitempty" validate:"omitempty,email"`
 	Phone     *string `json:"phone,omitempty"`
 	AvatarURL *string `json:"avatar_url,omitempty" validate:"omitempty,uri"`
+	Birthday  *string `json:"birthday,omitempty" validate:"omitempty,datetime=2006-01-02"`
 }
 
 type DeleteUserRequest struct {

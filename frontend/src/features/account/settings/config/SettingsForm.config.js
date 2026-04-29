@@ -25,16 +25,31 @@ export const getProfileFields = () => {
       name: 'login',
       label: 'Логин',
       placeholder: currentUser?.login,
+      type: 'text',
     },
     {
       name: 'email',
       label: 'Email',
       placeholder: currentUser?.email,
+      type: 'email',
     },
     {
       name: 'phone',
       label: 'Телефон',
       placeholder: currentUser?.phone ?? '+7...',
+      type: 'phone',
+    },
+    {
+      name: 'birthday',
+      label: 'День рождения',
+      placeholder: currentUser?.birthday
+        ? new Date(currentUser.birthday).toLocaleDateString('ru-RU')
+        : 'ДД.ММ.ГГГГ',
+      type: 'date',
+      min: new Date(new Date().setFullYear(new Date().getFullYear() - 120))
+        .toISOString()
+        .split('T')[0],
+      max: new Date().toISOString().split('T')[0],
     },
   ];
 };

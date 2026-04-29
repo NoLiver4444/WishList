@@ -68,7 +68,11 @@ export const ProfileDropdown = memo(
     return (
       <DropdownContainer>
         <div className={styles.profileData}>
-          <Avatar src={users?.avatarURL} alt={users?.login} size={32} />
+          <Avatar
+            src={currentUser?.avatar_url}
+            alt={currentUser?.login}
+            size={32}
+          />
           <span className={styles.profileInfo}>
             <span
               className={styles.profileLogin}
@@ -114,7 +118,7 @@ export const ProfileDropdown = memo(
               <span className={styles.switchAccount}>
                 <Avatar
                   className={styles.switchAccountIcon}
-                  src={users?.avatarURL}
+                  src={user?.avatar_url}
                   alt={user?.login}
                   size={32}
                 />

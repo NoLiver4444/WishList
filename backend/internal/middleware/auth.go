@@ -10,7 +10,7 @@ import (
 
 type contextKey string
 
-const UserIDKey contextKey = "user_id"
+const UserIDKey contextKey = "id"
 
 func AuthMiddleware(jwtSecret string, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

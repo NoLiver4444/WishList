@@ -14,7 +14,9 @@ CREATE TABLE users (
     phone VARCHAR(20),
     password_hash VARCHAR(255) NOT NULL,
     avatar_url TEXT,
-    created_at TIMESTAMP DEFAULT NOW()
+    birthday DATE,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE products (
@@ -79,8 +81,10 @@ CREATE TABLE user_products (
 );
 
 -- 3. Индексы для частых выборок
+CREATE INDEX idx_users_id ON users(id);
 CREATE INDEX idx_users_login ON users(login);
 CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_phone ON users(phone);
 CREATE INDEX idx_wishlists_user_id ON wishlists(user_id);
 CREATE INDEX idx_wishlist_items_wishlist_id ON wishlist_items(wishlist_id);
 CREATE INDEX idx_wishlist_items_product_id ON wishlist_items(product_id);
