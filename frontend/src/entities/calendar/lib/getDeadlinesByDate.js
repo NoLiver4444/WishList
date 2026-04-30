@@ -1,15 +1,18 @@
 /**
- * Фильтрует вишлисты, у которых дедлайн совпадает с переданной датой.
- * * @function getDeadlinesByDate
- * @param {Array<Object>} wishlists - Массив объектов вишлистов.
- * @param {Date} date - Объект даты для проверки.
- * @returns {Array<Object>} Список вишлистов, дедлайн которых приходится на этот день.
+ * Возвращает вишлисты, дедлайн которых совпадает с переданной датой.
+ * Совместимо с форматом API: поле deadline приходит как ISO строка.
+ * @param {Array} wishlists
+ * @param {Date} date
+ * @returns {Array}
  */
 export const getDeadlinesByDate = (wishlists, date) => {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, '0');
-  const d = String(date.getDate()).padStart(2, '0');
-  const key = `${y}-${m}-${d}`;
-
-  return wishlists.filter((w) => w.deadline === key);
+  return wishlists.filter((w) => {
+    if (!w.deadline) return false;
+    const d = new Date(w.deadline);
+    return (
+      d.getFullYear() === date.getFullYear() &&
+      d.getMonth() === date.getMonth() &&
+      d.getDate() === date.getDate()
+    );
+  });
 };

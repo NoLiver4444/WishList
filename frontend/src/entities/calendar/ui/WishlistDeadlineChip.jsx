@@ -3,8 +3,8 @@
  * @module entities/calendar/ui/WishlistDeadlineChip
  */
 
-import styles from './WishlistDeadlineChip.module.css';
 import { memo } from 'react';
+import styles from './WishlistDeadlineChip.module.css';
 
 /**
  * Компонент-индикатор дедлайна вишлиста в календаре.
@@ -15,8 +15,8 @@ import { memo } from 'react';
  */
 export const WishlistDeadlineChip = memo(({ wishlist }) => {
   return (
-    <span className={styles.chip} title={wishlist.title}>
-      {wishlist.title}
+    <span className={styles.chip} title={wishlist.name}>
+      {wishlist.name}
     </span>
   );
 });

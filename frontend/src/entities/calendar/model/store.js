@@ -4,26 +4,39 @@
  */
 
 import { create } from 'zustand';
-import { WISHLISTS_MOCK } from './mock.js';
+import { fetchWishlists } from '@/entities/api/wishlists.api.js';
 
 /**
- * Hook-хранилище для управления данными вишлистов.
- * Использует Zustand для обеспечения глобального доступа к данным.
- * * @typedef {Object} WishlistState
- * @property {Array<Object>} wishlists - Массив объектов вишлистов.
- * @property {function(Array<Object>): void} setWishlists - Функция обновления списка вишлистов.
- * * @returns {import('zustand').UseBoundStore<import('zustand').StoreApi<WishlistState>>}
+ * @typedef {Object} Wishlist
+ * @property {string|number} id
+ * @property {string} name       - название (поле из API)
+ * @property {string} [deadline] - ISO дата дедлайна
  */
 export const useWishlistStore = create((set) => ({
-  wishlists: WISHLISTS_MOCK,
-  setWishlists: (wishlists) => set({ wishlists }),
+  wishlists: [],
+  loading: false,
+  error: null,
+
+  fetchWishlists: async () => {
+    set({ loading: true, error: null });
+    try {
+      const data = await fetchWishlists();
+      const list = Array.isArray(data) ? data : (data.items ?? []);
+      set({ wishlists: list });
+    } catch (err) {
+      set({ error: err.message ?? 'Ошибка загрузки вишлистов' });
+    } finally {
+      set({ loading: false });
+    }
+  },
 }));
 
 /**
  * Селектор для получения только списка вишлистов из стейта.
  * Используется для оптимизации рендеринга (подписка только на часть стора).
  * * @function selectWishlists
- * @param {WishlistState} state - Текущее состояние стора.
+ * @param {state} state - Текущее состояние стора.
  * @returns {Array<Object>} Список вишлистов.
  */
-export const selectWishlists = (state) => state.wishlists;
+export const selectWishlists = (state) => state?.wishlists;
+export const selectWishlistsLoading = (state) => state.loading;

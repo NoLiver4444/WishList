@@ -80,7 +80,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
           },
         };
     }
-  }, [tab, currentUser, onClose, updateUser, logout, profileFields]);
+  }, [tab, currentUser, onClose, updateUser, logout]);
 
   useClickOutside([modalRef], onClose);
   useEscClose(onClose, isOpen);

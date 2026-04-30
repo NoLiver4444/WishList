@@ -3,13 +3,14 @@
  * @module widgets/CalendarWidget
  */
 
-import { memo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import CalendarNavigation from '@/features/calendar/calendar-navigation';
 import DayDeadlinesModal from '@/features/calendar/day-deadlines-modal';
 import CalendarDay from '@/shared/ui/Calendar/CalendarDay';
 import {
   getDeadlinesByDate,
   selectWishlists,
+  selectWishlistsLoading,
   useWishlistStore,
   WishlistDeadlineChip,
 } from '@/entities/calendar';
@@ -56,9 +57,15 @@ const buildCalendarDays = (date) => {
  */
 const CalendarWidget = () => {
   const wishlists = useWishlistStore(selectWishlists);
+  const loading = useWishlistStore(selectWishlistsLoading);
+  const fetchWishlists = useWishlistStore((s) => s.fetchWishlists);
 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [modal, setModal] = useState(null);
+
+  useEffect(() => {
+    fetchWishlists().then(() => 'xd');
+  }, [fetchWishlists]);
 
   const today = new Date();
 
@@ -73,10 +80,8 @@ const CalendarWidget = () => {
 
   const handlePrev = () =>
     setCurrentDate((d) => new Date(d.getFullYear(), d.getMonth() - 1, 1));
-
   const handleNext = () =>
     setCurrentDate((d) => new Date(d.getFullYear(), d.getMonth() + 1, 1));
-
   const handleToday = () => setCurrentDate(new Date());
 
   const handleDayClick = (date, deadlines) => {
@@ -96,37 +101,40 @@ const CalendarWidget = () => {
           onToday={handleToday}
         />
 
-        <div className={styles.grid}>
-          {DAYS_OF_WEEK.map((day) => (
-            <div key={day} className={styles.dayOfWeek}>
-              {day}
-            </div>
-          ))}
+        {loading ? (
+          <div className={styles.loading}>Загрузка...</div>
+        ) : (
+          <div className={styles.grid}>
+            {DAYS_OF_WEEK.map((day) => (
+              <div key={day} className={styles.dayOfWeek}>
+                {day}
+              </div>
+            ))}
 
-          {days.map((date, i) => {
-            const deadlines = getDeadlinesByDate(wishlists, date);
-            const MAX_VISIBLE = 3;
-
-            return (
-              <CalendarDay
-                key={i}
-                date={date}
-                isCurrentMonth={isCurrentMonth(date)}
-                isToday={isToday(date)}
-                onClick={() => handleDayClick(date, deadlines)}
-              >
-                {deadlines.slice(0, MAX_VISIBLE).map((w) => (
-                  <WishlistDeadlineChip key={w.id} wishlist={w} />
-                ))}
-                {deadlines.length > MAX_VISIBLE && (
-                  <span className={styles.more}>
-                    +{deadlines.length - MAX_VISIBLE} ещё
-                  </span>
-                )}
-              </CalendarDay>
-            );
-          })}
-        </div>
+            {days.map((date, i) => {
+              const deadlines = getDeadlinesByDate(wishlists, date);
+              const MAX_VISIBLE = 3;
+              return (
+                <CalendarDay
+                  key={i}
+                  date={date}
+                  isCurrentMonth={isCurrentMonth(date)}
+                  isToday={isToday(date)}
+                  onClick={() => handleDayClick(date, deadlines)}
+                >
+                  {deadlines.slice(0, MAX_VISIBLE).map((w) => (
+                    <WishlistDeadlineChip key={w.id} wishlist={w} />
+                  ))}
+                  {deadlines.length > MAX_VISIBLE && (
+                    <span className={styles.more}>
+                      +{deadlines.length - MAX_VISIBLE} ещё
+                    </span>
+                  )}
+                </CalendarDay>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {modal && (

@@ -1,12 +1,11 @@
 .overlay {
-  z-index: var(--modal-z-index);
   position: fixed;
   inset: 0;
-  background-color: rgb(0 0 0 / 0.2);
-  backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 100;
   padding: 16px;
 }
 
@@ -94,8 +93,28 @@
 
 .itemTitle {
   font-size: 14px;
-  color: var(--dropdown-text-color);
   font-weight: 500;
+  color: var(--text-color);
+  text-decoration: none;
+  background-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 90%,
+    var(--primary-color) 90%,
+    var(--primary-color) 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 0 100%;
+  background-position-x: right;
+  transition:
+    background-size var(--transition-duration),
+    color var(--transition-duration);
+}
+
+.itemTitle:hover {
+  color: var(--primary-color);
+  background-size: 100% 100%;
+  background-position-x: left;
 }
 
 .itemDesc {

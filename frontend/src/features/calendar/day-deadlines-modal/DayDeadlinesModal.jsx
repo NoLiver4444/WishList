@@ -4,9 +4,10 @@
  */
 
 import { memo, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useEscClose } from '@/shared/hooks/useEscClose.jsx';
-import { useClickOutside } from '@/shared/hooks/useClickOutside.jsx';
 import styles from './DayDeadlinesModal.module.css';
+import { useClickOutside } from '@/shared/hooks/useClickOutside.jsx';
 
 const MONTHS_RU = [
   'января',
@@ -33,20 +34,15 @@ const MONTHS_RU = [
 const DayDeadlinesModal = ({ date, wishlists, onClose }) => {
   const modalRef = useRef(null);
 
-  useEscClose(onClose);
-  useClickOutside([modalRef], onClose);
+  useClickOutside(modalRef, onClose);
+  useEscClose(onClose, !!date);
 
   if (!date) return null;
 
   const formattedDate = `${date.getDate()} ${MONTHS_RU[date.getMonth()]} ${date.getFullYear()}`;
-
-  const handleOverlayClick = (e) => {
-    if (e.target === e.currentTarget) onClose();
-  };
-
   return (
-    <div className={styles.overlay} onClick={handleOverlayClick}>
-      <div className={styles.modal} ref={modalRef}>
+    <div className={styles.overlay}>
+      <div ref={modalRef} className={styles.modal}>
         <div className={styles.header}>
           <h3 className={styles.title}>Дедлайны · {formattedDate}</h3>
           <button
@@ -60,16 +56,20 @@ const DayDeadlinesModal = ({ date, wishlists, onClose }) => {
 
         <div className={styles.body}>
           {wishlists.length === 0 ? (
-            <p className={styles.empty}>
-              Нет вишлистов с дедлайном в этот день
-            </p>
+            <p className={styles.empty}>В этот день дедлайнов нет</p>
           ) : (
             <ul className={styles.list}>
               {wishlists.map((w) => (
                 <li key={w.id} className={styles.item}>
                   <div className={styles.itemDot} />
                   <div className={styles.itemContent}>
-                    <span className={styles.itemTitle}>{w.title}</span>
+                    <Link
+                      to={`/wishlists/${w.id}`}
+                      className={styles.itemTitle}
+                      onClick={onClose}
+                    >
+                      {w.name}
+                    </Link>
                     {w.description && (
                       <span className={styles.itemDesc}>{w.description}</span>
                     )}

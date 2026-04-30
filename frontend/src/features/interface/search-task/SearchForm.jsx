@@ -27,7 +27,6 @@ const SearchForm = forwardRef(
       ></Search>
       <span className={styles['blinking-cursor']}></span>
       <input
-        autoFocus
         ref={inputRef}
         type="text"
         className={styles.input}
