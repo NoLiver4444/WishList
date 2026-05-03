@@ -86,12 +86,6 @@ export const FIELDS = {
   ],
   friends: [
     {
-      name: 'id',
-      label: 'id друга',
-      placeholder: 'Введите id друга',
-      required: true,
-    },
-    {
       name: 'login',
       label: 'Имя друга',
       placeholder: 'Введите имя друга',

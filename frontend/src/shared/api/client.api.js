@@ -10,13 +10,13 @@ import { useSessionStore } from '@/entities/session';
  * Автоматически добавляет заголовок Authorization, если в хранилище есть активный токен,
  * и устанавливает Content-Type: application/json.
  * * @async
- * @function apiClient
+ * @function client
  * @param {string} url - Относительный путь эндпоинта (базовый URL берется из VITE_API_URL).
  * @param {RequestInit} [options={}] - Дополнительные опции запроса (method, body, headers и т.д.).
  * @throws {Object} Выбрасывает объект с полем status и данными ответа, если r.ok === false.
  * @returns {Promise<Object|null>} Возвращает десериализованный JSON или null для статуса 204.
  */
-export const apiClient = (url, options = {}) => {
+export const client = (url, options = {}) => {
   const store = useSessionStore.getState();
   const token = store.accounts[store.activeIndex]?.token;
 

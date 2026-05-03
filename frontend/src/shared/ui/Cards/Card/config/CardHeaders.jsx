@@ -53,12 +53,10 @@ export const WishlistHeader = ({ name, date, counts, dateOptions }) => (
  * Заголовок для карточки друга.
  * @component
  * @param {Object} props
- * @param {string} props.name - Имя/логин друга.
- * @param {string|number} [props.friendId] - Уникальный идентификатор друга.
+ * @param {string} props.login - Имя/логин друга.
  */
-export const FriendHeader = ({ name, friendId }) => (
+export const FriendHeader = ({ login }) => (
   <div className={styles.information}>
-    <h5 className={styles.title}>{name}</h5>
-    {friendId && <span className={styles.friendId}>ID: {friendId}</span>}
+    <h5 className={styles.title}>{login}</h5>
   </div>
 );

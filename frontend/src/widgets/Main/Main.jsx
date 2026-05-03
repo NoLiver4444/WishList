@@ -7,6 +7,7 @@ import { memo, useMemo, useState } from 'react';
 import SortCardsForm from '@/features/cards/sort-cards/SortCardsForm';
 import CardList from '@/entities/ui/CardList';
 import { sortItems } from '@/shared/lib/sortItems';
+import Tabs from '@/shared/ui/Interface/Tabs';
 import styles from './Main.module.css';
 
 /**
@@ -26,6 +27,9 @@ const Main = ({
   title,
   type = 'wishes',
   sortOptions = [],
+  tabs = [],
+  onTabChange,
+  activeTab,
   onAddClick,
   onEdit,
   onDelete,
@@ -42,6 +46,10 @@ const Main = ({
   return (
     <div className={`${styles.main} ${styles[type]}`}>
       <h1 className={styles.title}>{title}</h1>
+
+      {tabs.length > 0 && (
+        <Tabs tabs={tabs} activeTab={activeTab} onTabChange={onTabChange} />
+      )}
 
       {sortOptions.length > 0 && (
         <SortCardsForm

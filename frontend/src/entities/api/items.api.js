@@ -3,7 +3,7 @@
  * @module entities/api/items
  */
 
-import { apiClient } from '@/shared/api/apiClient.js';
+import { client } from '@/shared/api/client.api.js';
 
 /**
  * Добавить желание в вишлист.
@@ -12,7 +12,7 @@ import { apiClient } from '@/shared/api/apiClient.js';
  * @returns {Promise}
  */
 export const addItem = (wishlistId, body) =>
-  apiClient(`/v1/wishlists/${wishlistId}/items`, {
+  client(`/api/wishlists/${wishlistId}/items`, {
     method: 'POST',
     body: JSON.stringify(body),
   });
@@ -23,7 +23,7 @@ export const addItem = (wishlistId, body) =>
  * @returns {Promise}
  */
 export const removeItem = (itemId) =>
-  apiClient(`/v1/items/${itemId}`, { method: 'DELETE' });
+  client(`/api/items/${itemId}`, { method: 'DELETE' });
 
 /**
  * Зарезервировать или снять резерв с желания.
@@ -32,7 +32,7 @@ export const removeItem = (itemId) =>
  * @returns {Promise}
  */
 export const reserveItem = (itemId, action) =>
-  apiClient(`/v1/items/${itemId}/reserve`, {
+  client(`/api/items/${itemId}/reserve`, {
     method: 'POST',
     body: JSON.stringify({ action }),
   });

@@ -3,8 +3,9 @@
  * @module shared/ui/Interface/Dropdowns
  */
 
-import { memo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Check, LogOut, Plus, Settings } from 'lucide-react';
+import { getIncomingRequests } from '@/entities/api/friendships.api.js';
 import Avatar from '@/shared/ui/User/Avatar/index.js';
 import { useEscClose } from '@/shared/hooks/useEscClose.jsx';
 import DropdownContainer from './DropdownContainer.jsx';
@@ -19,14 +20,28 @@ import styles from '@/shared/ui/Interface/Menu/Menu.module.css';
  * @param {Function} props.onClose - Функция закрытия.
  */
 export const NotificationDropdown = memo(({ onClose }) => {
+  const [requests, setRequests] = useState([]);
   useEscClose(onClose);
+
+  useEffect(() => {
+    getIncomingRequests().then(setRequests).catch(console.error);
+  }, []);
 
   return (
     <DropdownContainer>
       <p className={styles.dropdownTitle}>Уведомления</p>
-      <div className={styles.notificationsSubtitle}>
-        Пока нет новых сообщений
-      </div>
+      {requests.length === 0 ? (
+        <div className={styles.notificationsSubtitle}>
+          Пока нет новых сообщений
+        </div>
+      ) : (
+        requests.map((r) => (
+          <div key={r.id} className={styles.notificationItem}>
+            <img src={r.avatar_url ?? '/default-avatar.png'} alt="" />
+            <span>{r.login} хочет добавить вас в друзья</span>
+          </div>
+        ))
+      )}
     </DropdownContainer>
   );
 });

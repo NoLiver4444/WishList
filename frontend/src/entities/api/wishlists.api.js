@@ -3,7 +3,7 @@
  * @module entities/api/wishlists
  */
 
-import { apiClient } from '@/shared/api/apiClient.js';
+import { client } from '@/shared/api/client.api.js';
 
 /**
  * @typedef {Object} Wishlist
@@ -18,15 +18,14 @@ import { apiClient } from '@/shared/api/apiClient.js';
  * Получить список всех вишлистов.
  * @returns {Promise}
  */
-export const fetchWishlists = () => apiClient('/v1/wishlists');
+export const fetchWishlists = () => client('/api/wishlists');
 
 /**
  * Получить элементы вишлиста по ID.
  * @param {string|number} id - ID вишлиста.
  * @returns {Promise}
  */
-export const fetchWishlistItems = (id) =>
-  apiClient(`/v1/wishlists/${id}/items`);
+export const fetchWishlistItems = (id) => client(`/api/wishlists/${id}/items`);
 
 /**
  * Создать вишлист.
@@ -34,7 +33,7 @@ export const fetchWishlistItems = (id) =>
  * @returns {Promise}
  */
 export const createWishlist = (body) =>
-  apiClient('/v1/wishlists', {
+  client('/api/wishlists', {
     method: 'POST',
     body: JSON.stringify({
       ...body,
@@ -49,7 +48,7 @@ export const createWishlist = (body) =>
  * @param {string|number} id - ID вишлиста.
  * @returns {Promise}
  */
-export const fetchWishlist = (id) => apiClient(`/v1/wishlists/${id}`);
+export const fetchWishlist = (id) => client(`/api/wishlists/${id}`);
 
 /**
  * Удалить вишлист.
@@ -57,7 +56,7 @@ export const fetchWishlist = (id) => apiClient(`/v1/wishlists/${id}`);
  * @returns {Promise}
  */
 export const deleteWishlist = (id) =>
-  apiClient(`/v1/wishlists/${id}`, { method: 'DELETE' });
+  client(`/api/wishlists/${id}`, { method: 'DELETE' });
 
 /**
  * Обновить данные вишлиста.
@@ -66,7 +65,7 @@ export const deleteWishlist = (id) =>
  * @returns {Promise}
  */
 export const updateWishlist = (id, body) =>
-  apiClient(`/v1/wishlists/${id}`, {
+  client(`/api/wishlists/${id}`, {
     method: 'PUT',
     body: JSON.stringify({
       ...body,

@@ -3,14 +3,14 @@
  * @module entites/api/products
  */
 
-import { apiClient } from '@/shared/api/apiClient.js';
+import { client } from '@/shared/api/client.api.js';
 import { uploadImage } from '@/shared/lib/uploadImage.js';
 
 /**
  * Получить мои товары.
  * @returns {Promise}
  */
-export const fetchMyProducts = () => apiClient('/v1/products/me');
+export const fetchMyProducts = () => client('/api/products/me');
 
 /**
  * Создать товар (с загрузкой картинки).
@@ -27,7 +27,7 @@ export const createProduct = async (body) => {
     imageUrl = await uploadImage(body.image);
   }
 
-  return apiClient('/v1/products', {
+  return client('/api/products', {
     method: 'POST',
     body: JSON.stringify({
       title: body.name,
@@ -45,7 +45,7 @@ export const createProduct = async (body) => {
  * @returns {Promise}
  */
 export const deleteProduct = (id) =>
-  apiClient(`/v1/products/${id}`, { method: 'DELETE' });
+  client(`/api/products/${id}`, { method: 'DELETE' });
 
 /**
  * Обновить товар.
@@ -54,7 +54,7 @@ export const deleteProduct = (id) =>
  * @returns {Promise}
  */
 export const updateProduct = (id, body) =>
-  apiClient(`/v1/products/${id}`, {
+  client(`/api/products/${id}`, {
     method: 'PATCH',
     body: JSON.stringify({
       title: body.name,

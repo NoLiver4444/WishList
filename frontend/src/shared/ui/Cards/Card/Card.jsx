@@ -27,7 +27,7 @@ import styles from './Card.module.css';
  * @param {Function} [props.onDelete] - Функция для удаления элемента.
  * @returns {React.ReactElement} Элемент списка (li) с оформлением карточки.
  */
-const Card = ({ item, type, onEdit, onDelete }) => {
+const Card = ({ item, type, onEdit, onDelete, onBlock }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -37,6 +37,7 @@ const Card = ({ item, type, onEdit, onDelete }) => {
 
   const {
     name,
+    login,
     date,
     price,
     image,
@@ -44,7 +45,6 @@ const Card = ({ item, type, onEdit, onDelete }) => {
     url,
     description,
     counts,
-    friendId,
   } = item;
 
   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -59,7 +59,8 @@ const Card = ({ item, type, onEdit, onDelete }) => {
     e?.stopPropagation();
     if (action === 'view') navigate(`/wishlists/${item.id}`);
     if (action === 'edit') onEdit?.(item);
-    if (action === 'delete') onDelete?.(item.id);
+    if (action === 'delete') onDelete?.(item.friendship_id);
+    if (action === 'block') onBlock?.(item.friendship_id);
   };
 
   return (
@@ -77,7 +78,7 @@ const Card = ({ item, type, onEdit, onDelete }) => {
             dateOptions={dateOptions}
           />
         )}
-        {cardFriend && <FriendHeader name={name} friendId={friendId} />}
+        {cardFriend && <FriendHeader login={login} />}
 
         <div className={styles.menuWrapper}>
           <button
@@ -181,7 +182,7 @@ const Card = ({ item, type, onEdit, onDelete }) => {
 
         {cardFriend && (
           <div className={styles.friendBody}>
-            <Avatar src={item.avatarUrl} alt={name} size={80} />
+            <Avatar src={item.avatar_url} alt={login} size={130} />
           </div>
         )}
       </div>

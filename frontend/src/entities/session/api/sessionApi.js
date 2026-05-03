@@ -24,7 +24,7 @@ if (!API) {
  * @throws {Object} Ошибка с полем status и данными ответа.
  */
 export const loginRequest = (body) =>
-  fetch(`${API}/v1/auth/login`, {
+  fetch(`${API}/api/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
@@ -44,7 +44,7 @@ export const loginRequest = (body) =>
  * @throws {Object} Ошибка с полем status и данными ответа.
  */
 export const registerRequest = (body) =>
-  fetch(`${API}/v1/auth/register`, {
+  fetch(`${API}/api/auth/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),

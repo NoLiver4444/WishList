@@ -23,7 +23,7 @@
 }
 
 .card.friends {
-  height: 200px;
+  height: 220px;
 }
 
 .card.loading {
@@ -243,12 +243,14 @@
 .friendBody {
   flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-block-end: 20px;
+  gap: 8px;
+  padding-block-end: 16px;
 }
 
-.friendId {
+.friendLogin {
   color: var(--subtext-color);
   font-size: 13px;
 }

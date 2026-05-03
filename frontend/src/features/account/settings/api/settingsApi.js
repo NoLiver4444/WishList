@@ -3,7 +3,7 @@
  * @module features/account/settings/api/settingsApi.js
  */
 
-import { apiClient } from '@/shared/api/apiClient.js';
+import { client } from '@/shared/api/client.api.js';
 
 /**
  * Обновляет данные профиля (логин, email, телефон или пароль).
@@ -17,7 +17,7 @@ export const updateUserRequest = (body) => {
     )
   );
 
-  return apiClient('/v1/users/me', {
+  return client('/v1/users/me', {
     method: 'PATCH',
     body: JSON.stringify(cleaned),
   });
@@ -29,7 +29,7 @@ export const updateUserRequest = (body) => {
  * @returns {Promise<void>}
  */
 export const deleteUserRequest = (body) =>
-  apiClient('/v1/users/me', {
+  client('/v1/users/me', {
     method: 'DELETE',
     body: JSON.stringify(body),
   });
