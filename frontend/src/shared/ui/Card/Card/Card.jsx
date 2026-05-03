@@ -6,13 +6,9 @@
 import { memo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Ellipsis, Gift, Plus } from 'lucide-react';
-import {
-  FriendHeader,
-  WishHeader,
-  WishlistHeader,
-} from './config/CardHeaders.jsx';
-import Avatar from '@/shared/ui/User/Avatar/index.js';
-import CardMenu from '@/shared/ui/Cards/CardMenu/index.js';
+import { FriendHeader, WishHeader, WishlistHeader } from './config/CardHeaders';
+import Avatar from '@/shared/ui/User/Avatar';
+import CardMenu from '@/shared/ui/Card/CardMenu';
 import styles from './Card.module.css';
 
 /**
@@ -27,7 +23,7 @@ import styles from './Card.module.css';
  * @param {Function} [props.onDelete] - Функция для удаления элемента.
  * @returns {React.ReactElement} Элемент списка (li) с оформлением карточки.
  */
-const Card = ({ item, type, onEdit, onDelete, onBlock }) => {
+const Card = ({ item, type, onEdit, onDelete }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -60,7 +56,6 @@ const Card = ({ item, type, onEdit, onDelete, onBlock }) => {
     if (action === 'view') navigate(`/wishlists/${item.id}`);
     if (action === 'edit') onEdit?.(item);
     if (action === 'delete') onDelete?.(item.friendship_id);
-    if (action === 'block') onBlock?.(item.friendship_id);
   };
 
   return (

@@ -4,7 +4,7 @@
  */
 
 import { useState } from 'react';
-import { SearchContext } from './SearchContext.jsx';
+import { SearchContext } from './SearchContext';
 
 /**
  * Провайдер состояния поиска.

@@ -4,8 +4,8 @@
  */
 
 import { memo } from 'react';
-import AddCard from '@/shared/ui/Cards/AddCard';
-import Card from '@/shared/ui/Cards/Card';
+import AddCard from '@/shared/ui/Card/AddCard';
+import Card from '@/shared/ui/Card/Card';
 
 /**
  * Компонент CardList.

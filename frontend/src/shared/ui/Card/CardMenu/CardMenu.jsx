@@ -5,9 +5,9 @@
 
 import { memo, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useClickOutside } from '@/shared/hooks/useClickOutside.jsx';
-import { useEscClose } from '@/shared/hooks/useEscClose.jsx';
-import { ACTIONS } from './config/Actions.js';
+import { useClickOutside } from '@/shared/hooks/useClickOutside';
+import { useEscClose } from '@/shared/hooks/useEscClose';
+import { ACTIONS } from './config/Actions';
 import styles from './CardMenu.module.css';
 
 /**

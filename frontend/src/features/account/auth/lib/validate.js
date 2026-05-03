@@ -1,6 +1,6 @@
 /**
  * @file Логика валидации полей ввода на стороне клиента.
- * @module features/account/auth/lib/validate.js
+ * @module features/account/auth/lib/validate
  */
 
 /**

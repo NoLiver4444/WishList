@@ -4,7 +4,7 @@
  */
 
 import { useContext } from 'react';
-import { SearchContext } from '../context/SearchContext.jsx';
+import { SearchContext } from '../context/SearchContext';
 
 /**
  * Хук для доступа к состоянию поиска.

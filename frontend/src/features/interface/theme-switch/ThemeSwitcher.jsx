@@ -14,7 +14,7 @@ import {
   Sun,
   Tractor,
 } from 'lucide-react';
-import { useTheme } from '@/shared/hooks/useTheme.jsx';
+import { useTheme } from '@/shared/hooks/useTheme';
 import styles from './ThemeSwitcher.module.css';
 
 /**

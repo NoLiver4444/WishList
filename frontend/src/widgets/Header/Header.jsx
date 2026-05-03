@@ -5,14 +5,20 @@
  */
 
 import { memo, useRef } from 'react';
-import { useSearch } from '@/shared/hooks/useSearch.js';
+import { useSearch } from '@/shared/hooks/useSearch';
 import Logo from '@/shared/ui/Interface/Logo';
 import Navigation from '@/shared/ui/Interface/Navigation';
 import AccountSwitcher from '@/features/account/account-switch/AccountSwitcher';
 import SearchForm from '@/features/interface/search-task/SearchForm';
-import ShareButton from '@/features/interface/share-wishlist/index.js';
+import ShareButton from '@/features/interface/share-wishlist';
 import styles from './Header.module.css';
 
+/**
+ * Компонент Header.
+ * Обеспечивает верхнюю навигационную панель, управление поисковым запросом
+ * и доступ к переключению аккаунтов и функционалу "поделиться".
+ * @component
+ */
 const Header = () => {
   const searchRef = useRef(null);
   const inputRef = useRef(null);

@@ -13,8 +13,8 @@ import {
   fetchWishlistItems,
   fetchWishlists,
   updateWishlist,
-} from '@/entities/api/index.js';
-import { useSearch } from '@/shared/hooks/useSearch.js';
+} from '@/entities/api/index';
+import { useSearch } from '@/shared/hooks/useSearch';
 
 /**
  * Компонент WishlistsPage.

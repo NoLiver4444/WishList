@@ -13,7 +13,7 @@ import CalendarPage from '@/pages/CalendarPage';
 import AuthPage from '@/pages/AuthPage';
 import WishlistPage from '@/pages/WishlistPage';
 import ProtectedRoute from '@/app/routing/ProtectedRoute';
-import { SearchProvider } from '@/shared/context/SearchProvider.jsx';
+import { SearchProvider } from '@/shared/context/SearchProvider';
 import Header from '@/widgets/Header';
 import Footer from '@/widgets/Footer';
 import './styles';

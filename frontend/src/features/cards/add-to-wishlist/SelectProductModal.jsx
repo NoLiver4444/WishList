@@ -6,9 +6,9 @@
 import { memo, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Plus, Search, X } from 'lucide-react';
-import { fetchMyProducts } from '@/entities/api/products.api.js';
-import { useClickOutside } from '@/shared/hooks/useClickOutside.jsx';
-import { useEscClose } from '@/shared/hooks/useEscClose.jsx';
+import { fetchMyProducts } from '@/entities/api/products.api';
+import { useClickOutside } from '@/shared/hooks/useClickOutside';
+import { useEscClose } from '@/shared/hooks/useEscClose';
 import styles from './SelectProductModal.module.css';
 
 /**

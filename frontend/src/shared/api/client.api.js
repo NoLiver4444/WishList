@@ -1,6 +1,6 @@
 /**
  * @file Универсальный клиент для работы с API.
- * @module shared/api/apiClient
+ * @module shared/api/client
  */
 
 import { useSessionStore } from '@/entities/session';

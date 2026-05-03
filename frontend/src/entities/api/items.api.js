@@ -3,7 +3,7 @@
  * @module entities/api/items
  */
 
-import { client } from '@/shared/api/client.api.js';
+import { client } from '@/shared/api/client.api';
 
 /**
  * Добавить желание в вишлист.

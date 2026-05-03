@@ -1,1 +1,1 @@
-export { default } from './DayDeadlinesModal.jsx';
+export { default } from './DayDeadlinesModal';

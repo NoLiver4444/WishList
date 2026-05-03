@@ -3,10 +3,10 @@
  * @module features/account/auth/model/LoginForm
  */
 
-import { AuthForm } from '../ui/AuthForm.jsx';
-import { loginFields } from '../config/AuthForm.config.js';
-import { validateLoginField } from '../lib/validate.js';
-import { loginRequest, useSessionStore } from '@/entities/session/index.js';
+import { AuthForm } from '../ui/AuthForm';
+import { loginFields } from '../config/AuthForm.config';
+import { validateLoginField } from '../lib/validate';
+import { loginRequest, useSessionStore } from '@/entities/session';
 
 /**
  * Форма входа в систему.

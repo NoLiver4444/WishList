@@ -1,9 +1,9 @@
 /**
  * @file API-клиент для управления данными пользователя.
- * @module features/account/settings/api/settingsApi.js
+ * @module features/account/settings/api/settingsApi
  */
 
-import { client } from '@/shared/api/client.api.js';
+import { client } from '@/shared/api/client.api';
 
 /**
  * Обновляет данные профиля (логин, email, телефон или пароль).

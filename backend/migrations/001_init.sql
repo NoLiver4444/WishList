@@ -2,7 +2,7 @@
 -- Примечание: работает на PostgreSQL 13+ (gen_random_uuid встроен по умолчанию)
 
 -- 1. Enums
-CREATE TYPE friendship_status AS ENUM ('pending', 'accepted', 'declined', 'blocked');
+CREATE TYPE friendship_status AS ENUM ('pending', 'accepted', 'declined');
 CREATE TYPE privacy_status AS ENUM ('private', 'friends', 'public');
 CREATE TYPE notification_type AS ENUM ('wishlist_deadline', 'friend_request', 'friend_accepted', 'item_reserved');
 

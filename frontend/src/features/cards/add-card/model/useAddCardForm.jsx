@@ -4,7 +4,7 @@
  */
 
 import { useCallback, useEffect, useState } from 'react';
-import { validate } from '../lib/validate.js';
+import { validate } from '../lib/validate';
 
 /**
  * Логика обработки ввода, загрузки файлов и отправки формы.

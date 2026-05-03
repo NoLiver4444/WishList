@@ -10,7 +10,7 @@ type CreateUserRequest struct {
 	Login    string     `json:"login" validate:"required,min=3,max=50"`
 	Email    string     `json:"email" validate:"required,email"`
 	Phone    *string    `json:"phone,omitempty"`
-	Birthday *time.Time `json:"birthday, omitempty"`
+	Birthday *time.Time `json:"birthday,omitempty"`
 	Password string     `json:"password" validate:"required,min=6"`
 }
 

@@ -1,1 +1,1 @@
-export { default } from './ShareButton.jsx';
+export { default } from './ShareButton';

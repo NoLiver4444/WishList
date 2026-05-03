@@ -1,1 +1,1 @@
-export { default } from './CalendarNavigation.jsx';
+export { default } from './CalendarNavigation';

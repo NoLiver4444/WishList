@@ -4,7 +4,7 @@
  * @module features/account/settings/config
  */
 
-import { useSessionStore } from '@/entities/session/index.js';
+import { useSessionStore } from '@/entities/session';
 
 /**
  * Возвращает набор полей для редактирования основной информации профиля.

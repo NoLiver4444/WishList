@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"wish-piece/internal/dto"
 	"wish-piece/internal/models"
 
 	"github.com/google/uuid"
@@ -14,8 +15,6 @@ type UserRepository interface {
 	Update(ctx context.Context, user *models.User) error
 	Delete(ctx context.Context, id uuid.UUID) error
 }
-
-// ============ WISHLIST ============
 
 type WishlistRepository interface {
 	Create(ctx context.Context, wl *models.Wishlist) error
@@ -38,4 +37,11 @@ type WishlistItemRepository interface {
 
 type ProductRepository interface {
 	FindByID(ctx context.Context, id uuid.UUID) (*models.Product, error)
+}
+
+type FriendshipRepository interface {
+	SearchByLogin(ctx context.Context, login string, currentUserID uuid.UUID) ([]dto.UserSearchResult, error)
+	Create(ctx context.Context, userID, friendID uuid.UUID) (*models.Friendship, error)
+	UpdateStatus(ctx context.Context, friendshipID uuid.UUID, status models.FriendshipStatus) error
+	GetIncomingRequests(ctx context.Context, userID uuid.UUID) ([]dto.FriendDTO, error)
 }

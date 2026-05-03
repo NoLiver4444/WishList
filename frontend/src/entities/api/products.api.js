@@ -3,8 +3,8 @@
  * @module entites/api/products
  */
 
-import { client } from '@/shared/api/client.api.js';
-import { uploadImage } from '@/shared/lib/uploadImage.js';
+import { client } from '@/shared/api/client.api';
+import { uploadImage } from '@/shared/lib/uploadImage';
 
 /**
  * Получить мои товары.

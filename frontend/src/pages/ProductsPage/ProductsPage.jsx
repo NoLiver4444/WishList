@@ -5,7 +5,7 @@
 
 import { memo, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useSearch } from '@/shared/hooks/useSearch.js';
+import { useSearch } from '@/shared/hooks/useSearch';
 import { uploadImage } from '@/shared/lib/uploadImage';
 import Main from '@/widgets/Main';
 import AddCardModal from '@/features/cards/add-card/ui/AddCardModal';
@@ -14,7 +14,7 @@ import {
   deleteProduct,
   fetchMyProducts,
   updateProduct,
-} from '@/entities/api/products.api.js';
+} from '@/entities/api/products.api';
 
 /**
  * Компонент ProductsPage.

@@ -5,12 +5,12 @@
 
 import { memo, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { useClickOutside } from '@/shared/hooks/useClickOutside.jsx';
-import { useEscClose } from '@/shared/hooks/useEscClose.jsx';
-import { useEnterPress } from '@/shared/hooks/useEnterPress.jsx';
-import { FIELDS } from '../config/AddCardModal.config.js';
-import { useAddCardForm } from '../model/useAddCardForm.jsx';
-import { FormField } from './FormField.jsx';
+import { useClickOutside } from '@/shared/hooks/useClickOutside';
+import { useEscClose } from '@/shared/hooks/useEscClose';
+import { useEnterPress } from '@/shared/hooks/useEnterPress';
+import { FIELDS } from '../config/AddCardModal.config';
+import { useAddCardForm } from '../model/useAddCardForm';
+import { FormField } from './FormField';
 import styles from './AddCardModal.module.css';
 
 /**

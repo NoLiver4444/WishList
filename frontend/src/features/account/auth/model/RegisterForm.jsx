@@ -3,10 +3,10 @@
  * @module features/account/auth/model/RegisterForm
  */
 
-import { AuthForm } from '../ui/AuthForm.jsx';
-import { registerFields } from '../config/AuthForm.config.js';
-import { validateRegisterField } from '../lib/validate.js';
-import { registerRequest, useSessionStore } from '@/entities/session/index.js';
+import { AuthForm } from '../ui/AuthForm';
+import { registerFields } from '../config/AuthForm.config';
+import { validateRegisterField } from '../lib/validate';
+import { registerRequest, useSessionStore } from '@/entities/session';
 
 /**
  * Форма регистрации нового пользователя.

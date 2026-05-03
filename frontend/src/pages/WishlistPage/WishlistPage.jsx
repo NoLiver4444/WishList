@@ -3,6 +3,20 @@
  * @module pages/WishlistPage
  */
 
+import { memo, useEffect, useMemo, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Plus } from 'lucide-react';
+import {
+  deleteWishlist,
+  fetchWishlist,
+  fetchWishlistItems,
+} from '@/entities/api/wishlists.api';
+import { addItem, removeItem, reserveItem } from '@/entities/api/items.api';
+import SelectProductModal from '@/features/cards/add-to-wishlist/SelectProductModal';
+import WishlistItem from '@/shared/ui/Card/WishlistItem';
+import { useSearch } from '@/shared/hooks/useSearch';
+import styles from './WishlistPage.module.css';
+
 /**
  * Компонент WishlistPage.
  * Поддерживает два режима: 'owner' (владелец) и 'public' (гость/друг).
@@ -11,20 +25,6 @@
  * @param {Object} props - Свойства компонента.
  * @param {'owner'|'public'} [props.mode='owner'] - Режим доступа к странице.
  */
-import { memo, useEffect, useMemo, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Plus } from 'lucide-react';
-import {
-  deleteWishlist,
-  fetchWishlist,
-  fetchWishlistItems,
-} from '@/entities/api/wishlists.api.js';
-import { addItem, removeItem, reserveItem } from '@/entities/api/items.api.js';
-import SelectProductModal from '@/features/cards/add-to-wishlist/SelectProductModal.jsx';
-import WishlistItem from '@/shared/ui/Cards/WishlistItem/index.js';
-import { useSearch } from '@/shared/hooks/useSearch.js';
-import styles from './WishlistPage.module.css';
-
 const WishlistPage = ({ mode = 'owner' }) => {
   const isOwner = mode === 'owner';
   const { id } = useParams();

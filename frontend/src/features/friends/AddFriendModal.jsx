@@ -1,9 +1,24 @@
+/**
+ * @file Модальное окно добавления друзей.
+ * Обеспечивает поиск пользователей по логину и отправку заявок в друзья.
+ * @module features/friends/AddFriendModal
+ */
+
 import { memo, useCallback, useState } from 'react';
 import { searchUsers, sendFriendRequest } from '@/entities/api';
 import { useDebounce } from '@/shared/hooks/useDebounce';
 import styles from './AddFriendsModal.module.css';
-import Avatar from '@/shared/ui/User/Avatar/Avatar.jsx';
+import Avatar from '@/shared/ui/User/Avatar/Avatar';
 
+/**
+ * Компонент AddFriendModal.
+ * Позволяет вводить логин, автоматически искать пользователя с задержкой (debounce)
+ * и отправлять запрос на добавление в друзья.
+ * @component
+ * @param {Object} props - Свойства компонента.
+ * @param {boolean} props.isOpen - Флаг видимости модального окна.
+ * @param {Function} props.onClose - Функция закрытия модального окна.
+ */
 const AddFriendModal = ({ isOpen, onClose }) => {
   const [query, setQuery] = useState('');
   const [result, setResult] = useState(null);

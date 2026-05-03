@@ -1,2 +1,2 @@
-export { LoginForm } from './model/LoginForm.jsx';
-export { RegisterForm } from './model/RegisterForm.jsx';
+export { LoginForm } from './model/LoginForm';
+export { RegisterForm } from './model/RegisterForm';

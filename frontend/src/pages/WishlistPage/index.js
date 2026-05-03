@@ -1,1 +1,1 @@
-export { default } from './WishlistPage.jsx';
+export { default } from './WishlistPage';

@@ -1,6 +1,6 @@
 /**
  * @file Компонент карточки "Добавить".
- * @module shared/ui/Cards/AddCard
+ * @module shared/ui/Card/AddCard
  */
 
 import { memo } from 'react';

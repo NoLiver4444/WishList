@@ -8,6 +8,11 @@ import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Footer.module.css';
 
+/**
+ * Компонент Footer.
+ * Отображает логотип-ссылку, информацию о копирайте и внешние ссылки на поддержку и репозиторий.
+ * @component
+ */
 const Footer = () => {
   return (
     <footer className={styles.footer}>

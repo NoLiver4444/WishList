@@ -10,17 +10,18 @@ import {
   getFriends,
   getIncomingRequests,
   respondToRequest,
-} from '@/entities/api/friendships.api.js';
+} from '@/entities/api/friendships.api';
 import Main from '@/widgets/Main';
 import AddFriendModal from '@/features/friends/AddFriendModal';
-import { useSearch } from '@/shared/hooks/useSearch.js';
+import { useSearch } from '@/shared/hooks/useSearch';
 import styles from './FriendsPage.module.css';
-import Avatar from '@/shared/ui/User/Avatar/Avatar.jsx';
+import Avatar from '@/shared/ui/User/Avatar/Avatar';
 
 /**
  * Компонент FriendsPage.
- * Позволяет искать и добавлять друзей по их ID.
- * * @component
+ * Обеспечивает отображение списка друзей и входящих заявок.
+ * Позволяет искать друзей по логину, принимать/отклонять запросы и удалять из друзей.
+ * @component
  */
 const FriendsPage = () => {
   const [friends, setFriends] = useState([]);

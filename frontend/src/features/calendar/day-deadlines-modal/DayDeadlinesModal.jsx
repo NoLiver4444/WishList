@@ -5,9 +5,9 @@
 
 import { memo, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { useEscClose } from '@/shared/hooks/useEscClose.jsx';
+import { useEscClose } from '@/shared/hooks/useEscClose';
 import styles from './DayDeadlinesModal.module.css';
-import { useClickOutside } from '@/shared/hooks/useClickOutside.jsx';
+import { useClickOutside } from '@/shared/hooks/useClickOutside';
 
 const MONTHS_RU = [
   'января',

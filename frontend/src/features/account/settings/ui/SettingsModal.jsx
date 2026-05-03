@@ -6,18 +6,18 @@
 import { memo, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Camera, X } from 'lucide-react';
-import { useClickOutside } from '@/shared/hooks/useClickOutside.jsx';
-import { useEscClose } from '@/shared/hooks/useEscClose.jsx';
-import { useSessionStore } from '@/entities/session/index.js';
-import { uploadImage } from '@/shared/lib/uploadImage.js';
-import { validateSettingsField } from '../lib/validate.js';
-import { deleteUserRequest, updateUserRequest } from '../api/settingsApi.js';
+import { useClickOutside } from '@/shared/hooks/useClickOutside';
+import { useEscClose } from '@/shared/hooks/useEscClose';
+import { useSessionStore } from '@/entities/session';
+import { uploadImage } from '@/shared/lib/uploadImage';
+import { validateSettingsField } from '../lib/validate';
+import { deleteUserRequest, updateUserRequest } from '../api/settingsApi';
 import {
   dangerFields,
   getProfileFields,
   passwordFields,
-} from '../config/SettingsForm.config.js';
-import { useSettingsForm } from '@/features/account/settings/model/useSettingsForm.jsx';
+} from '../config/SettingsForm.config';
+import { useSettingsForm } from '@/features/account/settings/model/useSettingsForm';
 import styles from './SettingsModal.module.css';
 
 /**

@@ -5,11 +5,11 @@
 
 import { memo, useEffect, useState } from 'react';
 import { Check, LogOut, Plus, Settings } from 'lucide-react';
-import { getIncomingRequests } from '@/entities/api/friendships.api.js';
-import Avatar from '@/shared/ui/User/Avatar/index.js';
-import { useEscClose } from '@/shared/hooks/useEscClose.jsx';
-import DropdownContainer from './DropdownContainer.jsx';
-import ThemeSubmenu from '@/features/interface/theme-switch/ThemeSwitcher.jsx';
+import { getIncomingRequests } from '@/entities/api/friendships.api';
+import Avatar from '@/shared/ui/User/Avatar/index';
+import { useEscClose } from '@/shared/hooks/useEscClose';
+import DropdownContainer from './DropdownContainer';
+import ThemeSubmenu from '@/features/interface/theme-switch/ThemeSwitcher';
 import styles from '@/shared/ui/Interface/Menu/Menu.module.css';
 
 /**

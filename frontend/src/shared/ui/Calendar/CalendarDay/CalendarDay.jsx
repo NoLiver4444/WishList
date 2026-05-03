@@ -1,6 +1,6 @@
 /**
  * @file Компонент ячейки дня в календаре.
- * @module shared/ui/CalendarCalendarDay
+ * @module shared/ui/Calendar/CalendarDay
  */
 
 import { memo } from 'react';

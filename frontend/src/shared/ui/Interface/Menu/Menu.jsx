@@ -6,13 +6,13 @@
 import { memo, useRef, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { Bell, ChevronDown } from 'lucide-react';
-import Avatar from '@/shared/ui/User/Avatar/index.js';
-import { useClickOutside } from '@/shared/hooks/useClickOutside.jsx';
+import Avatar from '@/shared/ui/User/Avatar/index';
+import { useClickOutside } from '@/shared/hooks/useClickOutside';
 import {
   NotificationDropdown,
   ProfileDropdown,
-} from '@/shared/ui/Interface/Dropdowns/index.js';
-import ProfilePopup from '@/shared/ui/User/ProfilePopup/index.js';
+} from '@/shared/ui/Interface/Dropdowns/index';
+import ProfilePopup from '@/shared/ui/User/ProfilePopup/index';
 import styles from './Menu.module.css';
 
 /**

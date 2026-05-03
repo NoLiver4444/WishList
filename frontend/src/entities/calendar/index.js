@@ -1,3 +1,3 @@
-export * from './model/store.js';
-export { getDeadlinesByDate } from './lib/getDeadlinesByDate.js';
+export * from './model/store';
+export { getDeadlinesByDate } from './lib/getDeadlinesByDate';
 export { WishlistDeadlineChip } from './ui/WishlistDeadlineChip';

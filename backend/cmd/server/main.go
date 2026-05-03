@@ -81,7 +81,17 @@ func main() {
 		Validator: val,
 	}
 
-	r := router.New(authHandler, userHandler, wishlistHandler, productHandler, cfg.Auth.JWTSecret)
+	// Friendship
+	friendshipRepo := repository.NewFriendshipRepo(pool)
+	friendshipService := &service.FriendshipService{
+		Repo: friendshipRepo,
+	}
+	friendshipHandler := &handler.FriendshipHandler{
+		Service:   friendshipService,
+		Validator: val,
+	}
+
+	r := router.New(authHandler, userHandler, wishlistHandler, productHandler, friendshipHandler, cfg.Auth.JWTSecret)
 
 	srv := &http.Server{Addr: fmt.Sprintf(":%d", cfg.App.Port), Handler: r}
 	go func() {

@@ -1,1 +1,1 @@
-export { default } from './SelectProductModal.jsx';
+export { default } from './SelectProductModal';

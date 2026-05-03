@@ -1,6 +1,6 @@
 /**
  * @file Валидация полей настроек профиля.
- * @module features/account/settings/lib/validate.js
+ * @module features/account/settings/lib/validate
  */
 
 /**

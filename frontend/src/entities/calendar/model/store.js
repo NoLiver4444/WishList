@@ -4,7 +4,7 @@
  */
 
 import { create } from 'zustand';
-import { fetchWishlists } from '@/entities/api/wishlists.api.js';
+import { fetchWishlists } from '@/entities/api/wishlists.api';
 
 /**
  * @typedef {Object} Wishlist

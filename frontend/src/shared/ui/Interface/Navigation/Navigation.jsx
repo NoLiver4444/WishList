@@ -6,8 +6,8 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { NAV_ITEMS } from './config/Navigation.config.js';
-import HeaderButton from '../HeaderButton/index.js';
+import { NAV_ITEMS } from './config/Navigation.config';
+import HeaderButton from '../HeaderButton/index';
 import styles from './Navigation.module.css';
 
 /**

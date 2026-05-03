@@ -1,1 +1,1 @@
-export { default } from './ui/SettingsModal.jsx';
+export { default } from './ui/SettingsModal';

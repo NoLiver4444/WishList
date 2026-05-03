@@ -5,9 +5,9 @@
 
 import { memo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Menu from '@/shared/ui/Interface/Menu/index.js';
-import SettingsModal from '@/features/account/settings/index.js';
-import { useSessionStore } from '@/entities/session/index.js';
+import Menu from '@/shared/ui/Interface/Menu';
+import SettingsModal from '@/features/account/settings';
+import { useSessionStore } from '@/entities/session';
 
 /**
  * Инкапсулирует логику выбора текущего профиля, выхода из системы и открытия настроек.

@@ -1,1 +1,1 @@
-export { default } from './AddFriendModal.jsx';
+export { default } from './AddFriendModal';

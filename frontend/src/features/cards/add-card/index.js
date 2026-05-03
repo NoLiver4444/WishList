@@ -1,1 +1,1 @@
-export { default } from './ui/AddCardModal.jsx';
+export { default } from './ui/AddCardModal';
