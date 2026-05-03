@@ -47,16 +47,16 @@ export const FIELDS = {
       pattern: '^https?://.+',
       errorText: 'Введите корректную ссылку с http/https',
     },
-    {
-      name: 'private',
-      label: 'Приватность',
-      options: [
-        { value: 'public', label: 'Публичный' },
-        { value: 'private', label: 'Приватный' },
-        { value: 'friends', label: 'Видят только друзья' },
-      ],
-      type: 'select',
-    },
+    // {
+    //   name: 'private',
+    //   label: 'Приватность',
+    //   options: [
+    //     { value: 'public', label: 'Публичный' },
+    //     { value: 'private', label: 'Приватный' },
+    //     { value: 'friends', label: 'Видят только друзья' },
+    //   ],
+    //   type: 'select',
+    // },
   ],
   wishlists: [
     {
@@ -73,16 +73,16 @@ export const FIELDS = {
       min: new Date().toISOString().split('T')[0],
       max: '2100-01-01',
     },
-    {
-      name: 'private',
-      label: 'Приватность',
-      options: [
-        { value: 'public', label: 'Публичный' },
-        { value: 'private', label: 'Приватный' },
-        { value: 'friends', label: 'Видят только друзья' },
-      ],
-      type: 'select',
-    },
+    // {
+    //   name: 'private',
+    //   label: 'Приватность',
+    //   options: [
+    //     { value: 'public', label: 'Публичный' },
+    //     { value: 'private', label: 'Приватный' },
+    //     { value: 'friends', label: 'Видят только друзья' },
+    //   ],
+    //   type: 'select',
+    // },
   ],
   friends: [
     {
