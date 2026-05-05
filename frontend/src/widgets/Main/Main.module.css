@@ -1,0 +1,35 @@
+.main {
+  margin-block-start: 50px;
+  margin-inline: clamp(10px, -22.5px + 6.35vw, 140px);
+  padding-block: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 20px;
+  flex: 1;
+  border-radius: var(--small-border-radius);
+}
+
+.title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 50px;
+}
+
+.content {
+  width: 100%;
+}
+
+.content ul {
+  width: 100%;
+  display: grid;
+  justify-content: space-between;
+  align-items: center;
+  grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+  gap: clamp(0.3125rem, -0.0781rem + 1.2207vw, 1.875rem);
+}
+
+.content.wishlists ul {
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: clamp(1rem, 0.7rem + 1.5vw, 2.3rem);
+}

@@ -1,0 +1,64 @@
+.container {
+  margin-block-start: -15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.title {
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.list {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+}
+
+.tab {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 6px;
+  border: none;
+  border-left: 4px solid transparent;
+  border-radius: 4px;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  transition:
+    background-color var(--transition-duration)
+      var(--function-time-transition-duration),
+    border-left var(--transition-duration)
+      var(--function-time-transition-duration);
+}
+
+.tab:hover,
+.tab:focus-visible {
+  background-color: var(--hover-color);
+  border-left: 4px solid var(--primary-color);
+}
+
+.tab:focus {
+  outline: none;
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.activeTab {
+  background-color: var(--hover-color);
+  border-left: 4px solid var(--primary-color);
+}
+
+.count {
+  color: var(--subtext-color);
+}

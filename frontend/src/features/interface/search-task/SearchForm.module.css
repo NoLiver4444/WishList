@@ -1,0 +1,25 @@
+.inputWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
+  margin-inline: 15px;
+  border: var(--border);
+  border-radius: var(--small-border-radius);
+}
+
+.inputWrapper:focus-within {
+  border: 2px solid var(--primary-color);
+}
+
+.input {
+  border: none;
+  color: var(--text-color);
+  background-color: transparent;
+  flex: 1;
+}
+
+.input:focus-visible {
+  outline: none;
+}

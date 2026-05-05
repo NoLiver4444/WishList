@@ -1,0 +1,36 @@
+# 🔑 Секреты и окружение
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# 📦 Go-артефакты
+bin/
+*.exe
+*.exe~
+*.test
+*.out
+vendor/
+
+# 💻 IDE и редакторы
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+*.sublime-*
+
+# 🍎/🪟 ОС
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 📝 Логи и временные файлы
+*.log
+tmp/
+coverage.out
+
+# 🐳 (опционально) Если не коммитите конфигурацию запуска
+# docker-compose*.yml
+# Dockerfile

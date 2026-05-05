@@ -1,0 +1,46 @@
+{
+  "source": {
+    "include": [
+      "src"
+    ],
+    "exclude": [
+      "node_modules",
+      "dist",
+      "public"
+    ],
+    "includePattern": ".+\\.(js|jsx)$",
+    "excludePattern": "(^|\\/|\\\\)_"
+  },
+  "plugins": [
+    "plugins/markdown",
+    "node_modules/jsdoc-babel"
+  ],
+  "babel": {
+    "extensions": [
+      "js",
+      "jsx"
+    ],
+    "presets": [
+      "@babel/preset-react"
+    ]
+  },
+  "templates": {
+    "cleverLinks": true,
+    "monospaceLinks": true,
+    "default": {
+      "includeDate": false,
+      "staticFiles": {
+        "include": [
+          "public"
+        ]
+      }
+    }
+  },
+  "opts": {
+    "encoding": "utf8",
+    "destination": "./docs/",
+    "recurse": true,
+    "verbose": true,
+    "template": "templates/default"
+  }
+}

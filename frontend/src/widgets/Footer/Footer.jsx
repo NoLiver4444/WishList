@@ -1,0 +1,43 @@
+/**
+ * @file Компонент подвала сайта.
+ * Содержит копирайт и ссылки на поддержку и GitHub.
+ * @module widgets/Footer
+ */
+
+import { memo } from 'react';
+import { Link } from 'react-router-dom';
+import styles from './Footer.module.css';
+
+/**
+ * Компонент Footer.
+ * Отображает логотип-ссылку, информацию о копирайте и внешние ссылки на поддержку и репозиторий.
+ * @component
+ */
+const Footer = () => {
+  return (
+    <footer className={styles.footer}>
+      <Link to="/" className={styles.link}>
+        <h3 className={styles.title}>Wish-piece</h3>
+      </Link>
+      <div className={styles.content}>
+        <div>© 2026 Los huilos</div>
+        <a
+          href="https://t.me/AISAAAAUUUU"
+          className={styles.link}
+          target="_blank"
+        >
+          Поддержка
+        </a>
+        <a
+          href="https://github.com/NoLiver4444/WishList"
+          className={styles.link}
+          target="_blank"
+        >
+          О проекте
+        </a>
+      </div>
+    </footer>
+  );
+};
+
+export default memo(Footer);

@@ -1,0 +1,25 @@
+.widget {
+  width: 100%;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.dayOfWeek {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--subtext-color);
+  padding: 6px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.more {
+  font-size: 10px;
+  color: var(--subtext-color);
+  padding: 1px 4px;
+}

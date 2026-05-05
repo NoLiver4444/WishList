@@ -1,0 +1,89 @@
+.item {
+  height: 310px;
+  background-color: var(--background-color);
+  border: var(--border);
+  border-radius: var(--big-border-radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.itemImage {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.itemBody {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.itemTitle {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.itemComment {
+  font-size: 13px;
+  color: var(--subtext-color);
+  margin: 0;
+}
+
+.itemPrice {
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: auto;
+}
+
+.itemLink {
+  font-size: 13px;
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.itemLink:hover {
+  opacity: 0.75;
+}
+
+.itemActions {
+  display: flex;
+  gap: 8px;
+  padding: 10px 14px;
+  border-top: var(--border);
+}
+
+.reserveButton,
+.removeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: var(--border);
+  border-radius: var(--small-border-radius);
+  cursor: pointer;
+  color: var(--subtext-color);
+  transition:
+    color var(--transition-duration),
+    background-color var(--transition-duration);
+}
+
+.reserveButton:hover {
+  color: var(--primary-color);
+  background-color: var(--dim-background-color);
+}
+
+.reserved {
+  color: var(--primary-color);
+}
+
+.removeButton:hover {
+  color: var(--attention-color);
+  background-color: var(--dim-background-color);
+}

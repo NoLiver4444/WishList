@@ -1,0 +1,65 @@
+.overlay {
+  z-index: var(--modal-z-index);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(0 0 0 / 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(8px);
+  color: var(--text-color);
+}
+
+.content {
+  position: relative;
+  background-color: var(--background-color);
+  padding: 40px;
+  border: var(--border);
+  border-radius: var(--big-border-radius);
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+
+.closeButton {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-color);
+  transition: color var(--transition-duration)
+    var(--function-time-transition-duration);
+}
+
+.closeButton:hover {
+  color: var(--attention-color);
+}
+
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar {
+  border-radius: 50%;
+  object-fit: cover;
+  border: var(--border);
+  margin-bottom: 20px;
+}
+
+.name {
+  font-size: 24px;
+}
+
+.birthday {
+  font-size: 16px;
+  color: var(--text-color);
+}

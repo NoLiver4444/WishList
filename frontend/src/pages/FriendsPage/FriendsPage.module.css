@@ -1,0 +1,83 @@
+.requests {
+  width: 100%;
+  display: grid;
+  justify-content: space-between;
+  align-items: center;
+  grid-template-columns: repeat(auto-fill, minmax(auto, 1fr));
+  gap: clamp(0.3125rem, -0.0781rem + 1.2207vw, 1.875rem);
+}
+
+.requestCard {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    'userCard userCard'
+    'declined accepted';
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  border: var(--border);
+  border-radius: var(--big-border-radius);
+  padding: 10px 15px;
+}
+
+.emptyRequests {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 235px;
+  height: 200px;
+  border: var(--border);
+  border-radius: var(--big-border-radius);
+  color: var(--subtext-color);
+}
+
+.userCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  grid-area: userCard;
+}
+
+.declined,
+.accepted {
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.declined {
+  background: transparent;
+  border: 1px solid var(--split-line-color);
+  color: var(--subtext-color);
+  grid-area: declined;
+}
+
+.declined:hover {
+  background: var(--dim-background-color);
+}
+
+.accepted {
+  background: var(--primary-color);
+  color: var(--text-color);
+  border: none;
+  grid-area: accepted;
+}
+
+.accepted:hover {
+  background-color: var(--dim-primary-color);
+}
+
+.accepted:disabled,
+.declined:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.login {
+  font-size: 16px;
+}
