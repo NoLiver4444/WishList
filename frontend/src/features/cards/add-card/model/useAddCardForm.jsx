@@ -61,7 +61,7 @@ export const useAddCardForm = ({ fields, onSubmit, onClose, emptyForm }) => {
         return newForm;
       });
     },
-    [fields]
+    [fields],
   );
 
   const handleStep = useCallback(
@@ -75,7 +75,7 @@ export const useAddCardForm = ({ fields, onSubmit, onClose, emptyForm }) => {
 
       setForm((prev) => ({ ...prev, [name]: newValue }));
     },
-    [fields, form]
+    [fields, form],
   );
 
   const handleBlur = useCallback(
@@ -92,7 +92,7 @@ export const useAddCardForm = ({ fields, onSubmit, onClose, emptyForm }) => {
         }
       }
     },
-    [fields]
+    [fields],
   );
 
   const handleClose = useCallback(() => {

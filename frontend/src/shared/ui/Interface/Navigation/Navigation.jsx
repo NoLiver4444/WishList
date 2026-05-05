@@ -24,7 +24,7 @@ const Navigation = () => {
 
   const updateCapsule = useCallback(() => {
     const activeItem = NAV_ITEMS.find(
-      (item) => item.path === location.pathname
+      (item) => item.path === location.pathname,
     );
     if (!activeItem) return;
 

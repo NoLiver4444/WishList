@@ -75,7 +75,7 @@ const FriendsPage = () => {
       if (action === 'delete') {
         await deleteFriend(friendshipId);
         setFriends((prev) =>
-          prev.filter((f) => f.friendship_id !== friendshipId)
+          prev.filter((f) => f.friendship_id !== friendshipId),
         );
       }
     } catch {
@@ -86,9 +86,9 @@ const FriendsPage = () => {
   const filteredFriends = useMemo(
     () =>
       friends.filter((f) =>
-        f.login.toLowerCase().includes(searchQuery.toLowerCase())
+        f.login.toLowerCase().includes(searchQuery.toLowerCase()),
       ),
-    [friends, searchQuery]
+    [friends, searchQuery],
   );
 
   return (

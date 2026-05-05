@@ -195,5 +195,5 @@ export const ProfileDropdown = memo(
         </button>
       </DropdownContainer>
     );
-  }
+  },
 );

@@ -54,7 +54,7 @@ const ProductsPage = () => {
             imageUrl: p.image_url,
             description: p.description,
             price: p.price,
-          }))
+          })),
         );
       })
       .catch(console.error)
@@ -63,7 +63,7 @@ const ProductsPage = () => {
 
   const filteredItems = useMemo(() => {
     return items.filter((item) =>
-      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()),
     );
   }, [items, searchQuery]);
 
@@ -103,8 +103,8 @@ const ProductsPage = () => {
                 description: created.description,
                 price: created.price,
               }
-            : i
-        )
+            : i,
+        ),
       );
     } catch (err) {
       setItems((prev) => prev.filter((i) => i.id !== tempId));
@@ -142,8 +142,8 @@ const ProductsPage = () => {
               price: formData.price,
               _loading: formData.image instanceof File,
             }
-          : i
-      )
+          : i,
+      ),
     );
     setEditItem(null);
 
@@ -170,8 +170,8 @@ const ProductsPage = () => {
                 description: updated.description,
                 price: updated.price,
               }
-            : i
-        )
+            : i,
+        ),
       );
     } catch (err) {
       console.error('Ошибка обновления желания:', err);

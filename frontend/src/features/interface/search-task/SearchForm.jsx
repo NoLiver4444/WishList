@@ -40,7 +40,7 @@ const SearchForm = forwardRef(
       />
       <X size={20} style={{ cursor: 'pointer' }} onClick={onClose}></X>
     </div>
-  )
+  ),
 );
 
 export default memo(SearchForm);

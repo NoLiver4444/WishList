@@ -139,5 +139,5 @@ export const FormField = memo(
         {error && <span className={styles.errorText}>{error}</span>}
       </div>
     );
-  }
+  },
 );

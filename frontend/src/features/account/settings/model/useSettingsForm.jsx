@@ -43,7 +43,7 @@ export const useSettingsForm = ({
         }));
       }
     },
-    [validateField]
+    [validateField],
   );
 
   const handleSubmit = useCallback(
@@ -68,7 +68,7 @@ export const useSettingsForm = ({
 
       await onSubmit(form);
     },
-    [form, fields, onSubmit, validateField]
+    [form, fields, onSubmit, validateField],
   );
 
   return {

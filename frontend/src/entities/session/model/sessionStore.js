@@ -76,11 +76,11 @@ export const useSessionStore = create(
         const accounts = get().accounts;
         const activeIndex = get().activeIndex;
         const updated = accounts.map((a, i) =>
-          i === activeIndex ? { ...a, user: { ...a.user, ...user } } : a
+          i === activeIndex ? { ...a, user: { ...a.user, ...user } } : a,
         );
         set({ accounts: updated });
       },
     }),
-    { name: 'session' }
-  )
+    { name: 'session' },
+  ),
 );

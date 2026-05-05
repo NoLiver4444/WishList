@@ -38,11 +38,11 @@ const AddCardModal = ({
 
   const emptyForm = useMemo(
     () => Object.fromEntries(fields.map((f) => [f.name, ''])),
-    [fields]
+    [fields],
   );
   const defaultForm = useMemo(
     () => (initialValues ? { ...emptyForm, ...initialValues } : emptyForm),
-    [emptyForm, initialValues]
+    [emptyForm, initialValues],
   );
 
   const handleSubmitWithLoading = async (formData) => {

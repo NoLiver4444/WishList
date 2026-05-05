@@ -21,7 +21,7 @@ import styles from './AuthForm.module.css';
 export const AuthForm = memo(
   ({ fields, onSubmit, submitText, validateField }) => {
     const [form, setForm] = useState(() =>
-      Object.fromEntries(fields.map((f) => [f.name, '']))
+      Object.fromEntries(fields.map((f) => [f.name, ''])),
     );
 
     const [errors, setErrors] = useState({});
@@ -133,5 +133,5 @@ export const AuthForm = memo(
         </button>
       </form>
     );
-  }
+  },
 );

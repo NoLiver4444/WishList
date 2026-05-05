@@ -22,7 +22,7 @@ const applyTheme = (theme) => {
 
 export const useTheme = () => {
   const [theme, setTheme] = useState(
-    () => localStorage.getItem(STORAGE_KEY) ?? 'system'
+    () => localStorage.getItem(STORAGE_KEY) ?? 'system',
   );
 
   useEffect(() => {

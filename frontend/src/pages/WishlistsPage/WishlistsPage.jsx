@@ -54,7 +54,7 @@ const WishlistsPage = () => {
             counts: w.item_count ?? 0,
             privacy: w.privacy,
             previewImage: null,
-          }))
+          })),
         );
         return list;
       })
@@ -65,7 +65,7 @@ const WishlistsPage = () => {
 
   const filteredItems = useMemo(() => {
     return items.filter((item) =>
-      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()),
     );
   }, [items, searchQuery]);
 
@@ -83,8 +83,8 @@ const WishlistsPage = () => {
             prev.map((w) =>
               w.id === wishlist.id
                 ? { ...w, counts: items.length, previews }
-                : w
-            )
+                : w,
+            ),
           );
         })
         .catch(() => {});
@@ -144,8 +144,8 @@ const WishlistsPage = () => {
                 date: updated.deadline ?? null,
                 privacy: updated.privacy,
               }
-            : w
-        )
+            : w,
+        ),
       );
       setEditItem(null);
     } catch (err) {

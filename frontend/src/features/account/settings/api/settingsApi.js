@@ -13,8 +13,8 @@ import { client } from '@/shared/api/client.api';
 export const updateUserRequest = (body) => {
   const cleaned = Object.fromEntries(
     Object.entries(body).filter(
-      ([, v]) => v !== '' && v !== undefined && v !== null
-    )
+      ([, v]) => v !== '' && v !== undefined && v !== null,
+    ),
   );
 
   return client('/v1/users/me', {

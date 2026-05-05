@@ -43,7 +43,7 @@ const SelectProductModal = ({
     setLoading(true);
     fetchMyProducts()
       .then((data) =>
-        setProducts(Array.isArray(data) ? data : (data.products ?? []))
+        setProducts(Array.isArray(data) ? data : (data.products ?? [])),
       )
       .catch(console.error)
       .finally(() => setLoading(false));
@@ -54,7 +54,7 @@ const SelectProductModal = ({
     setLoading(true);
     fetchMyProducts()
       .then((data) =>
-        setProducts(Array.isArray(data) ? data : (data.products ?? []))
+        setProducts(Array.isArray(data) ? data : (data.products ?? [])),
       )
       .catch(console.error)
       .finally(() => setLoading(false));

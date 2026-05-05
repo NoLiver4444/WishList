@@ -12,7 +12,7 @@ export const useClickOutside = (refs, handler) => {
     const refList = Array.isArray(refs) ? refs : [refs];
     const listener = (event) => {
       const isInside = refList.some(
-        (ref) => ref.current && ref.current.contains(event.target)
+        (ref) => ref.current && ref.current.contains(event.target),
       );
 
       if (isInside) return;

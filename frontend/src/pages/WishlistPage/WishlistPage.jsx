@@ -53,7 +53,7 @@ const WishlistPage = ({ mode = 'owner' }) => {
         const list = Array.isArray(its) ? its : (its.items ?? []);
         const unique = list.filter(
           (item, index, self) =>
-            index === self.findIndex((i) => i.product?.id === item.product?.id)
+            index === self.findIndex((i) => i.product?.id === item.product?.id),
         );
         setWishlist(wl);
         setItems(unique);
@@ -127,8 +127,8 @@ const WishlistPage = ({ mode = 'owner' }) => {
                 is_reserved: !isReserved,
                 reserved_by: isReserved ? null : currentUser?.id,
               }
-            : i
-        )
+            : i,
+        ),
       );
     } catch (err) {
       console.error('Ошибка резервирования:', err);

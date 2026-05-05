@@ -21,6 +21,6 @@ export const useDebounce = (fn, delay) => {
       clearTimeout(timer.current);
       timer.current = setTimeout(() => fn(...args), delay);
     },
-    [fn, delay]
+    [fn, delay],
   );
 };

@@ -24,14 +24,14 @@ const Footer = () => {
         <a
           href="https://t.me/AISAAAAUUUU"
           className={styles.link}
-          target="_blank"
+          target="_blank" rel="noreferrer"
         >
           Поддержка
         </a>
         <a
           href="https://github.com/NoLiver4444/WishList"
           className={styles.link}
-          target="_blank"
+          target="_blank" rel="noreferrer"
         >
           О проекте
         </a>

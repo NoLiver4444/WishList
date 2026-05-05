@@ -55,7 +55,7 @@ const Menu = ({
 
   useClickOutside(
     notificationRef,
-    () => activeDropdown === 'notification' && closeAll()
+    () => activeDropdown === 'notification' && closeAll(),
   );
   useClickOutside(avatarRef, () => activeDropdown === 'avatar' && closeAll());
 
@@ -104,7 +104,7 @@ const Menu = ({
         <button
           onClick={() =>
             setActiveDropdown(
-              activeDropdown === 'notification' ? null : 'notification'
+              activeDropdown === 'notification' ? null : 'notification',
             )
           }
           className={`${styles.item} ${activeDropdown === 'notification' ? styles.activeItem : ''}`}

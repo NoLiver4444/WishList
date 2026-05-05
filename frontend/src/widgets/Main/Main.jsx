@@ -40,7 +40,7 @@ const Main = ({
 
   const sortedData = useMemo(
     () => sortItems(data, currentSort),
-    [data, currentSort]
+    [data, currentSort],
   );
 
   return (
