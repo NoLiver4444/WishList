@@ -14,6 +14,7 @@ import AuthPage from '@/pages/AuthPage';
 import WishlistPage from '@/pages/WishlistPage';
 import ProtectedRoute from '@/app/routing/ProtectedRoute';
 import { SearchProvider } from '@/shared/context/SearchProvider';
+import { useSessionStore } from '@/entities/session';
 import Header from '@/widgets/Header';
 import Footer from '@/widgets/Footer';
 import './styles';
@@ -31,6 +32,8 @@ import './styles';
  * @returns {React.ReactElement} Главная иерархия компонентов и роутов.
  */
 const App = () => {
+  const activeIndex = useSessionStore((s) => s.activeIndex);
+
   return (
     <>
       <SearchProvider>
@@ -53,7 +56,7 @@ const App = () => {
             path="/wishlists/:id"
             element={
               <ProtectedRoute>
-                <div className="app">
+                <div className="app" key={activeIndex}>
                   <Header />
                   <main className="main">
                     <WishlistPage mode="owner" />
@@ -68,7 +71,7 @@ const App = () => {
             path="/*"
             element={
               <ProtectedRoute>
-                <div className="app">
+                <div className="app" key={activeIndex}>
                   <Header />
                   <main className="main">
                     <Routes>
