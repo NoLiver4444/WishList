@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"wish-piece/internal/models"
 
@@ -40,7 +41,6 @@ func (r *WishlistItemRepo) ListItems(ctx context.Context, wishlistID uuid.UUID) 
 	return r.scanItems(r.Pool.Query(ctx, query, wishlistID))
 }
 
-// ListItemsWithProducts — JOIN с таблицей products
 func (r *WishlistItemRepo) ListItemsWithProducts(ctx context.Context, wishlistID uuid.UUID) ([]*models.WishlistItem, error) {
 	query := `SELECT
     wi.id, wi.wishlist_id, wi.product_id, wi.reserved_by, wi.comment, wi."order", wi.created_at, wi.updated_at,
@@ -100,15 +100,42 @@ func (r *WishlistItemRepo) RemoveItem(ctx context.Context, itemID uuid.UUID) err
 	return nil
 }
 
-func (r *WishlistItemRepo) ReserveItem(ctx context.Context, itemID uuid.UUID, userID *uuid.UUID) error {
-	query := `UPDATE wishlist_items SET reserved_by = $1, updated_at = NOW() WHERE id = $2`
-	result, err := r.Pool.Exec(ctx, query, userID, itemID)
+func (r *WishlistItemRepo) ReserveItem(
+	ctx context.Context,
+	itemID uuid.UUID,
+	actorID uuid.UUID,
+	ownerID uuid.UUID,
+	reserve bool,
+) error {
+	var query string
+	var args []interface{}
+
+	if reserve {
+		query = `
+            UPDATE wishlist_items 
+            SET reserved_by = $1, updated_at = NOW() 
+            WHERE id = $2 AND reserved_by IS NULL`
+		args = []interface{}{actorID, itemID}
+	} else {
+		query = `
+            UPDATE wishlist_items 
+            SET reserved_by = NULL, updated_at = NOW() 
+            WHERE id = $1 AND (reserved_by = $2 OR EXISTS (
+                SELECT 1 FROM wishlists w 
+                WHERE w.id = wishlist_items.wishlist_id AND w.user_id = $3
+            ))`
+		args = []interface{}{itemID, actorID, ownerID}
+	}
+
+	result, err := r.Pool.Exec(ctx, query, args...)
 	if err != nil {
 		return err
 	}
+
 	if result.RowsAffected() == 0 {
-		return ErrItemNotFound
+		return fmt.Errorf("action not allowed or item not found")
 	}
+
 	return nil
 }
 

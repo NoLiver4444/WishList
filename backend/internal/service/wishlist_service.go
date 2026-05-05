@@ -22,23 +22,23 @@ type WishlistService struct {
 	ItemRepo     repository.WishlistItemRepository
 	ProductRepo  repository.ProductRepository
 	Notification *repository.NotificationRepo
-    UserRepo     *repository.UserRepo
+	UserRepo     *repository.UserRepo
 }
 
 func NewWishlistService(
-    wlRepo repository.WishlistRepository,
-    itemRepo repository.WishlistItemRepository,
-    prodRepo repository.ProductRepository,
-    notifRepo *repository.NotificationRepo,
-    userRepo *repository.UserRepo,
+	wlRepo repository.WishlistRepository,
+	itemRepo repository.WishlistItemRepository,
+	prodRepo repository.ProductRepository,
+	notifRepo *repository.NotificationRepo,
+	userRepo *repository.UserRepo,
 ) *WishlistService {
-    return &WishlistService{
-        WishlistRepo: wlRepo,
-        ItemRepo:     itemRepo,
-        ProductRepo:  prodRepo,
-        Notification: notifRepo,
-        UserRepo:     userRepo,
-    }
+	return &WishlistService{
+		WishlistRepo: wlRepo,
+		ItemRepo:     itemRepo,
+		ProductRepo:  prodRepo,
+		Notification: notifRepo,
+		UserRepo:     userRepo,
+	}
 }
 
 // ============ WISHLIST CRUD ============
@@ -212,7 +212,6 @@ func (s *WishlistService) ListItems(ctx context.Context, userID, wlID uuid.UUID)
 		return nil, err
 	}
 
-	// Публичные и друзья — можно смотреть всем, приватные — только владелец
 	if wl.Privacy == models.PrivacyPrivate && wl.UserID != userID {
 		return nil, ErrWishlistNotOwned
 	}
@@ -229,50 +228,50 @@ func (s *WishlistService) ListItems(ctx context.Context, userID, wlID uuid.UUID)
 	return result, nil
 }
 
-func (s *WishlistService) ReserveItem(ctx context.Context, userID, itemID uuid.UUID, action string) error {
-    item, err := s.ItemRepo.FindByID(ctx, itemID)
-    if err != nil {
-        return err
-    }
+func (s *WishlistService) ReserveItem(ctx context.Context, itemID, actorID uuid.UUID, isCurrentlyReserved bool) error {
+	item, err := s.ItemRepo.FindByID(ctx, itemID)
+	if err != nil {
+		return err
+	}
 
-    wl, err := s.WishlistRepo.FindByID(ctx, item.WishlistID)
-    if err != nil {
-        return err
-    }
+	wl, err := s.WishlistRepo.FindByID(ctx, item.WishlistID)
+	if err != nil {
+		return err
+	}
 
-    if wl.Privacy == models.PrivacyPrivate && wl.UserID != userID {
-        return ErrWishlistNotOwned
-    }
+	if wl.Privacy == "private" && wl.UserID != actorID {
+		return errors.New("wishlist not owned")
+	}
 
-    var reserveBy *uuid.UUID
-    if action == "reserve" {
-        reserveBy = &userID
-    }
+	reserveAction := !isCurrentlyReserved
 
-    if err := s.ItemRepo.ReserveItem(ctx, itemID, reserveBy); err != nil {
-        return err
-    }
+	err = s.ItemRepo.ReserveItem(ctx, itemID, actorID, wl.UserID, reserveAction)
+	if err != nil {
+		return err
+	}
 
-    if action == "reserve" && wl.UserID != userID {
-        reserver, err := s.UserRepo.FindByID(ctx, userID)
-        if err == nil && reserver != nil {
-            product, _ := s.ProductRepo.FindByID(ctx, item.ProductID)
-            title := "Желание зарезервировано"
-            message := "Кто-то зарезервировал ваше желание, ждите сюрприз"
-            if product != nil {
-                message = "«" + product.Title + "» кто-то зарезервировал, ждите сюрприз"
-            }
-            _ = s.Notification.Create(ctx,
-                wl.UserID,
-                userID,
-                models.NotifItemReserved,
-                title,
-                message,
-            )
-        }
-    }
+	if reserveAction && wl.UserID != actorID {
+		reserver, err := s.UserRepo.FindByID(ctx, actorID)
+		if err == nil && reserver != nil {
+			product, _ := s.ProductRepo.FindByID(ctx, item.ProductID)
+			title := "Желание зарезервировано"
+			message := "Кто-то зарезервировал ваше желание, ждите сюрприз"
 
-    return nil
+			if product != nil {
+				message = "«" + product.Title + "» кто-то зарезервировал, ждите сюрприз"
+			}
+
+			_ = s.Notification.Create(ctx,
+				wl.UserID,
+				actorID,
+				"item_reserved",
+				title,
+				message,
+			)
+		}
+	}
+
+	return nil
 }
 
 func (s *WishlistService) RemoveItem(ctx context.Context, userID, itemID uuid.UUID) error {

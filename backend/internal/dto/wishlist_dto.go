@@ -27,7 +27,7 @@ type AddItemRequest struct {
 }
 
 type ReserveItemRequest struct {
-	Action string `json:"action" validate:"required,oneof=reserve unreserve"`
+	IsReserved bool `json:"is_reserved"`
 }
 
 type WishlistDTO struct {

@@ -275,18 +275,13 @@ func (h *WishlistHandler) ReserveItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := h.Validator.Struct(req); err != nil {
-		RespondError(w, http.StatusBadRequest, "Validation error", "VALIDATION_ERROR")
-		return
-	}
-
-	err = h.Service.ReserveItem(r.Context(), userID, itemID, req.Action)
+	err = h.Service.ReserveItem(r.Context(), itemID, userID, req.IsReserved)
 	if err != nil {
-		if err == service.ErrItemNotFound || err == service.ErrWishlistNotFound {
+		if err == service.ErrItemNotFound {
 			RespondError(w, http.StatusNotFound, "Not found", "NOT_FOUND")
 			return
 		}
-		if err == service.ErrWishlistNotOwned {
+		if err.Error() == "action not allowed or item not found" || err == service.ErrWishlistNotOwned {
 			RespondError(w, http.StatusForbidden, "Access denied", "FORBIDDEN")
 			return
 		}

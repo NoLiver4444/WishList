@@ -12,10 +12,10 @@ import { client } from '@/shared/api/client.api';
  * @returns {Promise}
  */
 export const addItem = (wishlistId, body) =>
-  client(`/api/wishlists/${wishlistId}/items`, {
-    method: 'POST',
-    body: JSON.stringify(body),
-  });
+	client(`/api/wishlists/${wishlistId}/items`, {
+		method: 'POST',
+		body: JSON.stringify(body),
+	});
 
 /**
  * Удалить желание.
@@ -23,16 +23,15 @@ export const addItem = (wishlistId, body) =>
  * @returns {Promise}
  */
 export const removeItem = (itemId) =>
-  client(`/api/items/${itemId}`, { method: 'DELETE' });
+	client(`/api/items/${itemId}`, {method: 'DELETE'});
 
 /**
- * Зарезервировать или снять резерв с желания.
- * @param {string|number} itemId - ID желания.
- * @param {string} action - 'reserve' или 'unreserve'.
- * @returns {Promise}
+ * Резервирование предмета.
+ * @param {string|number} itemId - ID элемента.
+ * @param {boolean} isReserved - Текущий статус (зарезервирован или нет).
  */
-export const reserveItem = (itemId, action) =>
-  client(`/api/items/${itemId}/reserve`, {
-    method: 'POST',
-    body: JSON.stringify({ action }),
-  });
+export const reserveItem = (itemId, isReserved) =>
+	client(`/api/items/${itemId}/reserve`, {
+		method: 'POST',
+		body: JSON.stringify({is_reserved: isReserved}),
+	});

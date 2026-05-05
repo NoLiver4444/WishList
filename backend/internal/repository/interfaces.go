@@ -31,7 +31,7 @@ type WishlistItemRepository interface {
 	ListItemsWithProducts(ctx context.Context, wishlistID uuid.UUID) ([]*models.WishlistItem, error)
 	UpdateItem(ctx context.Context, item *models.WishlistItem) error
 	RemoveItem(ctx context.Context, itemID uuid.UUID) error
-	ReserveItem(ctx context.Context, itemID uuid.UUID, userID *uuid.UUID) error
+	ReserveItem(ctx context.Context, itemID uuid.UUID, actorID uuid.UUID, ownerID uuid.UUID, reserve bool) error
 	FindByID(ctx context.Context, id uuid.UUID) (*models.WishlistItem, error)
 }
 
