@@ -18,7 +18,8 @@
   padding: 5px;
   cursor: pointer;
   color: var(--text-color);
-  transition: all var(--transition-duration) var(--function-time-transition-duration);
+  transition: all var(--transition-duration)
+    var(--function-time-transition-duration);
 }
 
 .item:hover,
@@ -41,7 +42,8 @@
 }
 
 .chevron {
-  transition: transform var(--transition-duration) var(--function-time-transition-duration);
+  transition: transform var(--transition-duration)
+    var(--function-time-transition-duration);
   color: var(--text-color);
   margin-left: -5px;
 }
@@ -96,7 +98,8 @@
   color: var(--dropdown-text-color);
   text-decoration: none;
   cursor: pointer;
-  transition: background var(--transition-duration) var(--function-time-transition-duration);
+  transition: background var(--transition-duration)
+    var(--function-time-transition-duration);
 }
 
 .menuLink:hover,
@@ -123,11 +126,11 @@
 .profileLogin {
   color: var(--dropdown-text-color);
   background-image: linear-gradient(
-          to bottom,
-          transparent 0%,
-          transparent 90%,
-          var(--primary-color) 90%,
-          var(--primary-color) 100%
+    to bottom,
+    transparent 0%,
+    transparent 90%,
+    var(--primary-color) 90%,
+    var(--primary-color) 100%
   );
   background-repeat: no-repeat;
   background-size: 0 100%;

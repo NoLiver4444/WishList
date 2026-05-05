@@ -14,8 +14,8 @@ export const useNotifications = () => {
 
     es.onmessage = (e) => {
       const notification = JSON.parse(e.data);
-      setNotifications(prev => {
-        if (prev.some(n => n.id === notification.id)) return prev;
+      setNotifications((prev) => {
+        if (prev.some((n) => n.id === notification.id)) return prev;
         return [notification, ...prev];
       });
     };
@@ -26,7 +26,7 @@ export const useNotifications = () => {
   }, []);
 
   const dismiss = (id) => {
-    setNotifications(prev => prev.filter(n => n.id !== id));
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
   };
 
   return { notifications, dismiss };

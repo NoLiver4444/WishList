@@ -23,68 +23,83 @@ import styles from './WishlistItem.module.css';
  * @param {function(string|number, boolean): void} props.onReserve - Функция переключения статуса резерва.
  * * @returns {React.ReactElement} Элемент списка (li).
  */
-const WishlistItem = ({item, onRemove, onReserve, isOwner, currentUserId}) => {
-	const {product, comment, is_reserved, reserved_by} = item;
+const WishlistItem = ({
+  item,
+  onRemove,
+  onReserve,
+  isOwner,
+  currentUserId,
+}) => {
+  const { product, comment, is_reserved, reserved_by } = item;
 
-	const isReserver = reserved_by === currentUserId;
-	const canChangeReserve = !is_reserved || isOwner || isReserver;
+  const isReserver = reserved_by === currentUserId;
+  const canChangeReserve = !is_reserved || isOwner || isReserver;
 
-	return (
-		<li className={styles.item}>
-			{product?.image_url && (
-				<img
-					src={product.image_url}
-					alt={product.title}
-					className={styles.itemImage}
-				/>
-			)}
+  return (
+    <li className={styles.item}>
+      {product?.image_url && (
+        <img
+          src={product.image_url}
+          alt={product.title}
+          className={styles.itemImage}
+        />
+      )}
 
-			<div className={styles.itemBody}>
-				<h3 className={styles.itemTitle}>{product?.title}</h3>
+      <div className={styles.itemBody}>
+        <h3 className={styles.itemTitle}>{product?.title}</h3>
 
-				{comment && <p className={styles.itemComment}>{comment}</p>}
+        {comment && <p className={styles.itemComment}>{comment}</p>}
 
-				{product?.price && (
-					<span className={styles.itemPrice}>
+        {product?.price && (
+          <span className={styles.itemPrice}>
             {Number(product.price).toLocaleString('ru-RU')} ₽
           </span>
-				)}
+        )}
 
-				{product?.url && (
-					<a
-						href={product?.url}
-						target="_blank"
-						rel="noopener noreferrer"
-						className={styles.itemLink}
-					>
-						Перейти →
-					</a>
-				)}
-			</div>
+        {product?.url && (
+          <a
+            href={product?.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.itemLink}
+          >
+            Перейти →
+          </a>
+        )}
+      </div>
 
-			<div className={styles.itemActions}>
-				<button
-					className={`${styles.reserveButton} ${is_reserved ? styles.reserved : ''}`}
-					onClick={() => canChangeReserve && onReserve(item.id, is_reserved)}
-					disabled={!canChangeReserve}
-					style={{opacity: canChangeReserve ? 1 : 0.5, cursor: canChangeReserve ? 'pointer' : 'not-allowed'}}
-					title={is_reserved ? (canChangeReserve ? 'Снять резерв' : 'Зарезервировано кем-то другим') : 'Зарезервировать'}
-				>
-					{is_reserved ? <BookmarkCheck size={18}/> : <Bookmark size={18}/>}
-				</button>
+      <div className={styles.itemActions}>
+        <button
+          className={`${styles.reserveButton} ${is_reserved ? styles.reserved : ''}`}
+          onClick={() => canChangeReserve && onReserve(item.id, is_reserved)}
+          disabled={!canChangeReserve}
+          style={{
+            opacity: canChangeReserve ? 1 : 0.5,
+            cursor: canChangeReserve ? 'pointer' : 'not-allowed',
+          }}
+          title={
+            is_reserved
+              ? canChangeReserve
+                ? 'Снять резерв'
+                : 'Зарезервировано кем-то другим'
+              : 'Зарезервировать'
+          }
+        >
+          {is_reserved ? <BookmarkCheck size={18} /> : <Bookmark size={18} />}
+        </button>
 
-				{isOwner && (
-					<button
-						className={styles.removeButton}
-						onClick={() => onRemove(item.id)}
-						title="Удалить"
-					>
-						<Trash2 size={18}/>
-					</button>
-				)}
-			</div>
-		</li>
-	);
+        {isOwner && (
+          <button
+            className={styles.removeButton}
+            onClick={() => onRemove(item.id)}
+            title="Удалить"
+          >
+            <Trash2 size={18} />
+          </button>
+        )}
+      </div>
+    </li>
+  );
 };
 
 export default memo(WishlistItem);
