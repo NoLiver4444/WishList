@@ -8,10 +8,8 @@ import { AnimatePresence } from 'framer-motion';
 import { Bell, ChevronDown } from 'lucide-react';
 import Avatar from '@/shared/ui/User/Avatar/index';
 import { useClickOutside } from '@/shared/hooks/useClickOutside';
-import {
-  NotificationDropdown,
-  ProfileDropdown,
-} from '@/shared/ui/Interface/Dropdowns/index';
+import { useNotifications } from '@/shared/hooks/useNotifications';
+import { NotificationDropdown, ProfileDropdown } from '@/shared/ui/Interface/Dropdowns/index';
 import ProfilePopup from '@/shared/ui/User/ProfilePopup/index';
 import styles from './Menu.module.css';
 
@@ -30,99 +28,102 @@ import styles from './Menu.module.css';
  * @param {boolean} [props.hasUnread=false] - Флаг наличия непрочитанных уведомлений.
  */
 const Menu = ({
-  currentUser,
-  users,
-  onSelectUser,
-  onAddAccount,
-  onLogout,
-  onOpenSettings,
-  hasUnread = false,
-}) => {
-  const [activeDropdown, setActiveDropdown] = useState(null);
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
+	              currentUser,
+	              users,
+	              onSelectUser,
+	              onAddAccount,
+	              onLogout,
+	              onOpenSettings,
+	              hasUnread,
+              }) => {
+	const [activeDropdown, setActiveDropdown] = useState(null);
+	const [isProfileOpen, setIsProfileOpen] = useState(false);
+	const {notifications} = useNotifications();
 
-  const notificationRef = useRef(null);
-  const avatarRef = useRef(null);
+	const notificationRef = useRef(null);
+	const avatarRef = useRef(null);
 
-  const closeAll = () => {
-    setActiveDropdown(null);
-    setIsProfileOpen(false);
-  };
+	hasUnread = notifications.length > 0;
 
-  useClickOutside(
-    notificationRef,
-    () => activeDropdown === 'notification' && closeAll()
-  );
-  useClickOutside(avatarRef, () => activeDropdown === 'avatar' && closeAll());
+	const closeAll = () => {
+		setActiveDropdown(null);
+		setIsProfileOpen(false);
+	};
 
-  return (
-    <ul className={styles.menu}>
-      <li className={styles.itemContainer} ref={avatarRef}>
-        <button
-          onClick={() =>
-            setActiveDropdown(activeDropdown === 'avatar' ? null : 'avatar')
-          }
-          className={`${styles.item} ${activeDropdown === 'avatar' ? styles.activeItem : ''}`}
-        >
-          <Avatar
-            classname={styles.avatar}
-            src={currentUser?.avatar_url}
-            alt={currentUser?.login}
-            size={32}
-          />
-          <span className={styles.avatarLabel}>{currentUser?.login}</span>
-          <ChevronDown
-            size={16}
-            className={`${styles.chevron} ${activeDropdown === 'avatar' ? styles.chevronOpen : ''}`}
-          />
-        </button>
+	useClickOutside(
+		notificationRef,
+		() => activeDropdown === 'notification' && closeAll(),
+	);
+	useClickOutside(avatarRef, () => activeDropdown === 'avatar' && closeAll());
 
-        <AnimatePresence>
-          {activeDropdown === 'avatar' && (
-            <ProfileDropdown
-              onClose={closeAll}
-              currentUser={currentUser}
-              users={users}
-              onSelectUser={onSelectUser}
-              onAddAccount={onAddAccount}
-              onOpenSettings={onOpenSettings}
-              onLogout={onLogout}
-              onOpenFullProfile={() => {
-                setActiveDropdown(null);
-                setIsProfileOpen(true);
-              }}
-            />
-          )}
-        </AnimatePresence>
-      </li>
+	return (
+		<ul className={styles.menu}>
+			<li className={styles.itemContainer} ref={avatarRef}>
+				<button
+					onClick={() =>
+						setActiveDropdown(activeDropdown === 'avatar' ? null : 'avatar')
+					}
+					className={`${styles.item} ${activeDropdown === 'avatar' ? styles.activeItem : ''}`}
+				>
+					<Avatar
+						classname={styles.avatar}
+						src={currentUser?.avatar_url}
+						alt={currentUser?.login}
+						size={32}
+					/>
+					<span className={styles.avatarLabel}>{currentUser?.login}</span>
+					<ChevronDown
+						size={16}
+						className={`${styles.chevron} ${activeDropdown === 'avatar' ? styles.chevronOpen : ''}`}
+					/>
+				</button>
 
-      <li className={styles.itemContainer} ref={notificationRef}>
-        <button
-          onClick={() =>
-            setActiveDropdown(
-              activeDropdown === 'notification' ? null : 'notification'
-            )
-          }
-          className={`${styles.item} ${activeDropdown === 'notification' ? styles.activeItem : ''}`}
-        >
-          <Bell size={24} />
-          {hasUnread && <span className={styles.badge} />}
-        </button>
+				<AnimatePresence>
+					{activeDropdown === 'avatar' && (
+						<ProfileDropdown
+							onClose={closeAll}
+							currentUser={currentUser}
+							users={users}
+							onSelectUser={onSelectUser}
+							onAddAccount={onAddAccount}
+							onOpenSettings={onOpenSettings}
+							onLogout={onLogout}
+							onOpenFullProfile={() => {
+								setActiveDropdown(null);
+								setIsProfileOpen(true);
+							}}
+						/>
+					)}
+				</AnimatePresence>
+			</li>
 
-        <AnimatePresence>
-          {activeDropdown === 'notification' && (
-            <NotificationDropdown onClose={closeAll} />
-          )}
-        </AnimatePresence>
-      </li>
+			<li className={styles.itemContainer} ref={notificationRef}>
+				<button
+					onClick={() =>
+						setActiveDropdown(
+							activeDropdown === 'notification' ? null : 'notification',
+						)
+					}
+					className={`${styles.item} ${activeDropdown === 'notification' ? styles.activeItem : ''}`}
+				>
+					<Bell size={24}/>
+					{hasUnread && <span className={styles.badge}/>}
+				</button>
 
-      <AnimatePresence>
-        {isProfileOpen && (
-          <ProfilePopup user={currentUser} onClose={closeAll} />
-        )}
-      </AnimatePresence>
-    </ul>
-  );
+				<AnimatePresence>
+					{activeDropdown === 'notification' && (
+						<NotificationDropdown onClose={closeAll}/>
+					)}
+				</AnimatePresence>
+			</li>
+
+			<AnimatePresence>
+				{isProfileOpen && (
+					<ProfilePopup user={currentUser} onClose={closeAll}/>
+				)}
+			</AnimatePresence>
+		</ul>
+	);
 };
 
 export default memo(Menu);
