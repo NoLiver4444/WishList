@@ -19,6 +19,7 @@ import (
 	"wish-piece/internal/repository"
 	"wish-piece/internal/router"
 	"wish-piece/internal/service"
+	"wish-piece/internal/worker"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/joho/godotenv"
@@ -64,18 +65,14 @@ func main() {
 	itemRepo := repository.NewWishlistItemRepo(pool)
 	productRepo := repository.NewProductRepo(pool)
 
-	wishlistService := service.NewWishlistService(wishlistRepo, itemRepo, productRepo)
-	wishlistHandler := &handler.WishlistHandler{
-		Service:   wishlistService,
-		Validator: val,
-	}
-
 	// Products
 	userProductRepo := repository.NewUserProductRepo(pool)
+
 	productService := &service.ProductService{
 		ProductRepo:     productRepo,
 		UserProductRepo: userProductRepo,
 	}
+
 	productHandler := &handler.ProductHandler{
 		Service:   productService,
 		Validator: val,
@@ -83,15 +80,30 @@ func main() {
 
 	// Friendship
 	friendshipRepo := repository.NewFriendshipRepo(pool)
+
+	// Notifications
+	notificationRepo := repository.NewNotificationRepo(pool)
+	notificationHandler := &handler.NotificationHandler{
+		Repo: notificationRepo,
+	}
+
+	wishlistService := service.NewWishlistService(wishlistRepo, itemRepo, productRepo, notificationRepo, userRepo)
+	wishlistHandler := &handler.WishlistHandler{
+		Service:   wishlistService,
+		Validator: val,
+	}
+
 	friendshipService := &service.FriendshipService{
-		Repo: friendshipRepo,
+		Repo:         friendshipRepo,
+		Notification: notificationRepo,
+		UserRepo:     userRepo,
 	}
 	friendshipHandler := &handler.FriendshipHandler{
 		Service:   friendshipService,
 		Validator: val,
 	}
 
-	r := router.New(authHandler, userHandler, wishlistHandler, productHandler, friendshipHandler, cfg.Auth.JWTSecret)
+	r := router.New(authHandler, userHandler, wishlistHandler, productHandler, friendshipHandler, notificationHandler, cfg.Auth.JWTSecret)
 
 	srv := &http.Server{Addr: fmt.Sprintf(":%d", cfg.App.Port), Handler: r}
 	go func() {
@@ -101,13 +113,18 @@ func main() {
 		}
 	}()
 
+	ctx, cancel := context.WithCancel(context.Background())
+
+	deadlineWorker := worker.NewDeadlineWorker(notificationRepo)
+	go deadlineWorker.Run(ctx)
+
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
 	log.Println("Graceful shutdown...")
+	cancel()
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-	srv.Shutdown(ctx)
-	log.Println("Server exited properly")
+	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer shutdownCancel()
+	srv.Shutdown(shutdownCtx)
 }

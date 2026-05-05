@@ -15,6 +15,13 @@ const UserIDKey contextKey = "id"
 func AuthMiddleware(jwtSecret string, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get("Authorization")
+
+		if authHeader == "" {
+			if token := r.URL.Query().Get("token"); token != "" {
+				authHeader = "Bearer " + token
+			}
+		}
+
 		if authHeader == "" {
 			http.Error(w, `{"status":401,"message":"Authorization header required","code":"UNAUTHORIZED"}`, http.StatusUnauthorized)
 			return

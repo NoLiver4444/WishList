@@ -12,6 +12,7 @@ func New(
 	wishlistHandler *handler.WishlistHandler,
 	productHandler *handler.ProductHandler,
 	friendshipHandler *handler.FriendshipHandler,
+	notificationHandler *handler.NotificationHandler,
 	jwtSecret string,
 ) http.Handler {
 	mainMux := http.NewServeMux()
@@ -77,6 +78,11 @@ func New(
 	protectedMux.HandleFunc("PATCH /v1/friends/{id}/respond", friendshipHandler.RespondToRequest)
 	protectedMux.HandleFunc("DELETE /v1/friends/{id}", friendshipHandler.DeleteFriend)
 
+	// Уведомления
+	protectedMux.HandleFunc("GET /v1/notifications/stream", notificationHandler.Stream)
+	protectedMux.HandleFunc("PATCH /v1/notifications/{id}/read", notificationHandler.MarkRead)
+	protectedMux.HandleFunc("PATCH /v1/notifications/read-all", notificationHandler.MarkAllRead)
+
 	protectedHandler := middleware.AuthMiddleware(jwtSecret, protectedMux)
 
 	mainMux.Handle("/v1/users/", withOptions(protectedHandler))
@@ -87,6 +93,8 @@ func New(
 	mainMux.Handle("/v1/products/", withOptions(protectedHandler))
 	mainMux.Handle("/v1/friends", withOptions(protectedHandler))
 	mainMux.Handle("/v1/friends/", withOptions(protectedHandler))
+	mainMux.Handle("/v1/notifications", withOptions(protectedHandler))
+	mainMux.Handle("/v1/notifications/", withOptions(protectedHandler))
 
 	return applyCORS(mainMux)
 }

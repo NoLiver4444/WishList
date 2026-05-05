@@ -16,7 +16,9 @@ var ErrFriendshipNotFound = errors.New("friendship not found")
 var ErrCannotAddSelf = errors.New("cannot add yourself")
 
 type FriendshipService struct {
-	Repo *repository.FriendshipRepo
+	Repo         *repository.FriendshipRepo
+	Notification *repository.NotificationRepo
+	UserRepo     *repository.UserRepo
 }
 
 func NewFriendshipService(repo *repository.FriendshipRepo) *FriendshipService {
@@ -43,7 +45,19 @@ func (s *FriendshipService) SendRequest(ctx context.Context, currentUserID strin
 	if errors.Is(err, repository.ErrFriendshipAlreadyExists) {
 		return nil, ErrFriendshipAlreadyExists
 	}
-	return friendship, err
+
+	sender, err := s.UserRepo.FindByID(ctx, userID)
+	if err == nil && sender != nil {
+		_ = s.Notification.Create(ctx,
+			req.FriendID,
+			userID,
+			models.NotifFriendRequest,
+			"Новая заявка в друзья",
+			sender.Login+" хочет добавить вас в друзья",
+		)
+	}
+
+	return friendship, nil
 }
 
 func (s *FriendshipService) RespondToRequest(ctx context.Context, friendshipID string, status models.FriendshipStatus) error {
@@ -51,7 +65,28 @@ func (s *FriendshipService) RespondToRequest(ctx context.Context, friendshipID s
 	if err != nil {
 		return ErrFriendshipNotFound
 	}
-	return s.Repo.UpdateStatus(ctx, id, status)
+
+	if err := s.Repo.UpdateStatus(ctx, id, status); err != nil {
+		return err
+	}
+
+	if status == models.FriendshipAccepted {
+		friendship, err := s.Repo.FindByID(ctx, id)
+		if err == nil && friendship != nil {
+			acceptor, err := s.UserRepo.FindByID(ctx, friendship.FriendID)
+			if err == nil && acceptor != nil {
+				_ = s.Notification.Create(ctx,
+					friendship.UserID,
+					friendship.FriendID,
+					models.NotifFriendAccepted,
+					"Заявка принята",
+					acceptor.Login+" принял вашу заявку в друзья",
+				)
+			}
+		}
+	}
+
+	return nil
 }
 
 func (s *FriendshipService) GetFriends(ctx context.Context, userID string) ([]dto.FriendDTO, error) {
@@ -71,9 +106,9 @@ func (s *FriendshipService) GetIncomingRequests(ctx context.Context, userID stri
 }
 
 func (s *FriendshipService) DeleteFriend(ctx context.Context, friendshipID string) error {
-    id, err := uuid.Parse(friendshipID)
-    if err != nil {
-        return ErrFriendshipNotFound
-    }
-    return s.Repo.Delete(ctx, id)
+	id, err := uuid.Parse(friendshipID)
+	if err != nil {
+		return ErrFriendshipNotFound
+	}
+	return s.Repo.Delete(ctx, id)
 }

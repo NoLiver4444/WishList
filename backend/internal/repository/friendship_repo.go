@@ -8,6 +8,7 @@ import (
 	"wish-piece/internal/models"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -111,36 +112,51 @@ func (r *FriendshipRepo) GetFriends(ctx context.Context, userID uuid.UUID) ([]dt
 }
 
 func (r *FriendshipRepo) GetIncomingRequests(ctx context.Context, userID uuid.UUID) ([]dto.FriendDTO, error) {
-    query := `
+	query := `
         SELECT f.id, u.id, u.login, u.avatar_url, f.status, f.created_at
         FROM friendships f
         JOIN users u ON f.user_id = u.id
         WHERE f.friend_id = $1 AND f.status = 'pending'`
 
-    rows, err := r.Pool.Query(ctx, query, userID)
-    if err != nil {
-        return nil, err
-    }
-    defer rows.Close()
+	rows, err := r.Pool.Query(ctx, query, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
 
-    requests := make([]dto.FriendDTO, 0)
-    for rows.Next() {
-        var f dto.FriendDTO
-        if err := rows.Scan(&f.FriendshipID, &f.ID, &f.Login, &f.AvatarURL, &f.Status, &f.CreatedAt); err != nil {
-            return nil, err
-        }
-        requests = append(requests, f)
-    }
-    return requests, nil
+	requests := make([]dto.FriendDTO, 0)
+	for rows.Next() {
+		var f dto.FriendDTO
+		if err := rows.Scan(&f.FriendshipID, &f.ID, &f.Login, &f.AvatarURL, &f.Status, &f.CreatedAt); err != nil {
+			return nil, err
+		}
+		requests = append(requests, f)
+	}
+	return requests, nil
 }
 
 func (r *FriendshipRepo) Delete(ctx context.Context, friendshipID uuid.UUID) error {
-    tag, err := r.Pool.Exec(ctx, `DELETE FROM friendships WHERE id=$1`, friendshipID)
-    if err != nil {
-        return err
-    }
-    if tag.RowsAffected() == 0 {
-        return ErrFriendshipNotFound
-    }
-    return nil
+	tag, err := r.Pool.Exec(ctx, `DELETE FROM friendships WHERE id=$1`, friendshipID)
+	if err != nil {
+		return err
+	}
+	if tag.RowsAffected() == 0 {
+		return ErrFriendshipNotFound
+	}
+	return nil
+}
+
+func (r *FriendshipRepo) FindByID(ctx context.Context, id uuid.UUID) (*models.Friendship, error) {
+	var f models.Friendship
+	err := r.Pool.QueryRow(ctx, `
+        SELECT id, user_id, friend_id, status, created_at
+        FROM friendships WHERE id=$1`, id).
+		Scan(&f.ID, &f.UserID, &f.FriendID, &f.Status, &f.CreatedAt)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return &f, nil
 }

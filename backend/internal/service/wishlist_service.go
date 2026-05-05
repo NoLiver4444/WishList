@@ -21,18 +21,24 @@ type WishlistService struct {
 	WishlistRepo repository.WishlistRepository
 	ItemRepo     repository.WishlistItemRepository
 	ProductRepo  repository.ProductRepository
+	Notification *repository.NotificationRepo
+    UserRepo     *repository.UserRepo
 }
 
 func NewWishlistService(
-	wlRepo repository.WishlistRepository,
-	itemRepo repository.WishlistItemRepository,
-	prodRepo repository.ProductRepository,
+    wlRepo repository.WishlistRepository,
+    itemRepo repository.WishlistItemRepository,
+    prodRepo repository.ProductRepository,
+    notifRepo *repository.NotificationRepo,
+    userRepo *repository.UserRepo,
 ) *WishlistService {
-	return &WishlistService{
-		WishlistRepo: wlRepo,
-		ItemRepo:     itemRepo,
-		ProductRepo:  prodRepo,
-	}
+    return &WishlistService{
+        WishlistRepo: wlRepo,
+        ItemRepo:     itemRepo,
+        ProductRepo:  prodRepo,
+        Notification: notifRepo,
+        UserRepo:     userRepo,
+    }
 }
 
 // ============ WISHLIST CRUD ============
@@ -224,28 +230,49 @@ func (s *WishlistService) ListItems(ctx context.Context, userID, wlID uuid.UUID)
 }
 
 func (s *WishlistService) ReserveItem(ctx context.Context, userID, itemID uuid.UUID, action string) error {
-	item, err := s.ItemRepo.FindByID(ctx, itemID)
-	if err != nil {
-		return err
-	}
+    item, err := s.ItemRepo.FindByID(ctx, itemID)
+    if err != nil {
+        return err
+    }
 
-	// Проверка прав на вишлист
-	wl, err := s.WishlistRepo.FindByID(ctx, item.WishlistID)
-	if err != nil {
-		return err
-	}
+    wl, err := s.WishlistRepo.FindByID(ctx, item.WishlistID)
+    if err != nil {
+        return err
+    }
 
-	if wl.Privacy == models.PrivacyPrivate && wl.UserID != userID {
-		return ErrWishlistNotOwned
-	}
+    if wl.Privacy == models.PrivacyPrivate && wl.UserID != userID {
+        return ErrWishlistNotOwned
+    }
 
-	var reserveBy *uuid.UUID
-	if action == "reserve" {
-		reserveBy = &userID
-	}
-	// action == "unreserve" → reserveBy = nil
+    var reserveBy *uuid.UUID
+    if action == "reserve" {
+        reserveBy = &userID
+    }
 
-	return s.ItemRepo.ReserveItem(ctx, itemID, reserveBy)
+    if err := s.ItemRepo.ReserveItem(ctx, itemID, reserveBy); err != nil {
+        return err
+    }
+
+    if action == "reserve" && wl.UserID != userID {
+        reserver, err := s.UserRepo.FindByID(ctx, userID)
+        if err == nil && reserver != nil {
+            product, _ := s.ProductRepo.FindByID(ctx, item.ProductID)
+            title := "Желание зарезервировано"
+            message := "Кто-то зарезервировал ваше желание, ждите сюрприз"
+            if product != nil {
+                message = "«" + product.Title + "» кто-то зарезервировал, ждите сюрприз"
+            }
+            _ = s.Notification.Create(ctx,
+                wl.UserID,
+                userID,
+                models.NotifItemReserved,
+                title,
+                message,
+            )
+        }
+    }
+
+    return nil
 }
 
 func (s *WishlistService) RemoveItem(ctx context.Context, userID, itemID uuid.UUID) error {

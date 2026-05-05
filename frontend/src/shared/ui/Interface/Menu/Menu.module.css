@@ -18,8 +18,7 @@
   padding: 5px;
   cursor: pointer;
   color: var(--text-color);
-  transition: all var(--transition-duration)
-    var(--function-time-transition-duration);
+  transition: all var(--transition-duration) var(--function-time-transition-duration);
 }
 
 .item:hover,
@@ -42,8 +41,7 @@
 }
 
 .chevron {
-  transition: transform var(--transition-duration)
-    var(--function-time-transition-duration);
+  transition: transform var(--transition-duration) var(--function-time-transition-duration);
   color: var(--text-color);
   margin-left: -5px;
 }
@@ -98,8 +96,7 @@
   color: var(--dropdown-text-color);
   text-decoration: none;
   cursor: pointer;
-  transition: background var(--transition-duration)
-    var(--function-time-transition-duration);
+  transition: background var(--transition-duration) var(--function-time-transition-duration);
 }
 
 .menuLink:hover,
@@ -126,11 +123,11 @@
 .profileLogin {
   color: var(--dropdown-text-color);
   background-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    transparent 90%,
-    var(--primary-color) 90%,
-    var(--primary-color) 100%
+          to bottom,
+          transparent 0%,
+          transparent 90%,
+          var(--primary-color) 90%,
+          var(--primary-color) 100%
   );
   background-repeat: no-repeat;
   background-size: 0 100%;
@@ -211,11 +208,54 @@
   margin-left: 26px;
 }
 
-.notificationsSubtitle {
+.notificationContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  gap: 5px;
+}
+
+.notificationTitle {
+  color: var(--text-color);
+  font-weight: 500;
+  font-size: 16px;
+  text-wrap: nowrap;
+  justify-self: center;
+}
+
+.notificationText {
   margin: 0;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
   color: var(--subtext-color);
+}
+
+.readAll {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  font-size: 14px;
+  border: none;
+  border-radius: var(--small-border-radius);
+  padding-block: 5px;
+  margin-block-start: 15px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.markRead {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  margin-block: auto;
+  padding: 3px;
+  border: none;
+  border-radius: var(--small-border-radius);
+  cursor: pointer;
+}
+
+.readAll:hover,
+.markRead:hover {
+  background-color: var(--dim-primary-color);
 }
 
 .divider {
