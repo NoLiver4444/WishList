@@ -3,8 +3,8 @@
   justify-content: center;
   align-items: center;
   gap: 30px;
-  padding-inline: 20px;
   height: 100%;
+  padding-inline: 20px;
   border-right: var(--border);
 }
 
@@ -28,13 +28,13 @@
 
 .chapter {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   padding: 6px 10px;
   border-radius: var(--big-border-radius);
+  cursor: pointer;
   transition: background-color var(--transition-duration)
     var(--function-time-transition-duration);
-  cursor: pointer;
 }
 
 .chapter:hover:not(.activeItem) {
@@ -43,8 +43,8 @@
 
 .item {
   position: relative;
-  border-radius: var(--small-border-radius);
   text-decoration: none;
+  border-radius: var(--small-border-radius);
 }
 
 .item:focus-visible {

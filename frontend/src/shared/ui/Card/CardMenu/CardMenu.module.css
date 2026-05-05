@@ -1,16 +1,16 @@
 .menu {
   position: absolute;
+  z-index: 100;
   top: calc(100% + 4px);
   right: 0;
-  z-index: 100;
-  background-color: var(--dropdown-color);
-  border: var(--border);
-  border-radius: var(--small-border-radius);
-  padding: 4px;
-  min-width: 160px;
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-width: 160px;
+  padding: 4px;
+  background-color: var(--dropdown-color);
+  border: var(--border);
+  border-radius: var(--small-border-radius);
 }
 
 .item {
@@ -18,13 +18,13 @@
   align-items: center;
   gap: 8px;
   padding: 8px 10px;
+  font-size: 13px;
+  text-align: left;
+  color: var(--dropdown-text-color);
   background: none;
   border: none;
   border-radius: var(--small-border-radius);
-  color: var(--dropdown-text-color);
-  font-size: 13px;
   cursor: pointer;
-  text-align: left;
   transition: background-color var(--transition-duration);
 }
 

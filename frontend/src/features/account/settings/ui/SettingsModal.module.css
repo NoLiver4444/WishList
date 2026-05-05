@@ -1,48 +1,48 @@
 .overlay {
   position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   z-index: 200;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(0, 0, 0, 0.5);
 }
 
 .modal {
-  background-color: var(--background-color);
-  border: var(--border);
-  border-radius: var(--big-border-radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   max-width: 480px;
   max-height: 85vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  background-color: var(--background-color);
+  border: var(--border);
+  border-radius: var(--big-border-radius);
 }
 
 .header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   padding: 16px 20px;
   border-bottom: var(--border);
 }
 
 .title {
+  margin: 0;
   font-size: 18px;
   font-weight: 500;
-  margin: 0;
 }
 
 .close {
-  background: none;
-  border: none;
-  color: var(--subtext-color);
-  cursor: pointer;
   display: flex;
   align-items: center;
   padding: 4px;
+  color: var(--subtext-color);
+  background: none;
+  border: none;
   border-radius: var(--small-border-radius);
+  cursor: pointer;
   transition: color var(--transition-duration);
 }
 
@@ -59,20 +59,20 @@
 }
 
 .avatarWrapper {
+  flex-shrink: 0;
   position: relative;
   width: 64px;
   height: 64px;
   border-radius: 50%;
   cursor: pointer;
-  flex-shrink: 0;
 }
 
 .avatar,
 .avatarPlaceholder {
   width: 64px;
   height: 64px;
-  border-radius: 50%;
   object-fit: cover;
+  border-radius: 50%;
 }
 
 .avatarPlaceholder {
@@ -82,12 +82,12 @@
 .avatarOverlay {
   position: absolute;
   inset: 0;
-  border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.4);
   display: flex;
-  align-items: center;
   justify-content: center;
-  color: #fff;
+  align-items: center;
+  color: #ffffff;
+  background-color: rgb(0, 0, 0, 0.4);
+  border-radius: 50%;
   opacity: 0;
   transition: opacity var(--transition-duration);
 }
@@ -118,19 +118,19 @@
 
 .tabs {
   display: flex;
-  border-bottom: var(--border);
   padding: 0 20px;
+  border-bottom: var(--border);
 }
 
 .tab {
+  margin-bottom: -1px;
   padding: 10px 12px;
+  font-size: 13px;
+  color: var(--subtext-color);
   background: none;
   border: none;
   border-bottom: 2px solid transparent;
-  color: var(--subtext-color);
-  font-size: 13px;
   cursor: pointer;
-  margin-bottom: -1px;
   transition: color var(--transition-duration);
 }
 
@@ -148,12 +148,12 @@
 }
 
 .content {
+  flex: 1;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 12px;
   padding: 10px 15px;
-  overflow-y: auto;
-  flex: 1;
 }
 
 .dangerZone {
@@ -163,9 +163,9 @@
 }
 
 .dangerText {
+  margin: 0;
   font-size: 13px;
   color: var(--subtext-color);
-  margin: 0;
 }
 
 .field {
@@ -175,37 +175,33 @@
 }
 
 .label {
+  margin-left: 4px;
   font-size: 13px;
   font-weight: 500;
   color: var(--subtext-color);
-  margin-left: 4px;
 }
 
 .input,
 .dateInput {
   box-sizing: border-box;
-  border: var(--border);
   min-height: 45px;
+  border: var(--border);
 }
 
 .input:focus,
 .dateInput:focus {
+  background-color: var(--background-color);
+  border-color: var(--primary-color);
   outline: none;
 }
 
-.input:focus,
-.dateInput:focus {
-  border-color: var(--primary-color);
-  background-color: var(--background-color);
-}
-
 .input {
-  padding: 12px 16px;
-  border-radius: var(--big-border-radius);
-  font-size: 15px;
-  background: var(--dim-background-color);
-  color: var(--text-color);
   width: 100%;
+  padding: 12px 16px;
+  font-size: 15px;
+  color: var(--text-color);
+  background: var(--dim-background-color);
+  border-radius: var(--big-border-radius);
 }
 
 .required {
@@ -217,22 +213,22 @@
 }
 
 .errorText {
-  color: var(--attention-color);
-  font-size: 12px;
   margin-left: 4px;
+  font-size: 12px;
   font-weight: 400;
+  color: var(--attention-color);
 }
 
 .submit {
-  margin-block-start: 8px;
   padding: 10px 20px;
-  border-radius: 10px;
   font-size: 14px;
   font-weight: 600;
-  cursor: pointer;
+  color: #ffffff;
   background: var(--primary-color);
-  color: #fff;
   border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-block-start: 8px;
 }
 
 .submit:hover {

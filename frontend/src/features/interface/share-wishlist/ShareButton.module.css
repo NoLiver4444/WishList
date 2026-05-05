@@ -9,10 +9,10 @@
 
 .button {
   padding: 5px;
-  border: none;
-  border-radius: var(--small-border-radius);
-  background-color: var(--primary-color);
   font-size: 16px;
   color: var(--text-color);
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: var(--small-border-radius);
   cursor: pointer;
 }

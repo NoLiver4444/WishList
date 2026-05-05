@@ -1,49 +1,49 @@
 .overlay {
   position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   z-index: 200;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(0, 0, 0, 0.5);
 }
 
 .modal {
-  background-color: var(--background-color);
-  border: var(--border);
-  border-radius: var(--big-border-radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   max-width: 480px;
   max-height: 70vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  background-color: var(--background-color);
+  border: var(--border);
+  border-radius: var(--big-border-radius);
 }
 
 .header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   padding: 16px 20px;
   border-bottom: var(--border);
 }
 
 .title {
+  margin: 0;
   font-size: 18px;
   font-weight: 500;
-  margin: 0;
 }
 
 .close {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px;
+  color: var(--subtext-color);
   background: none;
   border: none;
-  color: var(--subtext-color);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px;
   border-radius: var(--small-border-radius);
+  cursor: pointer;
   transition: color var(--transition-duration);
 }
 
@@ -65,16 +65,16 @@
 }
 
 .searchIcon {
-  color: var(--subtext-color);
   flex-shrink: 0;
+  color: var(--subtext-color);
 }
 
 .searchInput {
+  width: 100%;
+  font-size: 14px;
+  color: var(--text-color);
   background: none;
   border: none;
-  color: var(--text-color);
-  font-size: 14px;
-  width: 100%;
   outline: none;
 }
 
@@ -83,20 +83,20 @@
 }
 
 .list {
-  list-style: none;
-  padding: 8px;
-  margin: 0;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 4px;
+  margin: 0;
+  padding: 8px;
+  list-style: none;
 }
 
 .state {
   padding: 24px;
+  font-size: 14px;
   text-align: center;
   color: var(--subtext-color);
-  font-size: 14px;
 }
 
 .item {
@@ -113,11 +113,11 @@
 }
 
 .itemPreview {
+  flex-shrink: 0;
+  overflow: hidden;
   width: 48px;
   height: 48px;
   border-radius: var(--small-border-radius);
-  overflow: hidden;
-  flex-shrink: 0;
 }
 
 .itemImage {
@@ -133,17 +133,17 @@
 }
 
 .itemInfo {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 2px;
-  flex: 1;
   min-width: 0;
 }
 
 .itemTitle {
+  overflow: hidden;
   font-size: 14px;
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
 }
 
@@ -153,17 +153,17 @@
 }
 
 .addBtn {
+  flex-shrink: 0;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   width: 32px;
   height: 32px;
+  color: var(--primary-color);
   background: none;
   border: var(--border);
   border-radius: var(--small-border-radius);
-  color: var(--primary-color);
   cursor: pointer;
-  flex-shrink: 0;
   transition: background-color var(--transition-duration);
 }
 

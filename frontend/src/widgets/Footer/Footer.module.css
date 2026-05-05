@@ -1,22 +1,22 @@
 .footer {
-  box-sizing: border-box;
   position: static;
-  margin-top: auto;
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: start;
   gap: 20px;
+  box-sizing: border-box;
   width: 100%;
+  margin-top: auto;
   padding: 20px;
-  border-top: var(--border);
   background-color: var(--background-color);
+  border-top: var(--border);
 }
 
 .title {
-  color: var(--text-color);
-  font-weight: 800;
   font-size: 30px;
+  font-weight: 800;
+  color: var(--text-color);
 }
 
 .content {
@@ -26,8 +26,8 @@
 }
 
 .link {
-  color: var(--text-color);
   text-decoration: none;
+  color: var(--text-color);
   background-image: linear-gradient(
     to bottom,
     transparent 0%,
@@ -35,13 +35,13 @@
     var(--primary-color) 90%,
     var(--primary-color) 100%
   );
-  background-repeat: no-repeat;
-  background-size: 0 100%;
   background-position-x: right;
+  background-size: 0 100%;
+  background-repeat: no-repeat;
   transition: background-size var(--transition-duration);
 }
 
 .link:hover {
-  background-size: 100% 100%;
   background-position-x: left;
+  background-size: 100% 100%;
 }

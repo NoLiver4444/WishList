@@ -1,12 +1,12 @@
 .day {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
   min-height: 90px;
   padding: 6px;
   background-color: var(--background-color);
   border: var(--border);
   border-radius: var(--big-border-radius);
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
   cursor: pointer;
   transition: background-color var(--transition-duration)
     var(--function-time-transition-duration);
@@ -30,19 +30,19 @@
 }
 
 .today .dayNumber {
-  color: var(--primary-color);
   font-weight: 500;
+  color: var(--primary-color);
 }
 
 .dayNumber {
   font-size: 12px;
-  color: var(--subtext-color);
   line-height: 1;
+  color: var(--subtext-color);
 }
 
 .events {
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 2px;
-  overflow: hidden;
 }

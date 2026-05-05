@@ -7,26 +7,26 @@
 }
 
 .title {
-  font-weight: 400;
   font-size: 16px;
+  font-weight: 400;
 }
 
 .list {
   display: flex;
   flex-direction: row;
   gap: 10px;
-  list-style: none;
   padding: 0;
+  list-style: none;
 }
 
 .item {
-  cursor: pointer;
   padding-inline: 6px;
+  color: var(--text-color);
+  background-color: var(--background-color);
   border: none;
   border-left: 4px solid transparent;
   border-radius: 4px;
-  color: var(--text-color);
-  background-color: var(--background-color);
+  cursor: pointer;
   transition:
     background-color var(--transition-duration)
       var(--function-time-transition-duration),

@@ -3,21 +3,21 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding-inline: 10px;
   height: 100%;
+  padding-inline: 10px;
 }
 
 .item {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: none;
-  background: transparent;
-  border-radius: var(--small-border-radius);
   gap: 10px;
   padding: 5px;
-  cursor: pointer;
   color: var(--text-color);
+  background: transparent;
+  border: none;
+  border-radius: var(--small-border-radius);
+  cursor: pointer;
   transition: all var(--transition-duration)
     var(--function-time-transition-duration);
 }
@@ -28,8 +28,8 @@
 }
 
 .item:focus-visible {
-  outline: 2px solid var(--primary-color);
   border-radius: var(--big-border-radius);
+  outline: 2px solid var(--primary-color);
 }
 
 .avatar {
@@ -42,10 +42,10 @@
 }
 
 .chevron {
+  margin-left: -5px;
+  color: var(--text-color);
   transition: transform var(--transition-duration)
     var(--function-time-transition-duration);
-  color: var(--text-color);
-  margin-left: -5px;
 }
 
 .chevronOpen {
@@ -61,28 +61,28 @@
 }
 
 .dropdown {
-  z-index: var(--modal-z-index);
   position: absolute;
+  z-index: var(--modal-z-index);
   top: calc(100% + 3px);
   left: 0;
   min-width: 230px;
+  padding: 12px;
   background-color: var(--dropdown-color);
   border: var(--border);
   border-radius: var(--big-border-radius);
-  padding: 12px;
 }
 
 .dropdownTitle {
-  font-weight: 600;
   margin-bottom: 8px;
+  font-weight: 600;
   color: var(--dropdown-text-color);
 }
 
 .subtitle {
+  padding-left: 36px;
   font-size: 12px;
   font-weight: 400;
   color: var(--subtext-color);
-  padding-left: 36px;
 }
 
 .menuLink {
@@ -91,12 +91,12 @@
   gap: 10px;
   width: 100%;
   padding: 8px 10px;
-  border: none;
-  background: transparent;
-  border-radius: var(--small-border-radius);
   font-size: 14px;
-  color: var(--dropdown-text-color);
   text-decoration: none;
+  color: var(--dropdown-text-color);
+  background: transparent;
+  border: none;
+  border-radius: var(--small-border-radius);
   cursor: pointer;
   transition: background var(--transition-duration)
     var(--function-time-transition-duration);
@@ -132,17 +132,17 @@
     var(--primary-color) 90%,
     var(--primary-color) 100%
   );
-  background-repeat: no-repeat;
-  background-size: 0 100%;
   background-position-x: right;
+  background-size: 0 100%;
+  background-repeat: no-repeat;
   cursor: pointer;
   transition: background-size var(--transition-duration);
 }
 
 .profileLogin:hover,
 .profileIcon:hover + .profileInfo > .profileLogin {
-  background-size: 100% 100%;
   background-position-x: left;
+  background-size: 100% 100%;
 }
 
 .profileInfo {
@@ -181,25 +181,24 @@
 
 .switchAccount {
   display: grid;
-  justify-items: start;
-  align-items: center;
   grid-template-columns: 36px 1fr;
   grid-template-areas:
     'switchIcon switchLogin'
     'switchIcon switchEmail';
+  place-items: center start;
   gap: 5px;
   font-size: 13px;
 }
 
 .switchAccountIcon {
+  grid-area: switchIcon;
   width: 24px;
   height: 24px;
-  grid-area: switchIcon;
 }
 
 .switchAccountLogin {
-  font-size: 16px;
   grid-area: switchLogin;
+  font-size: 16px;
 }
 
 .switchAccountEmail {
@@ -220,11 +219,11 @@
 }
 
 .notificationTitle {
-  color: var(--text-color);
-  font-weight: 500;
-  font-size: 16px;
-  text-wrap: nowrap;
   justify-self: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-color);
+  text-wrap: nowrap;
 }
 
 .notificationText {
@@ -235,22 +234,22 @@
 }
 
 .readAll {
-  background-color: var(--primary-color);
-  color: var(--text-color);
+  width: 100%;
+  padding-block: 5px;
   font-size: 14px;
+  color: var(--text-color);
+  background-color: var(--primary-color);
   border: none;
   border-radius: var(--small-border-radius);
-  padding-block: 5px;
-  margin-block-start: 15px;
-  width: 100%;
   cursor: pointer;
+  margin-block-start: 15px;
 }
 
 .markRead {
-  background-color: var(--primary-color);
-  color: var(--text-color);
   margin-block: auto;
   padding: 3px;
+  color: var(--text-color);
+  background-color: var(--primary-color);
   border: none;
   border-radius: var(--small-border-radius);
   cursor: pointer;
@@ -262,9 +261,9 @@
 }
 
 .divider {
+  margin: 8px 0;
   border: 0;
   border-top: 1px solid var(--split-line-color);
-  margin: 8px 0;
 }
 
 .badge {
@@ -278,7 +277,7 @@
   pointer-events: none;
 }
 
-@media (min-width: 1024px) {
+@media (width >= 1024px) {
   .menu {
     gap: 15px;
   }

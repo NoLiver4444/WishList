@@ -1,25 +1,25 @@
 .overlay {
-  z-index: var(--modal-z-index);
   position: fixed;
+  z-index: var(--modal-z-index);
   inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: rgb(0 0 0 / 0.2);
   backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .modal {
-  background: var(--background-color);
-  border-radius: 16px;
-  padding: 2rem;
-  width: 100%;
-  max-width: 450px;
+  overflow: visible;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  overflow: visible;
+  width: 100%;
+  max-width: 450px;
+  padding: 2rem;
+  background: var(--background-color);
   border: var(--border);
+  border-radius: 16px;
 }
 
 .title {
@@ -30,37 +30,31 @@
 
 .input {
   box-sizing: border-box;
-  border: var(--border);
-  min-height: 45px;
-}
-
-.input:focus {
-  outline: none;
-}
-
-.input:focus {
-  border-color: var(--primary-color);
-  background-color: var(--background-color);
-}
-
-.input {
-  padding: 12px 16px;
-  border-radius: var(--big-border-radius);
-  font-size: 15px;
-  background: var(--dim-background-color);
-  color: var(--text-color);
   width: 100%;
+  min-height: 45px;
+  padding: 12px 16px;
+  font-size: 15px;
+  color: var(--text-color);
+  background: var(--dim-background-color);
+  border: var(--border);
+  border-radius: var(--big-border-radius);
+}
+
+.input:focus {
+  background-color: var(--background-color);
+  border-color: var(--primary-color);
+  outline: none;
 }
 
 .result {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   gap: 15px;
+  padding-block: 10px;
   border: var(--border);
   border-radius: var(--big-border-radius);
-  padding-block: 10px;
 }
 
 .userCard {
@@ -75,32 +69,32 @@
 }
 
 .status {
-  color: var(--subtext-color);
-  font-size: 14px;
   margin-left: 4px;
+  font-size: 14px;
   font-weight: 400;
+  color: var(--subtext-color);
 }
 
 .errorText {
-  color: var(--attention-color);
-  font-size: 14px;
   margin-left: 4px;
+  font-size: 14px;
   font-weight: 400;
+  color: var(--attention-color);
 }
 
 .cancel,
 .submit {
   padding: 10px 20px;
-  border-radius: 10px;
   font-size: 14px;
   font-weight: 600;
+  border-radius: 10px;
   cursor: pointer;
 }
 
 .cancel {
+  color: var(--subtext-color);
   background: transparent;
   border: 1px solid var(--split-line-color);
-  color: var(--subtext-color);
 }
 
 .cancel:hover {
@@ -108,8 +102,8 @@
 }
 
 .submit {
-  background: var(--primary-color);
   color: var(--text-color);
+  background: var(--primary-color);
   border: none;
 }
 

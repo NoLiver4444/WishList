@@ -1,17 +1,16 @@
 .avatar {
-  border-radius: 50%;
-  object-fit: cover;
   flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .placeholder {
-  border-radius: 50%;
-  background-color: var(--dim-background-color);
-  color: var(--subtext-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-self: center;
-  justify-self: center;
   flex-shrink: 0;
+  place-self: center center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--subtext-color);
+  background-color: var(--dim-background-color);
+  border-radius: 50%;
 }

@@ -1,20 +1,20 @@
 .nav {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
 }
 
 .title {
+  margin: 0;
   font-size: 20px;
   font-weight: 500;
   color: var(--text-color);
-  margin: 0;
 }
 
 .year {
-  color: var(--subtext-color);
   font-weight: 400;
+  color: var(--subtext-color);
 }
 
 .controls {
@@ -25,8 +25,8 @@
 .btn {
   padding: 6px 14px;
   font-size: 13px;
-  background-color: var(--dim-background-color);
   color: var(--text-color);
+  background-color: var(--dim-background-color);
   border: var(--border);
   border-radius: var(--small-border-radius);
   cursor: pointer;

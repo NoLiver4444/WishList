@@ -1,25 +1,25 @@
 .overlay {
-  z-index: var(--modal-z-index);
   position: fixed;
+  z-index: var(--modal-z-index);
   inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: rgb(0 0 0 / 0.2);
   backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .modal {
-  background: var(--background-color);
-  border-radius: 16px;
-  padding: 2rem;
-  width: 100%;
-  max-width: 450px;
+  overflow: visible;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  overflow: visible;
+  width: 100%;
+  max-width: 450px;
+  padding: 2rem;
+  background: var(--background-color);
   border: var(--border);
+  border-radius: 16px;
 }
 
 .title {
@@ -29,11 +29,11 @@
 }
 
 .formContent {
+  overflow: auto visible;
   display: flex;
   flex-direction: column;
   gap: 16px;
   max-height: 60vh;
-  overflow: auto visible;
   padding: 8px;
   scrollbar-width: thin;
 }
@@ -45,99 +45,93 @@
 }
 
 .label {
+  margin-left: 4px;
   font-size: 13px;
   font-weight: 500;
   color: var(--subtext-color);
-  margin-left: 4px;
 }
 
 .input,
 .dateInput,
 .numberContainer {
   box-sizing: border-box;
-  border: var(--border);
   min-height: 45px;
+  border: var(--border);
 }
 
 .input:focus,
 .dateInput:focus,
 .select:focus,
 .textarea:focus {
+  background-color: var(--background-color);
+  border-color: var(--primary-color);
   outline: none;
 }
 
-.input:focus,
-.dateInput:focus,
-.select:focus,
-.textarea:focus {
-  border-color: var(--primary-color);
-  background-color: var(--background-color);
-}
-
 .input {
-  padding: 12px 16px;
-  border-radius: var(--big-border-radius);
-  font-size: 15px;
-  background: var(--dim-background-color);
-  color: var(--text-color);
   width: 100%;
+  padding: 12px 16px;
+  font-size: 15px;
+  color: var(--text-color);
+  background: var(--dim-background-color);
+  border-radius: var(--big-border-radius);
 }
 
 .textarea {
   min-height: 100px;
   max-height: 200px;
-  resize: vertical;
   line-height: 1.5;
+  resize: vertical;
 }
 
 .numberContainer {
+  overflow: hidden;
   display: flex;
   align-items: center;
-  border-radius: var(--big-border-radius);
-  overflow: hidden;
-  background-color: var(--dim-background-color);
   padding: 12px 16px;
+  background-color: var(--dim-background-color);
+  border-radius: var(--big-border-radius);
   transition: border-color 0.2s;
 }
 
 .numberContainer:focus-within {
-  border-color: var(--primary-color);
   background: var(--background-color);
+  border-color: var(--primary-color);
 }
 
 .cleanInput {
+  appearance: textfield;
   flex: 1;
-  border: none !important;
-  outline: none !important;
-  background: transparent;
-  font-size: 15px;
-  color: var(--text-color);
   width: 100%;
   height: 100%;
   padding: 0;
-  -moz-appearance: textfield;
+  font-size: 15px;
+  color: var(--text-color);
+  background: transparent;
+  border: none !important;
+  outline: none !important;
 }
 
 .cleanInput::-webkit-outer-spin-button,
 .cleanInput::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+  appearance: none;
   margin: 0;
 }
 
 .stepButton {
-  background: transparent;
-  border: var(--border);
-  border-radius: var(--small-border-radius);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 35px;
   height: 100%;
-  cursor: pointer;
   font-size: 18px;
   font-weight: bold;
   color: var(--subtext-color);
+  background: transparent;
+  border: var(--border);
+  border-radius: var(--small-border-radius);
+  cursor: pointer;
   transition: background 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   user-select: none;
 }
 
@@ -150,28 +144,27 @@
 }
 
 .dateInput {
-  box-sizing: border-box;
   appearance: none;
-  -webkit-appearance: none;
-  color: var(--text-color);
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px 16px;
   font-family: inherit;
   font-size: 15px;
-  padding: 12px 16px;
+  color: var(--text-color);
+  background: var(--dim-background-color);
   border: var(--border);
   border-radius: var(--big-border-radius);
   outline: none;
-  background: var(--dim-background-color);
-  display: block;
-  width: 100%;
 }
 
 .dateInput::-webkit-calendar-picker-indicator {
-  cursor: pointer;
+  width: 18px;
+  height: 18px;
   color: var(--subtext-color);
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" viewBox="0 0 24 24"><path fill="currentColor" d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/></svg>');
   background-repeat: no-repeat;
-  width: 18px;
-  height: 18px;
+  cursor: pointer;
   transition: transform 0.2s;
 }
 
@@ -181,18 +174,18 @@
 
 .select {
   appearance: none;
+  padding-right: 40px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23888888'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
-  background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 16px;
-  padding-right: 40px;
+  background-repeat: no-repeat;
   cursor: pointer;
 }
 
 .select option {
-  background-color: var(--background-color);
-  color: var(--text-color);
   padding: 10px;
+  color: var(--text-color);
+  background-color: var(--background-color);
 }
 
 .fileWrapper {
@@ -205,8 +198,8 @@
   width: 100%;
   height: 160px;
   object-fit: cover;
-  border-radius: var(--small-border-radius);
   border: var(--border);
+  border-radius: var(--small-border-radius);
 }
 
 .fileInput {
@@ -215,15 +208,15 @@
 
 .fileLabel {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   padding: 10px;
-  background-color: var(--dim-background-color);
+  font-size: 14px;
   color: var(--text-color);
+  background-color: var(--dim-background-color);
   border: var(--border);
   border-radius: var(--small-border-radius);
   cursor: pointer;
-  font-size: 14px;
   transition: background-color var(--transition-duration);
 }
 
@@ -245,10 +238,10 @@
 }
 
 .errorText {
-  color: var(--attention-color);
-  font-size: 12px;
   margin-left: 4px;
+  font-size: 12px;
   font-weight: 400;
+  color: var(--attention-color);
 }
 
 .actions {
@@ -262,16 +255,16 @@
 .cancel,
 .submit {
   padding: 10px 20px;
-  border-radius: 10px;
   font-size: 14px;
   font-weight: 600;
+  border-radius: 10px;
   cursor: pointer;
 }
 
 .cancel {
+  color: var(--subtext-color);
   background: transparent;
   border: 1px solid var(--split-line-color);
-  color: var(--subtext-color);
 }
 
 .cancel:hover {
@@ -279,8 +272,8 @@
 }
 
 .submit {
+  color: #ffffff;
   background: var(--primary-color);
-  color: #fff;
   border: none;
 }
 
