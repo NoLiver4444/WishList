@@ -19,7 +19,6 @@ module.exports = {
 		'color-function-notation': 'modern',
 		'color-hex-length': 'short',
 		'length-zero-no-unit': true,
-		'font-family-name-quotes': 'always-where-required',
 		'function-url-quotes': 'never',
 		'import-notation': 'url',
 		'shorthand-property-no-redundant-values': true,
@@ -27,9 +26,21 @@ module.exports = {
 		'declaration-block-single-line-max-declarations': 1,
 		'no-unknown-animations': true,
 		'selector-type-case': 'lower',
-		'rule-empty-line-before': 'always',
-		'at-rule-empty-line-before': 'always',
+		'rule-empty-line-before': [
+			'always',
+			{except: ['first-nested'], ignore: ['after-comment']},
+		],
+		'at-rule-empty-line-before': [
+			'always',
+			{except: ['first-nested'], ignore: ['after-comment']},
+		],
 		'selector-class-pattern': null,
 		'font-family-name-quotes': 'always-where-recommended',
 	},
+	overrides: [
+		{
+			files: ['src/app/styles/**/*.css'],
+			rules: {'declaration-no-important': null},
+		},
+	],
 };
