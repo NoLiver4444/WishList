@@ -59,21 +59,6 @@
   min-height: 45px;
 }
 
-.input:focus,
-.dateInput:focus,
-.select:focus,
-.textarea:focus {
-  outline: none;
-}
-
-.input:focus,
-.dateInput:focus,
-.select:focus,
-.textarea:focus {
-  border-color: var(--primary-color);
-  background-color: var(--background-color);
-}
-
 .input {
   padding: 12px 16px;
   border-radius: var(--big-border-radius);
@@ -107,7 +92,10 @@
 
 .cleanInput {
   flex: 1;
+  /* Поле внутри .numberContainer: рамку рисует контейнер. */
+  /* stylelint-disable-next-line declaration-no-important */
   border: none !important;
+  /* stylelint-disable-next-line declaration-no-important */
   outline: none !important;
   background: transparent;
   font-size: 15px;
@@ -189,6 +177,15 @@
   cursor: pointer;
 }
 
+.input:focus,
+.dateInput:focus,
+.select:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background-color: var(--background-color);
+}
+
 .select option {
   background-color: var(--background-color);
   color: var(--text-color);
@@ -241,6 +238,8 @@
 }
 
 .inputError {
+  /* Ошибка должна перебивать стиль :focus. */
+  /* stylelint-disable-next-line declaration-no-important */
   border-color: var(--attention-color) !important;
 }
 

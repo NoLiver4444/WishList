@@ -29,15 +29,15 @@
   border-color: var(--primary-color);
 }
 
-.today .dayNumber {
-  color: var(--primary-color);
-  font-weight: 500;
-}
-
 .dayNumber {
   font-size: 12px;
   color: var(--subtext-color);
   line-height: 1;
+}
+
+.today .dayNumber {
+  color: var(--primary-color);
+  font-weight: 500;
 }
 
 .events {

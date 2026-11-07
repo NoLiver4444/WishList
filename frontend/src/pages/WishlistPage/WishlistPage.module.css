@@ -60,7 +60,7 @@
 }
 
 .deleteButton:hover {
-  background-color: rgba(231, 13, 39, 0.1);
+  background-color: rgb(231 13 39 / 0.1);
 }
 
 .grid {

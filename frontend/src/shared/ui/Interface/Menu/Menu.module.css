@@ -140,9 +140,10 @@
 }
 
 .profileLogin:hover,
-.profileIcon:hover + .profileInfo > .profileLogin {
+.profileIcon:hover + .profileInfo .profileLogin {
   background-size: 100% 100%;
   background-position-x: left;
+  text-decoration: underline;
 }
 
 .profileInfo {
@@ -150,11 +151,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.profileIcon:hover + .profileInfo .profileLogin,
-.profileLogin:hover {
-  text-decoration: underline;
 }
 
 .profileEmail {
@@ -169,13 +165,13 @@
   color: var(--subtext-color);
 }
 
-.profileIcon:hover + .profileInfo .profileEmail,
-.profileLogin:hover ~ .profileEmail {
+.profileLogin:hover ~ .profileEmail,
+.profileIcon:hover + .profileInfo .profileEmail {
   display: none;
 }
 
-.profileIcon:hover + .profileInfo .viewProfileLabel,
-.profileLogin:hover ~ .viewProfileLabel {
+.profileLogin:hover ~ .viewProfileLabel,
+.profileIcon:hover + .profileInfo .viewProfileLabel {
   display: block;
 }
 
