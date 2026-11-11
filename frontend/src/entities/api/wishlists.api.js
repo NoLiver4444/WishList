@@ -28,6 +28,22 @@ export const fetchWishlists = () => client('/api/wishlists');
 export const fetchWishlistItems = (id) => client(`/api/wishlists/${id}/items`);
 
 /**
+ * Получить публичный вишлист (без авторизации, только privacy = public).
+ * @param {string} id - ID вишлиста.
+ * @returns {Promise}
+ */
+export const fetchPublicWishlist = (id) =>
+  client(`/api/public/wishlists/${id}`, { auth: false });
+
+/**
+ * Получить элементы публичного вишлиста (без авторизации).
+ * @param {string} id - ID вишлиста.
+ * @returns {Promise}
+ */
+export const fetchPublicWishlistItems = (id) =>
+  client(`/api/public/wishlists/${id}/items`, { auth: false });
+
+/**
  * Создать вишлист.
  * @param {Object} body - Данные вишлиста (name, deadline, и др.).
  * @returns {Promise}

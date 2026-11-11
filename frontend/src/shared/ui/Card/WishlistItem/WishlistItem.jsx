@@ -18,22 +18,30 @@ import styles from './WishlistItem.module.css';
  * @param {Object} props.item.product - Данные о самом товаре (title, image_url, price, url).
  * @param {string} [props.item.comment] - Пользовательский комментарий к подарку.
  * @param {boolean} props.item.is_reserved - Флаг, забронирован ли товар кем-либо.
+ * @param {boolean} [props.item.reserved_by_me] - Забронировал ли товар текущий пользователь.
  * @param {string|number} props.item.id - ID связи товара и списка.
  * @param {Function} props.onRemove - Обработчик удаления товара из списка.
- * @param {function(string|number, boolean): void} props.onReserve - Функция переключения статуса резерва.
+ * @param {function(string|number, boolean): void} props.onReserve - Бронирование/снятие брони (передаётся текущее состояние).
+ * @param {boolean} props.isOwner - Текущий пользователь — владелец вишлиста.
+ * @param {boolean} props.canReserve - Пользователь авторизован (гость бронировать не может).
  * * @returns {React.ReactElement} Элемент списка (li).
  */
-const WishlistItem = ({
-  item,
-  onRemove,
-  onReserve,
-  isOwner,
-  currentUserId,
-}) => {
-  const { product, comment, is_reserved, reserved_by } = item;
+const WishlistItem = ({ item, onRemove, onReserve, isOwner, canReserve }) => {
+  const { product, comment, is_reserved, reserved_by_me } = item;
 
-  const isReserver = reserved_by === currentUserId;
-  const canChangeReserve = !is_reserved || isOwner || isReserver;
+  // Владелец не бронирует свои желания, но может снять чужую бронь;
+  // остальные бронируют свободное и снимают только свою бронь.
+  const canChangeReserve =
+    canReserve && (is_reserved ? isOwner || reserved_by_me : !isOwner);
+
+  const reserveTitle = (() => {
+    if (!canReserve) return 'Войдите, чтобы забронировать';
+    if (is_reserved) {
+      if (reserved_by_me) return 'Снять мою бронь';
+      return isOwner ? 'Снять бронь' : 'Зарезервировано кем-то другим';
+    }
+    return isOwner ? 'Свои желания бронировать нельзя' : 'Зарезервировать';
+  })();
 
   return (
     <li className={styles.item}>
@@ -77,13 +85,7 @@ const WishlistItem = ({
             opacity: canChangeReserve ? 1 : 0.5,
             cursor: canChangeReserve ? 'pointer' : 'not-allowed',
           }}
-          title={
-            is_reserved
-              ? canChangeReserve
-                ? 'Снять резерв'
-                : 'Зарезервировано кем-то другим'
-              : 'Зарезервировать'
-          }
+          title={reserveTitle}
         >
           {is_reserved ? <BookmarkCheck size={18} /> : <Bookmark size={18} />}
         </button>

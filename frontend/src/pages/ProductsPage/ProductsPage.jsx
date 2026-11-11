@@ -6,7 +6,6 @@
 import { memo, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSearch } from '@/shared/hooks/useSearch';
-import { uploadImage } from '@/shared/lib/uploadImage';
 import Main from '@/widgets/Main';
 import AddCardModal from '@/features/cards/add-card/ui/AddCardModal';
 import {
@@ -148,15 +147,7 @@ const ProductsPage = () => {
     setEditItem(null);
 
     try {
-      let imageUrl = formData.imageUrl || undefined;
-      if (formData.image instanceof File) {
-        imageUrl = await uploadImage(formData.image);
-      }
-
-      const updated = await updateProduct(editItem.id, {
-        ...formData,
-        imageUrl,
-      });
+      const updated = await updateProduct(editItem.id, formData);
 
       setItems((prev) =>
         prev.map((i) =>
@@ -215,7 +206,6 @@ const ProductsPage = () => {
                 imageUrl: editItem.imageUrl ?? '',
                 description: editItem.description ?? '',
                 price: editItem.price ?? '',
-                private: editItem.privacy ?? 'public',
               }
             : null
         }

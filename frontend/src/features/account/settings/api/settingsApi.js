@@ -17,7 +17,7 @@ export const updateUserRequest = (body) => {
     )
   );
 
-  return client('/v1/users/me', {
+  return client('/api/users/me', {
     method: 'PATCH',
     body: JSON.stringify(cleaned),
   });
@@ -29,7 +29,7 @@ export const updateUserRequest = (body) => {
  * @returns {Promise<void>}
  */
 export const deleteUserRequest = (body) =>
-  client('/v1/users/me', {
+  client('/api/users/me', {
     method: 'DELETE',
     body: JSON.stringify(body),
   });

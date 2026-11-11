@@ -3,34 +3,43 @@
  * @module pages/WishlistPage
  */
 
-import { memo, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Plus } from 'lucide-react';
+import toast from 'react-hot-toast';
 import {
   deleteWishlist,
+  fetchPublicWishlist,
+  fetchPublicWishlistItems,
   fetchWishlist,
   fetchWishlistItems,
 } from '@/entities/api/wishlists.api';
-import { addItem, removeItem, reserveItem } from '@/entities/api/items.api';
+import {
+  addItem,
+  removeItem,
+  reserveItem,
+  unreserveItem,
+} from '@/entities/api/items.api';
 import SelectProductModal from '@/features/cards/add-to-wishlist/SelectProductModal';
 import WishlistItem from '@/shared/ui/Card/WishlistItem';
 import { useSearch } from '@/shared/hooks/useSearch';
 import styles from './WishlistPage.module.css';
-import { useSessionStore } from '@/entities/session/index.js';
+import { useSessionStore } from '@/entities/session';
 
-const currentUser =
-  useSessionStore.getState().accounts[useSessionStore.getState().activeIndex]
-    ?.user;
 /**
  * Компонент WishlistPage.
- * Поддерживает два режима: 'owner' (владелец) и 'public' (гость/друг).
- * В режиме владельца доступно удаление списка и добавление новых желаний.
- * * @component
+ * Режимы: 'owner' (маршрут /wishlists/:id, только для авторизованных) и 'public' (/view/:id).
+ * В public-режиме гость без входа получает данные через публичный API (только privacy = public);
+ * авторизованный пользователь — через защищённый API, где учитывается дружба и доступно бронирование.
+ * Права владельца определяются по user_id вишлиста, а не по режиму.
+ * @component
  * @param {Object} props - Свойства компонента.
  * @param {'owner'|'public'} [props.mode='owner'] - Режим доступа к странице.
  */
 const WishlistPage = ({ mode = 'owner' }) => {
-  const isOwner = mode === 'owner';
+  const token = useSessionStore((s) => s.accounts[s.activeIndex]?.token);
+  const currentUser = useSessionStore((s) => s.accounts[s.activeIndex]?.user);
+  const isGuest = mode === 'public' && !token;
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -47,22 +56,29 @@ const WishlistPage = ({ mode = 'owner' }) => {
     setSearchQuery('');
   }, [location.pathname, setSearchQuery]);
 
+  const loadItems = useCallback(
+    () => (isGuest ? fetchPublicWishlistItems(id) : fetchWishlistItems(id)),
+    [id, isGuest]
+  );
+
   useEffect(() => {
-    Promise.all([fetchWishlist(id), fetchWishlistItems(id)])
+    setLoading(true);
+    setError(null);
+    const loadWishlist = isGuest ? fetchPublicWishlist : fetchWishlist;
+    Promise.all([loadWishlist(id), loadItems()])
       .then(([wl, its]) => {
-        const list = Array.isArray(its) ? its : (its.items ?? []);
-        const unique = list.filter(
-          (item, index, self) =>
-            index === self.findIndex((i) => i.product?.id === item.product?.id)
-        );
         setWishlist(wl);
-        setItems(unique);
+        setItems(Array.isArray(its) ? its : []);
       })
       .catch((err) => {
-        setError(err.status === 404 ? 'Вишлист не найден' : 'Ошибка загрузки');
+        if (err.status === 404) setError('Вишлист не найден');
+        else if (err.status === 403) setError('Нет доступа к этому вишлисту');
+        else setError('Ошибка загрузки');
       })
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, isGuest, loadItems]);
+
+  const isOwner = !!currentUser && wishlist?.user_id === currentUser.id;
 
   const processedItems = useMemo(() => {
     const query = searchQuery.toLowerCase().trim();
@@ -83,16 +99,15 @@ const WishlistPage = ({ mode = 'owner' }) => {
   }, [items, searchQuery]);
 
   const handleAddItem = async (productId) => {
-    const already = items.some((i) => i.product?.id === productId);
-    if (already) {
-      console.warn('Это желание уже в вишлисте');
+    if (items.some((i) => i.product?.id === productId)) {
+      toast('Это желание уже в вишлисте');
       return;
     }
     try {
       const created = await addItem(id, { product_id: productId });
       setItems((prev) => [...prev, created]);
     } catch (err) {
-      console.error('Ошибка добавления:', err);
+      toast.error(err.message || 'Ошибка добавления');
     }
   };
 
@@ -101,37 +116,34 @@ const WishlistPage = ({ mode = 'owner' }) => {
       await removeItem(itemId);
       setItems((prev) => prev.filter((i) => i.id !== itemId));
     } catch (err) {
-      console.error('Ошибка удаления:', err);
+      toast.error(err.message || 'Ошибка удаления');
     }
   };
 
+  /**
+   * Бронирует или снимает бронь явным действием (без инверсии на сервере),
+   * поэтому состояние не рассинхронизируется между вкладками.
+   * @param {string} itemId
+   * @param {boolean} isReserved - Текущее состояние в UI.
+   */
   const handleReserve = async (itemId, isReserved) => {
-    const item = items.find((i) => i.id === itemId);
-
-    if (isReserved) {
-      const isReserver = item.reserved_by === currentUser?.id;
-      if (!isOwner && !isReserver) {
-        alert('Только владелец или тот, кто забронировал, могут снять резерв');
-        return;
-      }
-    }
-
     try {
-      await reserveItem(itemId, isReserved);
+      if (isReserved) await unreserveItem(itemId);
+      else await reserveItem(itemId);
 
       setItems((prev) =>
         prev.map((i) =>
           i.id === itemId
-            ? {
-                ...i,
-                is_reserved: !isReserved,
-                reserved_by: isReserved ? null : currentUser?.id,
-              }
+            ? { ...i, is_reserved: !isReserved, reserved_by_me: !isReserved }
             : i
         )
       );
     } catch (err) {
-      console.error('Ошибка резервирования:', err);
+      toast.error(err.message || 'Ошибка бронирования');
+      // Состояние на сервере могло измениться (например, бронь из другой вкладки).
+      loadItems()
+        .then((its) => setItems(Array.isArray(its) ? its : []))
+        .catch(() => {});
     }
   };
 
@@ -141,7 +153,7 @@ const WishlistPage = ({ mode = 'owner' }) => {
       await deleteWishlist(id);
       navigate('/wishlists');
     } catch (err) {
-      console.error('Ошибка удаления вишлиста:', err);
+      toast.error(err.message || 'Ошибка удаления вишлиста');
     }
   };
 
@@ -190,7 +202,7 @@ const WishlistPage = ({ mode = 'owner' }) => {
             onRemove={handleRemoveItem}
             onReserve={handleReserve}
             isOwner={isOwner}
-            currentUserId={currentUser?.id}
+            canReserve={!!token}
           />
         ))}
 
