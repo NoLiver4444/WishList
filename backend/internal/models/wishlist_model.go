@@ -31,6 +31,7 @@ type Wishlist struct {
 func (w *Wishlist) ToDTO() dto.WishlistDTO {
 	return dto.WishlistDTO{
 		ID:          w.ID,
+		UserID:      w.UserID,
 		Name:        w.Name,
 		Description: w.Description,
 		Privacy:     string(w.Privacy),

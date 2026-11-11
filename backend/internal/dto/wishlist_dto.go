@@ -21,17 +21,14 @@ type UpdateWishlistRequest struct {
 }
 
 type AddItemRequest struct {
-	ProductID uuid.UUID `json:"product_id" validate:"required,uuid"`
+	ProductID uuid.UUID `json:"product_id" validate:"required"`
 	Comment   *string   `json:"comment,omitempty" validate:"omitempty,max=500"`
 	Order     *int      `json:"order,omitempty"`
 }
 
-type ReserveItemRequest struct {
-	IsReserved bool `json:"is_reserved"`
-}
-
 type WishlistDTO struct {
 	ID          uuid.UUID  `json:"id"`
+	UserID      uuid.UUID  `json:"user_id"`
 	Name        string     `json:"name"`
 	Description *string    `json:"description,omitempty"`
 	Privacy     string     `json:"privacy"`
@@ -57,9 +54,10 @@ type WishlistItemDTO struct {
 	Comment    *string    `json:"comment,omitempty"`
 	Order      *int       `json:"order,omitempty"`
 	IsReserved bool       `json:"is_reserved"`
-	ReservedBy *uuid.UUID `json:"reserved_by,omitempty"`
-	CreatedAt  time.Time  `json:"created_at"`
-	UpdatedAt  time.Time  `json:"updated_at"`
+	// ReservedByMe — забронировал ли желание текущий пользователь (ID бронирующего не раскрывается).
+	ReservedByMe bool      `json:"reserved_by_me"`
+	CreatedAt    time.Time `json:"created_at"`
+	UpdatedAt    time.Time `json:"updated_at"`
 }
 
 type WishlistWithItemsDTO struct {

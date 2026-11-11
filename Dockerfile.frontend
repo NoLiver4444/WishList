@@ -1,5 +1,5 @@
 # Stage 1: Build React приложение
-FROM node:20-alpine AS builder
+FROM node:22-alpine AS builder
 
 WORKDIR /app
 
@@ -11,6 +11,15 @@ RUN npm ci
 
 # Копируем исходный код
 COPY frontend/ .
+
+# Переменные Vite встраиваются в бандл на этапе сборки.
+# Пустой VITE_API_URL — запросы идут на относительный /api (nginx проксирует на бэкенд).
+ARG VITE_API_URL=""
+ARG VITE_CLOUDINARY_CLOUD_NAME=""
+ARG VITE_CLOUDINARY_UPLOAD_PRESET=""
+ENV VITE_API_URL=$VITE_API_URL \
+    VITE_CLOUDINARY_CLOUD_NAME=$VITE_CLOUDINARY_CLOUD_NAME \
+    VITE_CLOUDINARY_UPLOAD_PRESET=$VITE_CLOUDINARY_UPLOAD_PRESET
 
 # Собираем приложение в dist папку
 RUN npm run build

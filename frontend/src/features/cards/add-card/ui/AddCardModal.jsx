@@ -37,7 +37,13 @@ const AddCardModal = ({
   const fields = useMemo(() => FIELDS[type] ?? FIELDS.wishes, [type]);
 
   const emptyForm = useMemo(
-    () => Object.fromEntries(fields.map((f) => [f.name, ''])),
+    () =>
+      Object.fromEntries(
+        fields.map((f) => [
+          f.name,
+          f.type === 'select' ? (f.options[0]?.value ?? '') : '',
+        ])
+      ),
     [fields]
   );
   const defaultForm = useMemo(

@@ -22,17 +22,21 @@ type WishlistItem struct {
 	Product *Product `db:"-"`
 }
 
-func (wi *WishlistItem) ToDTO() dto.WishlistItemDTO {
-	dto := dto.WishlistItemDTO{
-		ID:         wi.ID,
-		Comment:    wi.Comment,
-		Order:      wi.Order,
-		CreatedAt:  wi.CreatedAt,
-		UpdatedAt:  wi.UpdatedAt,
-		IsReserved: wi.ReservedBy != nil,
+// ToDTO конвертирует элемент в DTO с точки зрения viewerID.
+// ID бронирующего не раскрывается: отдаётся только флаг reserved_by_me.
+// Для анонимного просмотра передавайте uuid.Nil.
+func (wi *WishlistItem) ToDTO(viewerID uuid.UUID) dto.WishlistItemDTO {
+	out := dto.WishlistItemDTO{
+		ID:           wi.ID,
+		Comment:      wi.Comment,
+		Order:        wi.Order,
+		CreatedAt:    wi.CreatedAt,
+		UpdatedAt:    wi.UpdatedAt,
+		IsReserved:   wi.ReservedBy != nil,
+		ReservedByMe: wi.ReservedBy != nil && viewerID != uuid.Nil && *wi.ReservedBy == viewerID,
 	}
 	if wi.Product != nil {
-		dto.Product = wi.Product.ToDTO()
+		out.Product = wi.Product.ToDTO()
 	}
-	return dto
+	return out
 }

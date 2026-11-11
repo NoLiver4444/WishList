@@ -17,10 +17,10 @@ type UserSearchResult struct {
 }
 
 type FriendDTO struct {
-    FriendshipID uuid.UUID `json:"friendship_id"`
-	ID        uuid.UUID `json:"id"`
-	Login     string    `json:"login"`
-	AvatarURL *string   `json:"avatar_url"`
-	Status    string    `json:"status"`
-	CreatedAt time.Time `json:"created_at"`
+	FriendshipID uuid.UUID `json:"friendship_id"`
+	ID           uuid.UUID `json:"id"`
+	Login        string    `json:"login"`
+	AvatarURL    *string   `json:"avatar_url"`
+	Status       string    `json:"status"`
+	CreatedAt    time.Time `json:"created_at"`
 }

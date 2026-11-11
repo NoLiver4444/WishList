@@ -27,7 +27,7 @@ import { persist } from 'zustand/middleware';
  * @property {function(): User|null} currentUser - Геттер для получения данных текущего пользователя.
  * @property {function(): string|null} token - Геттер для получения текущего токена.
  * @property {function(): boolean} isAuth - Проверка наличия хотя бы одной активной сессии.
- * @property {function(string, User): void} addAccount - Добавление нового аккаунта или переключение на существующий.
+ * @property {function(string, User): void} addAccount - Добавление нового аккаунта или обновление токена/профиля существующего.
  * @property {function(number): void} switchAccount - Переключение между аккаунтами по индексу.
  * @property {function(): void} logout - Удаление текущего аккаунта из сессии.
  * @property {function(Partial<User>): void} updateCurrentUser - Обновление данных текущего пользователя.
@@ -52,7 +52,13 @@ export const useSessionStore = create(
         const accounts = get().accounts;
         const existing = accounts.findIndex((a) => a.user.id === user.id);
         if (existing !== -1) {
-          set({ activeIndex: existing });
+          // Повторный вход: обновляем токен и профиль, а не только переключаемся.
+          set({
+            accounts: accounts.map((a, i) =>
+              i === existing ? { token, user } : a
+            ),
+            activeIndex: existing,
+          });
           return;
         }
         set({
@@ -69,7 +75,7 @@ export const useSessionStore = create(
         const next = accounts.filter((_, i) => i !== activeIndex);
         set({
           accounts: next,
-          activeIndex: Math.min(activeIndex, next.length - 1),
+          activeIndex: Math.max(0, Math.min(activeIndex, next.length - 1)),
         });
       },
       updateCurrentUser: (user) => {

@@ -1,55 +1,40 @@
 /**
  * @file API методы для аутентификации и регистрации.
- * @module shared/api/sessionApi
+ * @module entities/session/api/sessionApi
  */
 
-const API = import.meta.env.VITE_API_URL;
-
-if (!API) {
-  console.error('API не определено');
-}
+import { client } from '@/shared/api/client.api';
 
 /**
  * @typedef {Object} AuthResponse
  * @property {string} token - Токен доступа.
- * @property {User} user - Объект пользователя.
+ * @property {Object} user - Объект пользователя.
  */
 
 /**
  * Выполняет запрос на вход в систему.
- * * @param {Object} body - Данные для входа.
- * @param {string} body.email - Email пользователя.
+ * @param {Object} body - Данные для входа.
+ * @param {string} body.login_or_email - Логин или email.
  * @param {string} body.password - Пароль.
  * @returns {Promise<AuthResponse>} Данные сессии.
- * @throws {Object} Ошибка с полем status и данными ответа.
+ * @throws {import('@/shared/api/client.api').ApiError}
  */
 export const loginRequest = (body) =>
-  fetch(`${API}/api/auth/login`, {
+  client('/api/auth/login', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    auth: false,
     body: JSON.stringify(body),
-  }).then(async (r) => {
-    const data = await r.json();
-    if (!r.ok) throw { status: r.status, ...data };
-    return data;
   });
 
 /**
  * Выполняет запрос на регистрацию нового пользователя.
- * * @param {Object} body - Данные для регистрации.
- * @param {string} body.name - Имя пользователя.
- * @param {string} body.email - Email.
- * @param {string} body.password - Пароль.
+ * @param {Object} body - Данные для регистрации (login, email, password).
  * @returns {Promise<AuthResponse>} Данные новой сессии.
- * @throws {Object} Ошибка с полем status и данными ответа.
+ * @throws {import('@/shared/api/client.api').ApiError}
  */
 export const registerRequest = (body) =>
-  fetch(`${API}/api/auth/register`, {
+  client('/api/auth/register', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    auth: false,
     body: JSON.stringify(body),
-  }).then(async (r) => {
-    const data = await r.json();
-    if (!r.ok) throw { status: r.status, ...data };
-    return data;
   });

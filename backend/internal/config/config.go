@@ -18,7 +18,8 @@ type Config struct {
 
 // AppConfig содержит базовые настройки сервера.
 type AppConfig struct {
-	Port int // Порт, на котором будет запущен HTTP-сервер.
+	Port       int    // Порт, на котором будет запущен HTTP-сервер.
+	CORSOrigin string // Разрешённый CORS origin (CORS_ORIGIN). Пустая строка отключает CORS-заголовки.
 }
 
 // DBConfig содержит параметры подключения к базе данных PostgreSQL.
@@ -41,7 +42,10 @@ type AuthConfig struct {
 // После загрузки выполняется обязательная валидация через метод Validate.
 func Load() (*Config, error) {
 	cfg := &Config{
-		App: AppConfig{Port: getEnvAsInt("PORT", 8080)},
+		App: AppConfig{
+			Port:       getEnvAsInt("PORT", 8080),
+			CORSOrigin: getEnv("CORS_ORIGIN", "http://localhost"),
+		},
 		DB: DBConfig{
 			Host:     getEnv("DB_HOST", "localhost"),
 			Port:     getEnv("DB_PORT", "5432"),

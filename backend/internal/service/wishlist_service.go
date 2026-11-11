@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"errors"
 
 	"wish-piece/internal/dto"
 	"wish-piece/internal/models"
@@ -11,40 +10,96 @@ import (
 	"github.com/google/uuid"
 )
 
-var (
-	ErrWishlistNotFound = errors.New("wishlist not found")
-	ErrWishlistNotOwned = errors.New("user does not own this wishlist")
-	ErrItemNotFound     = errors.New("item not found")
-)
-
 type WishlistService struct {
-	WishlistRepo repository.WishlistRepository
-	ItemRepo     repository.WishlistItemRepository
-	ProductRepo  repository.ProductRepository
-	Notification *repository.NotificationRepo
-	UserRepo     *repository.UserRepo
+	WishlistRepo   repository.WishlistRepository
+	ItemRepo       repository.WishlistItemRepository
+	ProductRepo    repository.ProductRepository
+	FriendshipRepo repository.FriendshipRepository
+	Notification   repository.NotificationRepository
 }
 
 func NewWishlistService(
 	wlRepo repository.WishlistRepository,
 	itemRepo repository.WishlistItemRepository,
 	prodRepo repository.ProductRepository,
-	notifRepo *repository.NotificationRepo,
-	userRepo *repository.UserRepo,
+	friendRepo repository.FriendshipRepository,
+	notifRepo repository.NotificationRepository,
 ) *WishlistService {
 	return &WishlistService{
-		WishlistRepo: wlRepo,
-		ItemRepo:     itemRepo,
-		ProductRepo:  prodRepo,
-		Notification: notifRepo,
-		UserRepo:     userRepo,
+		WishlistRepo:   wlRepo,
+		ItemRepo:       itemRepo,
+		ProductRepo:    prodRepo,
+		FriendshipRepo: friendRepo,
+		Notification:   notifRepo,
 	}
+}
+
+// canView решает, может ли viewerID (uuid.Nil — гость) видеть вишлист:
+//   - владелец — всегда;
+//   - public — все;
+//   - friends — только принятые друзья владельца;
+//   - private — только владелец.
+func (s *WishlistService) canView(ctx context.Context, viewerID uuid.UUID, wl *models.Wishlist) (bool, error) {
+	if viewerID != uuid.Nil && wl.UserID == viewerID {
+		return true, nil
+	}
+	switch wl.Privacy {
+	case models.PrivacyPublic:
+		return true, nil
+	case models.PrivacyFriends:
+		if viewerID == uuid.Nil {
+			return false, nil
+		}
+		return s.FriendshipRepo.AreFriends(ctx, viewerID, wl.UserID)
+	default:
+		return false, nil
+	}
+}
+
+// loadViewable загружает вишлист и проверяет право просмотра.
+func (s *WishlistService) loadViewable(ctx context.Context, viewerID, wlID uuid.UUID) (*models.Wishlist, error) {
+	wl, err := s.WishlistRepo.FindByID(ctx, wlID)
+	if err != nil {
+		return nil, err
+	}
+	ok, err := s.canView(ctx, viewerID, wl)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, ErrForbidden
+	}
+	return wl, nil
+}
+
+// requireOwner возвращает ErrWishlistNotFound, если вишлиста нет, и ErrForbidden, если он чужой.
+func (s *WishlistService) requireOwner(ctx context.Context, userID, wlID uuid.UUID) (*models.Wishlist, error) {
+	wl, err := s.WishlistRepo.FindByID(ctx, wlID)
+	if err != nil {
+		return nil, err
+	}
+	if wl.UserID != userID {
+		return nil, ErrForbidden
+	}
+	return wl, nil
+}
+
+func (s *WishlistService) itemsDTO(ctx context.Context, viewerID, wlID uuid.UUID) ([]dto.WishlistItemDTO, error) {
+	items, err := s.ItemRepo.ListItemsWithProducts(ctx, wlID)
+	if err != nil {
+		return nil, err
+	}
+	result := make([]dto.WishlistItemDTO, 0, len(items))
+	for _, item := range items {
+		result = append(result, item.ToDTO(viewerID))
+	}
+	return result, nil
 }
 
 // ============ WISHLIST CRUD ============
 
 func (s *WishlistService) CreateWishlist(ctx context.Context, userID uuid.UUID, req dto.CreateWishlistRequest) (*dto.WishlistDTO, error) {
-	privacy := models.PrivacyPrivate
+	privacy := models.PrivacyPublic
 	if req.Privacy != nil {
 		privacy = models.PrivacyStatus(*req.Privacy)
 	}
@@ -60,33 +115,22 @@ func (s *WishlistService) CreateWishlist(ctx context.Context, userID uuid.UUID, 
 	if err := s.WishlistRepo.Create(ctx, wl); err != nil {
 		return nil, err
 	}
-	dto := wl.ToDTO()
-	return &dto, nil
+	out := wl.ToDTO()
+	return &out, nil
 }
 
 func (s *WishlistService) GetWishlist(ctx context.Context, userID, wlID uuid.UUID, withItems bool) (*dto.WishlistWithItemsDTO, error) {
-	wl, err := s.WishlistRepo.FindByID(ctx, wlID)
+	wl, err := s.loadViewable(ctx, userID, wlID)
 	if err != nil {
 		return nil, err
 	}
 
-	// Проверка прав: приватный вишлист — только владелец
-	if wl.Privacy == models.PrivacyPrivate && wl.UserID != userID {
-		return nil, ErrWishlistNotOwned
-	}
-
 	result := &dto.WishlistWithItemsDTO{WishlistDTO: wl.ToDTO()}
-
 	if withItems {
-		items, err := s.ItemRepo.ListItemsWithProducts(ctx, wlID)
-		if err != nil {
+		if result.Items, err = s.itemsDTO(ctx, userID, wlID); err != nil {
 			return nil, err
 		}
-		for _, item := range items {
-			result.Items = append(result.Items, item.ToDTO())
-		}
 	}
-
 	return result, nil
 }
 
@@ -98,28 +142,18 @@ func (s *WishlistService) ListUserWishlists(ctx context.Context, userID uuid.UUI
 
 	result := make([]*dto.WishlistDTO, 0, len(wishlists))
 	for _, wl := range wishlists {
-		dto := wl.ToDTO()
-		result = append(result, &dto)
+		out := wl.ToDTO()
+		result = append(result, &out)
 	}
 	return result, nil
 }
 
 func (s *WishlistService) UpdateWishlist(ctx context.Context, userID, wlID uuid.UUID, req dto.UpdateWishlistRequest) (*dto.WishlistDTO, error) {
-	// Проверка прав
-	owned, err := s.WishlistRepo.IsOwner(ctx, wlID, userID)
-	if err != nil {
-		return nil, err
-	}
-	if !owned {
-		return nil, ErrWishlistNotOwned
-	}
-
-	wl, err := s.WishlistRepo.FindByID(ctx, wlID)
+	wl, err := s.requireOwner(ctx, userID, wlID)
 	if err != nil {
 		return nil, err
 	}
 
-	// Обновление полей
 	if req.Name != nil {
 		wl.Name = *req.Name
 	}
@@ -137,54 +171,60 @@ func (s *WishlistService) UpdateWishlist(ctx context.Context, userID, wlID uuid.
 		return nil, err
 	}
 
-	dto := wl.ToDTO()
-	return &dto, nil
+	out := wl.ToDTO()
+	return &out, nil
 }
 
 func (s *WishlistService) DeleteWishlist(ctx context.Context, userID, wlID uuid.UUID) error {
-	owned, err := s.WishlistRepo.IsOwner(ctx, wlID, userID)
-	if err != nil {
+	if _, err := s.requireOwner(ctx, userID, wlID); err != nil {
 		return err
-	}
-	if !owned {
-		return ErrWishlistNotOwned
 	}
 	return s.WishlistRepo.Delete(ctx, wlID)
 }
 
-func (s *WishlistService) GetWishlistPublic(ctx context.Context, wlID uuid.UUID) (*dto.WishlistDTO, error) {
-	wishlist, err := s.WishlistRepo.FindByID(ctx, wlID)
+// ============ PUBLIC (без авторизации) ============
+
+// loadPublic отдаёт только вишлисты с privacy = public; остальные выглядят несуществующими.
+func (s *WishlistService) loadPublic(ctx context.Context, wlID uuid.UUID) (*models.Wishlist, error) {
+	wl, err := s.WishlistRepo.FindByID(ctx, wlID)
 	if err != nil {
 		return nil, err
 	}
+	if wl.Privacy != models.PrivacyPublic {
+		return nil, ErrWishlistNotFound
+	}
+	return wl, nil
+}
 
-	return &dto.WishlistDTO{
-		ID:          wishlist.ID,
-		Name:        wishlist.Name,
-		Description: wishlist.Description,
-		Privacy:     string(wishlist.Privacy),
-		Deadline:    wishlist.Deadline,
-		CreatedAt:   wishlist.CreatedAt,
-		UpdatedAt:   wishlist.UpdatedAt,
-	}, nil
+func (s *WishlistService) GetWishlistPublic(ctx context.Context, wlID uuid.UUID) (*dto.WishlistDTO, error) {
+	wl, err := s.loadPublic(ctx, wlID)
+	if err != nil {
+		return nil, err
+	}
+	out := wl.ToDTO()
+	return &out, nil
+}
+
+func (s *WishlistService) ListItemsPublic(ctx context.Context, wlID uuid.UUID) ([]dto.WishlistItemDTO, error) {
+	if _, err := s.loadPublic(ctx, wlID); err != nil {
+		return nil, err
+	}
+	return s.itemsDTO(ctx, uuid.Nil, wlID)
 }
 
 // ============ ITEMS ============
 
 func (s *WishlistService) AddItem(ctx context.Context, userID, wlID uuid.UUID, req dto.AddItemRequest) (*dto.WishlistItemDTO, error) {
-	// Проверка прав на вишлист
-	owned, err := s.WishlistRepo.IsOwner(ctx, wlID, userID)
+	if _, err := s.requireOwner(ctx, userID, wlID); err != nil {
+		return nil, err
+	}
+
+	product, err := s.ProductRepo.FindByID(ctx, req.ProductID)
 	if err != nil {
 		return nil, err
 	}
-	if !owned {
-		return nil, ErrWishlistNotOwned
-	}
-
-	// Проверка существования продукта
-	_, err = s.ProductRepo.FindByID(ctx, req.ProductID)
-	if err != nil {
-		return nil, ErrProductNotFound
+	if product.OwnerID != userID {
+		return nil, ErrForbidden
 	}
 
 	item := &models.WishlistItem{
@@ -192,86 +232,88 @@ func (s *WishlistService) AddItem(ctx context.Context, userID, wlID uuid.UUID, r
 		ProductID:  req.ProductID,
 		Comment:    req.Comment,
 		Order:      req.Order,
+		Product:    product,
 	}
 
 	if err := s.ItemRepo.AddItem(ctx, item); err != nil {
 		return nil, err
 	}
 
-	// Загрузить продукт для ответа
-	product, _ := s.ProductRepo.FindByID(ctx, req.ProductID)
-	item.Product = product
-
-	dto := item.ToDTO()
-	return &dto, nil
+	out := item.ToDTO(userID)
+	return &out, nil
 }
 
 func (s *WishlistService) ListItems(ctx context.Context, userID, wlID uuid.UUID) ([]dto.WishlistItemDTO, error) {
-	wl, err := s.WishlistRepo.FindByID(ctx, wlID)
-	if err != nil {
+	if _, err := s.loadViewable(ctx, userID, wlID); err != nil {
 		return nil, err
 	}
-
-	if wl.Privacy == models.PrivacyPrivate && wl.UserID != userID {
-		return nil, ErrWishlistNotOwned
-	}
-
-	items, err := s.ItemRepo.ListItemsWithProducts(ctx, wlID)
-	if err != nil {
-		return nil, err
-	}
-
-	result := make([]dto.WishlistItemDTO, 0, len(items))
-	for _, item := range items {
-		result = append(result, item.ToDTO())
-	}
-	return result, nil
+	return s.itemsDTO(ctx, userID, wlID)
 }
 
-func (s *WishlistService) ReserveItem(ctx context.Context, itemID, actorID uuid.UUID, isCurrentlyReserved bool) error {
+// ReserveItem бронирует желание за actorID.
+// Владелец не может бронировать свои желания; повторная бронь своим же пользователем идемпотентна.
+func (s *WishlistService) ReserveItem(ctx context.Context, actorID, itemID uuid.UUID) error {
 	item, err := s.ItemRepo.FindByID(ctx, itemID)
 	if err != nil {
 		return err
 	}
 
-	wl, err := s.WishlistRepo.FindByID(ctx, item.WishlistID)
+	wl, err := s.loadViewable(ctx, actorID, item.WishlistID)
 	if err != nil {
 		return err
 	}
-
-	if wl.Privacy == "private" && wl.UserID != actorID {
-		return errors.New("wishlist not owned")
+	if wl.UserID == actorID {
+		return ErrForbidden
 	}
 
-	reserveAction := !isCurrentlyReserved
-
-	err = s.ItemRepo.ReserveItem(ctx, itemID, actorID, wl.UserID, reserveAction)
-	if err != nil {
-		return err
-	}
-
-	if reserveAction && wl.UserID != actorID {
-		reserver, err := s.UserRepo.FindByID(ctx, actorID)
-		if err == nil && reserver != nil {
-			product, _ := s.ProductRepo.FindByID(ctx, item.ProductID)
-			title := "Желание зарезервировано"
-			message := "Кто-то зарезервировал ваше желание, ждите сюрприз"
-
-			if product != nil {
-				message = "«" + product.Title + "» кто-то зарезервировал, ждите сюрприз"
-			}
-
-			_ = s.Notification.Create(ctx,
-				wl.UserID,
-				actorID,
-				"item_reserved",
-				title,
-				message,
-			)
+	if item.ReservedBy != nil {
+		if *item.ReservedBy == actorID {
+			return nil
 		}
+		return ErrAlreadyReserved
 	}
+
+	if err := s.ItemRepo.Reserve(ctx, itemID, actorID); err != nil {
+		return err
+	}
+
+	message := "Кто-то зарезервировал ваше желание, ждите сюрприз"
+	if product, err := s.ProductRepo.FindByID(ctx, item.ProductID); err == nil {
+		message = "«" + product.Title + "» кто-то зарезервировал, ждите сюрприз"
+	}
+	// actor не указываем, чтобы не раскрывать владельцу, кто забронировал.
+	notify(ctx, s.Notification, repository.NewNotification{
+		UserID:     wl.UserID,
+		WishlistID: &wl.ID,
+		Type:       models.NotifItemReserved,
+		Title:      "Желание зарезервировано",
+		Message:    message,
+	})
 
 	return nil
+}
+
+// UnreserveItem снимает бронь. Снять может тот, кто бронировал, или владелец вишлиста.
+// Если брони нет, операция идемпотентна.
+func (s *WishlistService) UnreserveItem(ctx context.Context, actorID, itemID uuid.UUID) error {
+	item, err := s.ItemRepo.FindByID(ctx, itemID)
+	if err != nil {
+		return err
+	}
+
+	wl, err := s.loadViewable(ctx, actorID, item.WishlistID)
+	if err != nil {
+		return err
+	}
+
+	if item.ReservedBy == nil {
+		return nil
+	}
+	if *item.ReservedBy != actorID && wl.UserID != actorID {
+		return ErrForbidden
+	}
+
+	return s.ItemRepo.Unreserve(ctx, itemID, *item.ReservedBy)
 }
 
 func (s *WishlistService) RemoveItem(ctx context.Context, userID, itemID uuid.UUID) error {
@@ -280,48 +322,9 @@ func (s *WishlistService) RemoveItem(ctx context.Context, userID, itemID uuid.UU
 		return err
 	}
 
-	// Только владелец вишлиста может удалять товары
-	owned, err := s.WishlistRepo.IsOwner(ctx, item.WishlistID, userID)
-	if err != nil {
+	if _, err := s.requireOwner(ctx, userID, item.WishlistID); err != nil {
 		return err
-	}
-	if !owned {
-		return ErrWishlistNotOwned
 	}
 
 	return s.ItemRepo.RemoveItem(ctx, itemID)
-}
-
-func (s *WishlistService) ListItemsPublic(ctx context.Context, wlID uuid.UUID) ([]dto.WishlistItemDTO, error) {
-	items, err := s.ItemRepo.ListItemsWithProducts(ctx, wlID)
-	if err != nil {
-		return nil, err
-	}
-
-	result := make([]dto.WishlistItemDTO, 0, len(items))
-	for _, item := range items {
-		var product dto.ProductDTO
-		if item.Product != nil {
-			product = dto.ProductDTO{
-				ID:          item.Product.ID,
-				Title:       item.Product.Title,
-				URL:         item.Product.URL,
-				ImageURL:    item.Product.ImageURL,
-				Description: item.Product.Description,
-				Price:       item.Product.Price,
-				CreatedAt:   item.Product.CreatedAt,
-			}
-		}
-		result = append(result, dto.WishlistItemDTO{
-			ID:         item.ID,
-			Product:    product,
-			Comment:    item.Comment,
-			Order:      item.Order,
-			IsReserved: item.ReservedBy != nil,
-			ReservedBy: item.ReservedBy,
-			CreatedAt:  item.CreatedAt,
-			UpdatedAt:  item.UpdatedAt,
-		})
-	}
-	return result, nil
 }

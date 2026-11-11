@@ -10,12 +10,25 @@ import (
 
 type Product struct {
 	ID          uuid.UUID `db:"id"`
+	OwnerID     uuid.UUID `db:"owner_id"`
 	Title       string    `db:"title"`
 	URL         *string   `db:"url"`
 	ImageURL    *string   `db:"image_url"`
 	Description *string   `db:"description"`
 	Price       *float64  `db:"price"`
 	CreatedAt   time.Time `db:"created_at"`
+}
+
+func (p *Product) ToResponseDTO() dto.ProductResponseDTO {
+	return dto.ProductResponseDTO{
+		ID:          p.ID,
+		Title:       p.Title,
+		URL:         p.URL,
+		ImageURL:    p.ImageURL,
+		Description: p.Description,
+		Price:       p.Price,
+		CreatedAt:   p.CreatedAt,
+	}
 }
 
 func (p *Product) ToDTO() dto.ProductDTO {

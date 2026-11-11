@@ -11,9 +11,6 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-var ErrWishlistNotFound = errors.New("wishlist not found")
-var ErrWishlistNotOwned = errors.New("user does not own this wishlist")
-
 type WishlistRepo struct {
 	Pool *pgxpool.Pool
 }
@@ -42,10 +39,13 @@ func (r *WishlistRepo) FindByID(ctx context.Context, id uuid.UUID) (*models.Wish
 	err := r.Pool.QueryRow(ctx, query, id).
 		Scan(&wl.ID, &wl.UserID, &wl.Name, &wl.Description, &wl.Privacy, &wl.Deadline, &wl.CreatedAt, &wl.UpdatedAt)
 
-	if errors.Is(err, pgx.ErrNoRows) {
-		return nil, ErrWishlistNotFound
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, ErrWishlistNotFound
+		}
+		return nil, err
 	}
-	return &wl, err
+	return &wl, nil
 }
 
 func (r *WishlistRepo) FindByUserID(ctx context.Context, userID uuid.UUID) ([]*models.Wishlist, error) {
@@ -58,7 +58,7 @@ func (r *WishlistRepo) FindByUserID(ctx context.Context, userID uuid.UUID) ([]*m
 	}
 	defer rows.Close()
 
-	var wishlists []*models.Wishlist
+	wishlists := make([]*models.Wishlist, 0)
 	for rows.Next() {
 		var wl models.Wishlist
 		err := rows.Scan(&wl.ID, &wl.UserID, &wl.Name, &wl.Description, &wl.Privacy, &wl.Deadline, &wl.CreatedAt, &wl.UpdatedAt)

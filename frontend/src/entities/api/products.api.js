@@ -13,57 +13,61 @@ import { uploadImage } from '@/shared/lib/uploadImage';
 export const fetchMyProducts = () => client('/api/products/me');
 
 /**
- * Создать товар (с загрузкой картинки).
- * @param {Object} body - Объект с данными (name, image, price и др.).
- * @returns {Promise}
+ * Собирает тело запроса товара из данных формы.
+ * Загружает новый файл картинки в Cloudinary, если он выбран.
+ * Пустые необязательные поля отправляются как null (при PUT это очищает их).
+ * @param {Object} body - Данные формы (name, url, image, imageUrl, description, price).
+ * @returns {Promise<Object>}
  */
-export const createProduct = async (body) => {
+const toProductPayload = async (body) => {
   let imageUrl =
-    typeof body.imageUrl === 'string' && body.imageUrl
-      ? body.imageUrl
-      : undefined;
+    typeof body.imageUrl === 'string' && body.imageUrl ? body.imageUrl : null;
 
   if (body.image instanceof File) {
     imageUrl = await uploadImage(body.image);
   }
 
-  return client('/api/products', {
-    method: 'POST',
-    body: JSON.stringify({
-      title: body.name,
-      url: body.url || undefined,
-      image_url: imageUrl,
-      description: body.description || undefined,
-      price: body.price ? Number(body.price) : undefined,
-    }),
-  });
+  const price =
+    body.price === '' || body.price === null || body.price === undefined
+      ? null
+      : Number(body.price);
+
+  return {
+    title: body.name,
+    url: body.url || null,
+    image_url: imageUrl,
+    description: body.description || null,
+    price: Number.isFinite(price) ? price : null,
+  };
 };
 
 /**
+ * Создать товар (с загрузкой картинки).
+ * @param {Object} body - Данные формы (name, image, price и др.).
+ * @returns {Promise}
+ */
+export const createProduct = async (body) =>
+  client('/api/products', {
+    method: 'POST',
+    body: JSON.stringify(await toProductPayload(body)),
+  });
+
+/**
  * Удалить товар.
- * @param {string|number} id - ID товара.
+ * @param {string} id - ID товара.
  * @returns {Promise}
  */
 export const deleteProduct = (id) =>
   client(`/api/products/${id}`, { method: 'DELETE' });
 
 /**
- * Обновить товар.
- * @param {string|number} id - ID товара.
- * @param {Object} body - Обновляемые поля.
+ * Обновить товар (полная замена полей, PUT; новая картинка загружается так же, как при создании).
+ * @param {string} id - ID товара.
+ * @param {Object} body - Данные формы.
  * @returns {Promise}
  */
-export const updateProduct = (id, body) =>
+export const updateProduct = async (id, body) =>
   client(`/api/products/${id}`, {
-    method: 'PATCH',
-    body: JSON.stringify({
-      title: body.name,
-      url: body.url || undefined,
-      image_url:
-        typeof body.imageUrl === 'string' && body.imageUrl
-          ? body.imageUrl
-          : undefined,
-      description: body.description || undefined,
-      price: body.price ? Number(body.price) : undefined,
-    }),
+    method: 'PUT',
+    body: JSON.stringify(await toProductPayload(body)),
   });

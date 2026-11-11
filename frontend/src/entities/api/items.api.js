@@ -7,8 +7,8 @@ import { client } from '@/shared/api/client.api';
 
 /**
  * Добавить желание в вишлист.
- * @param {string|number} wishlistId - ID вишлиста.
- * @param {Object} body - Данные желания.
+ * @param {string} wishlistId - ID вишлиста.
+ * @param {Object} body - Данные желания ({ product_id, comment?, order? }).
  * @returns {Promise}
  */
 export const addItem = (wishlistId, body) =>
@@ -19,19 +19,25 @@ export const addItem = (wishlistId, body) =>
 
 /**
  * Удалить желание.
- * @param {string|number} itemId - ID желания.
+ * @param {string} itemId - ID желания.
  * @returns {Promise}
  */
 export const removeItem = (itemId) =>
   client(`/api/items/${itemId}`, { method: 'DELETE' });
 
 /**
- * Резервирование предмета.
- * @param {string|number} itemId - ID элемента.
- * @param {boolean} isReserved - Текущий статус (зарезервирован или нет).
+ * Забронировать желание за текущим пользователем.
+ * Повторный вызов тем же пользователем безопасен; если бронь чужая — ошибка 409.
+ * @param {string} itemId - ID элемента.
+ * @returns {Promise}
  */
-export const reserveItem = (itemId, isReserved) =>
-  client(`/api/items/${itemId}/reserve`, {
-    method: 'POST',
-    body: JSON.stringify({ is_reserved: isReserved }),
-  });
+export const reserveItem = (itemId) =>
+  client(`/api/items/${itemId}/reserve`, { method: 'POST' });
+
+/**
+ * Снять бронь (свою; владелец вишлиста может снять любую).
+ * @param {string} itemId - ID элемента.
+ * @returns {Promise}
+ */
+export const unreserveItem = (itemId) =>
+  client(`/api/items/${itemId}/reserve`, { method: 'DELETE' });
