@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	"errors"
+	"strings"
 	"time"
 
 	"wish-piece/internal/dto"
@@ -13,10 +13,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var ErrUserNotFound = errors.New("user not found")
-var ErrPizda = errors.New("pizdec")
-var ErrInvalidPassword = errors.New("invalid password")
-
 type UserService struct {
 	Repo repository.UserRepository
 }
@@ -25,45 +21,41 @@ func NewUserService(repo repository.UserRepository) *UserService {
 	return &UserService{Repo: repo}
 }
 
-func (s *UserService) GetUserByID(ctx context.Context, userID string) (*models.User, error) {
-	id, err := uuid.Parse(userID)
-	if err != nil {
-		return nil, ErrPizda
-	}
+func (s *UserService) GetUserByID(ctx context.Context, id uuid.UUID) (*models.User, error) {
 	user, err := s.Repo.FindByID(ctx, id)
-	if err != nil || user == nil {
-		return nil, ErrPizda
+	if err != nil {
+		return nil, err
+	}
+	if user == nil {
+		return nil, ErrUserNotFound
 	}
 	return user, nil
 }
 
-func (s *UserService) UpdateUser(ctx context.Context, userID string, req dto.UpdateUserRequest) (*models.User, error) {
-	id, err := uuid.Parse(userID)
+func (s *UserService) UpdateUser(ctx context.Context, id uuid.UUID, req dto.UpdateUserRequest) (*models.User, error) {
+	user, err := s.GetUserByID(ctx, id)
 	if err != nil {
-		return nil, ErrUserNotFound
+		return nil, err
 	}
 
-	user, err := s.Repo.FindByID(ctx, id)
-	if err != nil || user == nil {
-		return nil, ErrPizda
+	if req.Login != nil {
+		login := strings.TrimSpace(*req.Login)
+		if !strings.EqualFold(login, user.Login) {
+			if err := s.ensureFree(ctx, id, login); err != nil {
+				return nil, err
+			}
+		}
+		user.Login = login
 	}
 
-	if req.Login != nil && *req.Login != user.Login {
-		if existing, _ := s.Repo.FindByLoginOrEmail(ctx, *req.Login); existing != nil && existing.ID != id {
-			return nil, ErrUserAlreadyExists
+	if req.Email != nil {
+		email := normalizeEmail(*req.Email)
+		if email != strings.ToLower(user.Email) {
+			if err := s.ensureFree(ctx, id, email); err != nil {
+				return nil, err
+			}
 		}
-		user.Login = *req.Login
-	}
-
-	if req.Email != nil && *req.Email != user.Email {
-		existing, err := s.Repo.FindByLoginOrEmail(ctx, *req.Email)
-		if err != nil {
-			return nil, err
-		}
-		if existing != nil && existing.ID != id {
-			return nil, ErrUserAlreadyExists
-		}
-		user.Email = *req.Email
+		user.Email = email
 	}
 
 	if req.Phone != nil {
@@ -74,13 +66,15 @@ func (s *UserService) UpdateUser(ctx context.Context, userID string, req dto.Upd
 	}
 
 	if req.Birthday != nil {
-		parseDate, err := time.Parse("2006-01-02", *req.Birthday)
+		parsed, err := time.Parse("2006-01-02", *req.Birthday)
 		if err != nil {
-			return nil, errors.New("invalid date format")
+			return nil, ErrInvalidInput
 		}
-		user.Birthday = &parseDate
+		user.Birthday = &parsed
 	}
 
+	// Между проверкой и записью возможна гонка — её ловит уникальный индекс,
+	// репозиторий в этом случае возвращает ErrUserAlreadyExists.
 	if err := s.Repo.Update(ctx, user); err != nil {
 		return nil, err
 	}
@@ -88,15 +82,22 @@ func (s *UserService) UpdateUser(ctx context.Context, userID string, req dto.Upd
 	return user, nil
 }
 
-func (s *UserService) DeleteUser(ctx context.Context, userID, password string) error {
-	id, err := uuid.Parse(userID)
+// ensureFree проверяет, что логин/email не занят другим пользователем.
+func (s *UserService) ensureFree(ctx context.Context, selfID uuid.UUID, loginOrEmail string) error {
+	existing, err := s.Repo.FindByLoginOrEmail(ctx, loginOrEmail)
 	if err != nil {
-		return ErrUserNotFound
+		return err
 	}
+	if existing != nil && existing.ID != selfID {
+		return ErrUserAlreadyExists
+	}
+	return nil
+}
 
-	user, err := s.Repo.FindByID(ctx, id)
-	if err != nil || user == nil {
-		return ErrUserNotFound
+func (s *UserService) DeleteUser(ctx context.Context, id uuid.UUID, password string) error {
+	user, err := s.GetUserByID(ctx, id)
+	if err != nil {
+		return err
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password)); err != nil {

@@ -1,15 +1,17 @@
 // Package main является точкой входа в приложение WishPiece Backend.
 // Данный пакет отвечает за инициализацию конфигурации, подключение к базе данных,
-// настройку зависимостей (DI) и запуск HTTP-сервера с поддержкой graceful shutdown.
+// применение миграций, настройку зависимостей (DI) и запуск HTTP-сервера с поддержкой graceful shutdown.
 package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
+	"sync"
 	"syscall"
 	"time"
 
@@ -25,106 +27,115 @@ import (
 	"github.com/joho/godotenv"
 )
 
-// main инициализирует и запускает HTTP-сервер.
-//
-// Процесс запуска включает в себя:
-//  1. Загрузку переменных окружения из .env [cite: 1]
-//  2. Инициализацию пула соединений с БД [cite: 1, 4]
-//  3. Регистрацию репозиториев, сервисов и хендлеров
-//  4. Запуск сервера на порту, указанном в конфигурации [cite: 2]
-//
-// При получении сигналов SIGINT или SIGTERM сервер завершает работу корректно,
-// ожидая завершения активных запросов в течение 5 секунд.
 func main() {
-	godotenv.Load()
+	if err := run(); err != nil {
+		log.Fatal(err)
+	}
+}
+
+// run инициализирует зависимости и запускает HTTP-сервер.
+//
+// Процесс запуска:
+//  1. Загрузка переменных окружения (.env необязателен).
+//  2. Подключение к БД и применение миграций (goose).
+//  3. Регистрация репозиториев, сервисов и хендлеров.
+//  4. Запуск сервера и фонового воркера дедлайнов.
+//
+// При SIGINT/SIGTERM сервер завершает активные запросы (до 10 секунд) и дожидается остановки воркера.
+func run() error {
+	_ = godotenv.Load()
 
 	cfg, err := config.Load()
 	if err != nil {
-		log.Fatalf("Config error: %v", err)
+		return fmt.Errorf("config error: %w", err)
 	}
 
 	pool, dbClose, err := database.NewPool(&cfg.DB)
 	if err != nil {
-		log.Fatalf("Database error: %v", err)
+		return fmt.Errorf("database error: %w", err)
 	}
 	defer dbClose()
 
+	if err := database.Migrate(pool); err != nil {
+		return fmt.Errorf("migration error: %w", err)
+	}
+
 	val := validator.New()
 
-	// Auth
+	// Репозитории
 	userRepo := repository.NewUserRepo(pool)
-	authService := service.NewAuthService(userRepo, cfg.Auth.JWTSecret)
-	authHandler := &handler.AuthHandler{Service: authService, Validator: val}
-
-	// Users
-	userService := service.NewUserService(userRepo)
-	userHandler := &handler.UserHandler{Service: userService, Validator: val}
-
-	// Wishlists
 	wishlistRepo := repository.NewWishlistRepo(pool)
 	itemRepo := repository.NewWishlistItemRepo(pool)
 	productRepo := repository.NewProductRepo(pool)
-
-	// Products
-	userProductRepo := repository.NewUserProductRepo(pool)
-
-	productService := &service.ProductService{
-		ProductRepo:     productRepo,
-		UserProductRepo: userProductRepo,
-	}
-
-	productHandler := &handler.ProductHandler{
-		Service:   productService,
-		Validator: val,
-	}
-
-	// Friendship
 	friendshipRepo := repository.NewFriendshipRepo(pool)
-
-	// Notifications
 	notificationRepo := repository.NewNotificationRepo(pool)
-	notificationHandler := &handler.NotificationHandler{
-		Repo: notificationRepo,
-	}
 
-	wishlistService := service.NewWishlistService(wishlistRepo, itemRepo, productRepo, notificationRepo, userRepo)
-	wishlistHandler := &handler.WishlistHandler{
-		Service:   wishlistService,
-		Validator: val,
-	}
+	// Сервисы
+	authService := service.NewAuthService(userRepo, cfg.Auth.JWTSecret)
+	userService := service.NewUserService(userRepo)
+	productService := service.NewProductService(productRepo)
+	wishlistService := service.NewWishlistService(wishlistRepo, itemRepo, productRepo, friendshipRepo, notificationRepo)
+	friendshipService := service.NewFriendshipService(friendshipRepo, notificationRepo, userRepo)
 
-	friendshipService := &service.FriendshipService{
-		Repo:         friendshipRepo,
-		Notification: notificationRepo,
-		UserRepo:     userRepo,
-	}
-	friendshipHandler := &handler.FriendshipHandler{
-		Service:   friendshipService,
-		Validator: val,
-	}
+	// Закрывается при Shutdown, чтобы долгие SSE-соединения завершились.
+	streamsDone := make(chan struct{})
 
-	r := router.New(authHandler, userHandler, wishlistHandler, productHandler, friendshipHandler, notificationHandler, cfg.Auth.JWTSecret)
+	r := router.New(router.Handlers{
+		Auth:         &handler.AuthHandler{Service: authService, Validator: val},
+		User:         &handler.UserHandler{Service: userService, Validator: val},
+		Wishlist:     &handler.WishlistHandler{Service: wishlistService, Validator: val},
+		Product:      &handler.ProductHandler{Service: productService, Validator: val},
+		Friendship:   &handler.FriendshipHandler{Service: friendshipService, Validator: val},
+		Notification: &handler.NotificationHandler{Repo: notificationRepo, Shutdown: streamsDone},
+	}, router.Options{
+		JWTSecret:  cfg.Auth.JWTSecret,
+		CORSOrigin: cfg.App.CORSOrigin,
+	})
 
-	srv := &http.Server{Addr: fmt.Sprintf(":%d", cfg.App.Port), Handler: r}
+	// WriteTimeout намеренно не задан: он оборвал бы SSE-поток уведомлений.
+	srv := &http.Server{
+		Addr:              fmt.Sprintf(":%d", cfg.App.Port),
+		Handler:           r,
+		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       15 * time.Second,
+		IdleTimeout:       120 * time.Second,
+	}
+	srv.RegisterOnShutdown(func() { close(streamsDone) })
+
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer stop()
+
+	var wg sync.WaitGroup
+	wg.Add(1)
 	go func() {
-		log.Printf("Server starting on http://localhost:%d", cfg.App.Port)
-		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatal(err)
-		}
+		defer wg.Done()
+		worker.NewDeadlineWorker(notificationRepo).Run(ctx)
 	}()
 
-	ctx, cancel := context.WithCancel(context.Background())
+	serverErr := make(chan error, 1)
+	go func() {
+		log.Printf("Server starting on http://localhost:%d", cfg.App.Port)
+		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			serverErr <- err
+		}
+		close(serverErr)
+	}()
 
-	deadlineWorker := worker.NewDeadlineWorker(notificationRepo)
-	go deadlineWorker.Run(ctx)
+	var runErr error
+	select {
+	case <-ctx.Done():
+		log.Println("Graceful shutdown...")
+	case err := <-serverErr:
+		runErr = fmt.Errorf("server error: %w", err)
+	}
+	stop()
 
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-	<-quit
-	log.Println("Graceful shutdown...")
-	cancel()
+	shutdownCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	if err := srv.Shutdown(shutdownCtx); err != nil {
+		log.Printf("server shutdown error: %v", err)
+	}
 
-	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer shutdownCancel()
-	srv.Shutdown(shutdownCtx)
+	wg.Wait()
+	return runErr
 }

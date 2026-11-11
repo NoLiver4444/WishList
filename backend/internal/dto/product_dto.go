@@ -6,12 +6,14 @@ import (
 	"github.com/google/uuid"
 )
 
-type CreateProductRequest struct {
+// ProductRequest — тело запроса создания (POST) и полной замены (PUT) товара.
+// Отсутствующие необязательные поля при PUT очищаются.
+type ProductRequest struct {
 	Title       string   `json:"title" validate:"required,max=200"`
 	URL         *string  `json:"url,omitempty" validate:"omitempty,url"`
 	ImageURL    *string  `json:"image_url,omitempty" validate:"omitempty,url"`
-	Description *string  `json:"description,omitempty"`
-	Price       *float64 `json:"price,omitempty" validate:"omitempty,min=0"`
+	Description *string  `json:"description,omitempty" validate:"omitempty,max=2000"`
+	Price       *float64 `json:"price,omitempty" validate:"omitempty,min=0,max=99999999"`
 }
 
 type ProductResponseDTO struct {

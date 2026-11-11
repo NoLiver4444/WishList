@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"errors"
 
 	"wish-piece/internal/dto"
 	"wish-piece/internal/models"
@@ -11,16 +10,17 @@ import (
 	"github.com/google/uuid"
 )
 
-var ErrProductNotFound = errors.New("product not found")
-var ErrProductNotOwned = errors.New("user does not own this product")
-
 type ProductService struct {
-	ProductRepo     *repository.ProductRepo
-	UserProductRepo *repository.UserProductRepo
+	Repo repository.ProductRepository
 }
 
-func (s *ProductService) CreateProduct(ctx context.Context, userID uuid.UUID, req dto.CreateProductRequest) (*dto.ProductResponseDTO, error) {
+func NewProductService(repo repository.ProductRepository) *ProductService {
+	return &ProductService{Repo: repo}
+}
+
+func (s *ProductService) CreateProduct(ctx context.Context, userID uuid.UUID, req dto.ProductRequest) (*dto.ProductResponseDTO, error) {
 	product := &models.Product{
+		OwnerID:     userID,
 		Title:       req.Title,
 		URL:         req.URL,
 		ImageURL:    req.ImageURL,
@@ -28,74 +28,55 @@ func (s *ProductService) CreateProduct(ctx context.Context, userID uuid.UUID, re
 		Price:       req.Price,
 	}
 
-	if err := s.ProductRepo.Create(ctx, product); err != nil {
+	if err := s.Repo.Create(ctx, product); err != nil {
 		return nil, err
 	}
 
-	// привязываем продукт к пользователю
-	if err := s.UserProductRepo.Add(ctx, userID, product.ID); err != nil {
-		return nil, err
-	}
-
-	return &dto.ProductResponseDTO{
-		ID:          product.ID,
-		Title:       product.Title,
-		URL:         product.URL,
-		ImageURL:    product.ImageURL,
-		Description: product.Description,
-		Price:       product.Price,
-		CreatedAt:   product.CreatedAt,
-	}, nil
+	out := product.ToResponseDTO()
+	return &out, nil
 }
 
 func (s *ProductService) ListUserProducts(ctx context.Context, userID uuid.UUID) ([]dto.ProductResponseDTO, error) {
-	products, err := s.UserProductRepo.FindByUserID(ctx, userID)
+	products, err := s.Repo.FindByOwner(ctx, userID)
 	if err != nil {
 		return nil, err
 	}
 
 	result := make([]dto.ProductResponseDTO, 0, len(products))
 	for _, p := range products {
-		result = append(result, dto.ProductResponseDTO{
-			ID:          p.ID,
-			Title:       p.Title,
-			URL:         p.URL,
-			ImageURL:    p.ImageURL,
-			Description: p.Description,
-			Price:       p.Price,
-			CreatedAt:   p.CreatedAt,
-		})
+		result = append(result, p.ToResponseDTO())
 	}
 	return result, nil
 }
 
-func (s *ProductService) DeleteProduct(ctx context.Context, userID uuid.UUID, productID uuid.UUID) error {
-	owned, err := s.UserProductRepo.IsOwner(ctx, userID, productID)
+// checkOwner возвращает ErrProductNotFound, если товара нет, и ErrForbidden, если он чужой.
+func (s *ProductService) checkOwner(ctx context.Context, userID, productID uuid.UUID) error {
+	product, err := s.Repo.FindByID(ctx, productID)
 	if err != nil {
 		return err
 	}
-	if !owned {
-		return ErrProductNotOwned
+	if product.OwnerID != userID {
+		return ErrForbidden
 	}
-
-	if err := s.UserProductRepo.Remove(ctx, userID, productID); err != nil {
-		return err
-	}
-
-	return s.ProductRepo.Delete(ctx, productID)
+	return nil
 }
 
-func (s *ProductService) UpdateProduct(ctx context.Context, userID, productID uuid.UUID, req dto.CreateProductRequest) (*dto.ProductResponseDTO, error) {
-	owned, err := s.UserProductRepo.IsOwner(ctx, userID, productID)
-	if err != nil {
-		return nil, err
+func (s *ProductService) DeleteProduct(ctx context.Context, userID, productID uuid.UUID) error {
+	if err := s.checkOwner(ctx, userID, productID); err != nil {
+		return err
 	}
-	if !owned {
-		return nil, ErrProductNotOwned
+	return s.Repo.Delete(ctx, productID, userID)
+}
+
+// UpdateProduct полностью заменяет поля товара (семантика PUT).
+func (s *ProductService) UpdateProduct(ctx context.Context, userID, productID uuid.UUID, req dto.ProductRequest) (*dto.ProductResponseDTO, error) {
+	if err := s.checkOwner(ctx, userID, productID); err != nil {
+		return nil, err
 	}
 
 	product := &models.Product{
 		ID:          productID,
+		OwnerID:     userID,
 		Title:       req.Title,
 		URL:         req.URL,
 		ImageURL:    req.ImageURL,
@@ -103,16 +84,10 @@ func (s *ProductService) UpdateProduct(ctx context.Context, userID, productID uu
 		Price:       req.Price,
 	}
 
-	if err := s.ProductRepo.Update(ctx, product); err != nil {
+	if err := s.Repo.Update(ctx, product); err != nil {
 		return nil, err
 	}
 
-	return &dto.ProductResponseDTO{
-		ID:          product.ID,
-		Title:       product.Title,
-		URL:         product.URL,
-		ImageURL:    product.ImageURL,
-		Description: product.Description,
-		Price:       product.Price,
-	}, nil
+	out := product.ToResponseDTO()
+	return &out, nil
 }

@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	"errors"
+	"strings"
 	"time"
 
 	"wish-piece/internal/dto"
@@ -14,24 +14,29 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var ErrUserAlreadyExists = errors.New("user already exists")
-var ErrInvalidCredentials = errors.New("invalid login or password")
+const tokenTTL = 24 * time.Hour
 
 type AuthService struct {
-	Repo      *repository.UserRepo
+	Repo      repository.UserRepository
 	JWTSecret string
 }
 
-func NewAuthService(repo *repository.UserRepo, jwtSecret string) *AuthService {
+func NewAuthService(repo repository.UserRepository, jwtSecret string) *AuthService {
 	return &AuthService{Repo: repo, JWTSecret: jwtSecret}
 }
 
 func (s *AuthService) Register(ctx context.Context, req dto.CreateUserRequest) (*dto.AuthResponse, error) {
-	if existing, _ := s.Repo.FindByLoginOrEmail(ctx, req.Login); existing != nil {
-		return nil, ErrUserAlreadyExists
-	}
-	if existing, _ := s.Repo.FindByLoginOrEmail(ctx, req.Email); existing != nil {
-		return nil, ErrUserAlreadyExists
+	login := strings.TrimSpace(req.Login)
+	email := normalizeEmail(req.Email)
+
+	for _, key := range []string{login, email} {
+		existing, err := s.Repo.FindByLoginOrEmail(ctx, key)
+		if err != nil {
+			return nil, err
+		}
+		if existing != nil {
+			return nil, ErrUserAlreadyExists
+		}
 	}
 
 	hash, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
@@ -40,36 +45,23 @@ func (s *AuthService) Register(ctx context.Context, req dto.CreateUserRequest) (
 	}
 
 	user := &models.User{
-		Login:        req.Login,
-		Email:        req.Email,
+		Login:        login,
+		Email:        email,
 		Phone:        req.Phone,
+		Birthday:     req.Birthday,
 		PasswordHash: string(hash),
 	}
 
+	// Уникальность дополнительно гарантирует БД: при гонке Create вернёт ErrUserAlreadyExists.
 	if err := s.Repo.Create(ctx, user); err != nil {
 		return nil, err
 	}
 
-	token, err := s.generateJWT(user.ID)
-	if err != nil {
-		return nil, err
-	}
-
-	return &dto.AuthResponse{
-		Token: token,
-		User: dto.UserDTO{
-			ID:        user.ID,
-			Login:     user.Login,
-			Email:     user.Email,
-			Phone:     user.Phone,
-			AvatarURL: user.AvatarURL,
-			CreatedAt: user.CreatedAt,
-		},
-	}, nil
+	return s.authResponse(user)
 }
 
 func (s *AuthService) Login(ctx context.Context, req dto.LoginRequest) (*dto.AuthResponse, error) {
-	user, err := s.Repo.FindByLoginOrEmail(ctx, req.LoginOrEmail)
+	user, err := s.Repo.FindByLoginOrEmail(ctx, strings.TrimSpace(req.LoginOrEmail))
 	if err != nil {
 		return nil, err
 	}
@@ -81,28 +73,21 @@ func (s *AuthService) Login(ctx context.Context, req dto.LoginRequest) (*dto.Aut
 		return nil, ErrInvalidCredentials
 	}
 
+	return s.authResponse(user)
+}
+
+func (s *AuthService) authResponse(user *models.User) (*dto.AuthResponse, error) {
 	token, err := s.generateJWT(user.ID)
 	if err != nil {
 		return nil, err
 	}
-
-	return &dto.AuthResponse{
-		Token: token,
-		User: dto.UserDTO{
-			ID:        user.ID,
-			Login:     user.Login,
-			Email:     user.Email,
-			Phone:     user.Phone,
-			AvatarURL: user.AvatarURL,
-			CreatedAt: user.CreatedAt,
-		},
-	}, nil
+	return &dto.AuthResponse{Token: token, User: user.ToDTO()}, nil
 }
 
 func (s *AuthService) generateJWT(userID uuid.UUID) (string, error) {
 	claims := jwt.MapClaims{
 		"user_id": userID.String(),
-		"exp":     time.Now().Add(24 * time.Hour).Unix(),
+		"exp":     time.Now().Add(tokenTTL).Unix(),
 	}
 	t := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return t.SignedString([]byte(s.JWTSecret))

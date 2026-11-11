@@ -7,35 +7,28 @@ import (
 	"net/http"
 	"time"
 
-	"wish-piece/internal/middleware"
 	"wish-piece/internal/repository"
 
-	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
 )
 
+// sseInterval — период опроса новых уведомлений и отправки keep-alive.
+const sseInterval = 10 * time.Second
+
 type NotificationHandler struct {
-	Repo      *repository.NotificationRepo
-	Validator *validator.Validate
+	Repo repository.NotificationRepository
+	// Shutdown закрывается при остановке сервера, чтобы SSE-потоки завершились
+	// и не задерживали graceful shutdown. Может быть nil.
+	Shutdown <-chan struct{}
 }
 
+// Stream — Server-Sent Events. При подключении отправляет все непрочитанные уведомления,
+// дальше — только новые (уже отправленные ID запоминаются), между ними шлёт «: ping».
 func (h *NotificationHandler) Stream(w http.ResponseWriter, r *http.Request) {
-	userID, ok := middleware.GetUserIDFromContext(r.Context())
+	userID, ok := currentUserID(w, r)
 	if !ok {
-		RespondError(w, http.StatusUnauthorized, "Unauthorized", "UNAUTHORIZED")
 		return
 	}
-
-	id, err := uuid.Parse(userID)
-	if err != nil {
-		RespondError(w, http.StatusBadRequest, "Bad request", "BAD_REQUEST")
-		return
-	}
-
-	w.Header().Set("Content-Type", "text/event-stream")
-	w.Header().Set("Cache-Control", "no-cache")
-	w.Header().Set("Connection", "keep-alive")
-	w.Header().Set("X-Accel-Buffering", "no")
 
 	flusher, ok := w.(http.Flusher)
 	if !ok {
@@ -43,53 +36,76 @@ func (h *NotificationHandler) Stream(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	notifications, err := h.Repo.GetUnread(r.Context(), id)
-	if err == nil && len(notifications) > 0 {
-		for _, n := range notifications {
-			data, _ := json.Marshal(n)
-			fmt.Fprintf(w, "data: %s\n\n", data)
+	w.Header().Set("Content-Type", "text/event-stream")
+	w.Header().Set("Cache-Control", "no-cache")
+	w.Header().Set("Connection", "keep-alive")
+	w.Header().Set("X-Accel-Buffering", "no")
+	w.WriteHeader(http.StatusOK)
+
+	sent := make(map[uuid.UUID]struct{})
+
+	push := func() {
+		notifications, err := h.Repo.GetUnread(r.Context(), userID)
+		if err != nil {
+			if r.Context().Err() == nil {
+				log.Printf("SSE GetUnread error: %v", err)
+			}
+			return
 		}
-		flusher.Flush()
+		unread := make(map[uuid.UUID]struct{}, len(notifications))
+		for _, n := range notifications {
+			unread[n.ID] = struct{}{}
+			if _, done := sent[n.ID]; done {
+				continue
+			}
+			data, err := json.Marshal(n)
+			if err != nil {
+				log.Printf("SSE marshal error: %v", err)
+				continue
+			}
+			fmt.Fprintf(w, "data: %s\n\n", data)
+			sent[n.ID] = struct{}{}
+		}
+		// Забываем прочитанные, чтобы набор не рос бесконечно.
+		for id := range sent {
+			if _, still := unread[id]; !still {
+				delete(sent, id)
+			}
+		}
 	}
 
-	ticker := time.NewTicker(10 * time.Second)
+	push()
+	flusher.Flush()
+
+	ticker := time.NewTicker(sseInterval)
 	defer ticker.Stop()
 
 	for {
 		select {
 		case <-r.Context().Done():
 			return
+		case <-h.Shutdown:
+			return
 		case <-ticker.C:
-			notifications, err := h.Repo.GetUnread(r.Context(), id)
-			if err != nil {
-				log.Printf("SSE GetUnread error: %v", err)
-				continue
-			}
-			for _, n := range notifications {
-				data, _ := json.Marshal(n)
-				fmt.Fprintf(w, "data: %s\n\n", data)
-				flusher.Flush()
-			}
+			push()
+			fmt.Fprint(w, ": ping\n\n")
+			flusher.Flush()
 		}
 	}
 }
 
 func (h *NotificationHandler) MarkRead(w http.ResponseWriter, r *http.Request) {
-	userID, ok := middleware.GetUserIDFromContext(r.Context())
+	userID, ok := currentUserID(w, r)
 	if !ok {
-		RespondError(w, http.StatusUnauthorized, "Unauthorized", "UNAUTHORIZED")
+		return
+	}
+	notifID, ok := pathUUID(w, r, "id")
+	if !ok {
 		return
 	}
 
-	notifID, err := uuid.Parse(r.PathValue("id"))
-	if err != nil {
-		RespondError(w, http.StatusBadRequest, "Bad id", "BAD_REQUEST")
-		return
-	}
-
-	uid, _ := uuid.Parse(userID)
-	if err := h.Repo.MarkRead(r.Context(), notifID, uid); err != nil {
-		RespondError(w, http.StatusInternalServerError, "Internal error", "INTERNAL_ERROR")
+	if err := h.Repo.MarkRead(r.Context(), notifID, userID); err != nil {
+		respondServiceError(w, r, err)
 		return
 	}
 
@@ -97,15 +113,13 @@ func (h *NotificationHandler) MarkRead(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *NotificationHandler) MarkAllRead(w http.ResponseWriter, r *http.Request) {
-	userID, ok := middleware.GetUserIDFromContext(r.Context())
+	userID, ok := currentUserID(w, r)
 	if !ok {
-		RespondError(w, http.StatusUnauthorized, "Unauthorized", "UNAUTHORIZED")
 		return
 	}
 
-	uid, _ := uuid.Parse(userID)
-	if err := h.Repo.MarkAllRead(r.Context(), uid); err != nil {
-		RespondError(w, http.StatusInternalServerError, "Internal error", "INTERNAL_ERROR")
+	if err := h.Repo.MarkAllRead(r.Context(), userID); err != nil {
+		respondServiceError(w, r, err)
 		return
 	}
 
